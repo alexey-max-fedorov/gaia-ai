@@ -4,19 +4,20 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowRight, ChevronDown } from "lucide-react";
+import GlitchLogo from "@/components/GlitchLogo";
 
 // ─── Subfunction data ──────────────────────────────────────
 const SUBFUNCTIONS = [
-  { name: "HEPHAESTUS", color: "#FF8C42", symbol: "⚙" },
-  { name: "HADES",      color: "#EF4444", symbol: "☠" },
-  { name: "MINERVA",    color: "#60A5FA", symbol: "◈" },
-  { name: "AETHER",     color: "#1DD3B0", symbol: "◉" },
-  { name: "POSEIDON",   color: "#3B82F6", symbol: "≈" },
-  { name: "DEMETER",    color: "#4ADE80", symbol: "⬡" },
-  { name: "ARTEMIS",    color: "#F472B6", symbol: "◎" },
-  { name: "ELEUTHIA",   color: "#A78BFA", symbol: "⚖" },
-  { name: "APOLLO",     color: "#FBBF24", symbol: "◆" },
-  { name: "ATHENA",     color: "#E8EAF6", symbol: "⊕" },
+  { name: "HEPHAESTUS", color: "#FF8C42" },
+  { name: "HADES",      color: "#EF4444" },
+  { name: "MINERVA",    color: "#60A5FA" },
+  { name: "AETHER",     color: "#1DD3B0" },
+  { name: "POSEIDON",   color: "#3B82F6" },
+  { name: "DEMETER",    color: "#4ADE80" },
+  { name: "ARTEMIS",    color: "#F472B6" },
+  { name: "ELEUTHIA",   color: "#A78BFA" },
+  { name: "APOLLO",     color: "#FBBF24" },
+  { name: "ATHENA",     color: "#E8EAF6" },
 ];
 
 const ROUTE_ROWS = [
@@ -75,18 +76,17 @@ function HexCell({ fn, idx }: { fn: typeof SUBFUNCTIONS[0]; idx: number }) {
       className="flex flex-col items-center gap-1 cursor-pointer group"
     >
       <div
-        className="w-11 h-11 md:w-13 md:h-13 flex items-center justify-center text-base md:text-lg font-bold transition-all duration-300"
+        className="w-11 h-11 md:w-13 md:h-13 flex items-center justify-center transition-all duration-300"
         style={{
           clipPath: "polygon(50% 0%, 93% 25%, 93% 75%, 50% 100%, 7% 75%, 7% 25%)",
           backgroundColor: `${fn.color}14`,
           border: `1px solid ${fn.color}50`,
-          color: fn.color,
           filter: `drop-shadow(0 0 5px ${fn.color}50)`,
           width: "44px",
           height: "44px",
         }}
       >
-        {fn.symbol}
+        <GlitchLogo name={fn.name} size={28} />
       </div>
       <span
         className="text-[7px] md:text-[8px] font-display font-semibold tracking-[0.2em] opacity-50 group-hover:opacity-90 transition-opacity"

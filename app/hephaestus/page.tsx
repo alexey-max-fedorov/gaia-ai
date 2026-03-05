@@ -5,6 +5,7 @@ import Link from "next/link";
 import { ArrowRight, ExternalLink } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import GlitchLogo from "@/components/GlitchLogo";
 
 const DEMO_URL =
   "https://www.perplexity.ai/spaces/hephaestus-code-public-djO4mFs7Rhm19vzo4JIajg";
@@ -89,7 +90,7 @@ export default function HephaestusPage() {
                 initial={{ opacity: 0, scale: 0.4, filter: "blur(14px) brightness(6)" }}
                 animate={{ opacity: 1, scale: 1, filter: "blur(0px) brightness(1)" }}
                 transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-                className="shrink-0 flex items-center justify-center text-5xl md:text-6xl"
+                className="shrink-0 flex items-center justify-center"
                 style={{
                   width: "100px",
                   height: "100px",
@@ -97,11 +98,10 @@ export default function HephaestusPage() {
                     "polygon(50% 0%, 93% 25%, 93% 75%, 50% 100%, 7% 75%, 7% 25%)",
                   backgroundColor: "rgba(255,140,66,0.10)",
                   border: "1px solid rgba(255,140,66,0.40)",
-                  color: "#FF8C42",
                   filter: "drop-shadow(0 0 22px rgba(255,140,66,0.55))",
                 }}
               >
-                ⚙
+                <GlitchLogo name="HEPHAESTUS" size={56} />
               </motion.div>
 
               <div>

@@ -5,13 +5,13 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import GlitchLogo from "@/components/GlitchLogo";
 
 const SKILLS = [
   {
     name: "HEPHAESTUS",
     role: "Coding Engine",
     color: "#FF8C42",
-    symbol: "⚙",
     description:
       "Full Claude Code-inspired coding engine with Plan Mode, GitHub MCP integration, and implementation workflow. Handles all code generation, debugging, and repo work.",
     tags: ["Code Generation", "Debugging", "GitHub MCP", "Plan Mode"],
@@ -21,7 +21,6 @@ const SKILLS = [
     name: "HADES",
     role: "Security & Pentesting",
     color: "#EF4444",
-    symbol: "☠",
     description:
       "Threat modeling (STRIDE), vulnerability analysis, CVE research, pentest planning, and incident response. Authorization-gated for offensive techniques.",
     tags: ["Threat Modeling", "CVE Research", "Pentest", "Incident Response"],
@@ -30,7 +29,6 @@ const SKILLS = [
     name: "MINERVA",
     role: "System Architecture",
     color: "#60A5FA",
-    symbol: "◈",
     description:
       "ADR Mode for architectural decisions, distributed systems design, API design, database architecture, and capacity planning. No code generation.",
     tags: ["ADR Mode", "Distributed Systems", "API Design", "Capacity Planning"],
@@ -39,7 +37,6 @@ const SKILLS = [
     name: "AETHER",
     role: "Analytics, Data Science & ML",
     color: "#1DD3B0",
-    symbol: "◉",
     description:
       "Pipeline Plan Mode with 5 phases, EDA with Plotly charts, model training with proper evaluation, feature engineering, and statistical analysis.",
     tags: ["ML Pipelines", "EDA", "Statistics", "Data Viz"],
@@ -48,7 +45,6 @@ const SKILLS = [
     name: "POSEIDON",
     role: "Quantitative Finance",
     color: "#3B82F6",
-    symbol: "≈",
     description:
       "DCF, comps, options pricing (Black-Scholes + Greeks), portfolio construction, earnings analysis, and macro research. Valuation ranges, never point estimates.",
     tags: ["DCF", "Options", "Earnings", "Portfolio"],
@@ -57,7 +53,6 @@ const SKILLS = [
     name: "DEMETER",
     role: "DevOps & Platform Engineering",
     color: "#4ADE80",
-    symbol: "⬡",
     description:
       "IaC Plan Mode with approval gates, Kubernetes, Terraform, CI/CD pipelines, observability design, cloud cost optimization, and incident response.",
     tags: ["Kubernetes", "Terraform", "CI/CD", "Observability"],
@@ -66,7 +61,6 @@ const SKILLS = [
     name: "ARTEMIS",
     role: "Product Management",
     color: "#F472B6",
-    symbol: "◎",
     description:
       "PRD Mode with 5 phases, RICE/ICE prioritization, competitive analysis, user story writing, and stakeholder alignment frameworks.",
     tags: ["PRDs", "Roadmaps", "Prioritization", "User Stories"],
@@ -75,7 +69,6 @@ const SKILLS = [
     name: "ELEUTHIA",
     role: "Legal Research",
     color: "#A78BFA",
-    symbol: "⚖",
     description:
       "IRAC analysis mode, contract review with risk grading, regulatory research, employment law, IP analysis. Jurisdiction-aware with built-in disclaimer gates.",
     tags: ["Contract Review", "IRAC", "Regulatory", "IP Law"],
@@ -84,7 +77,6 @@ const SKILLS = [
     name: "APOLLO",
     role: "Creative Writing & Worldbuilding",
     color: "#FBBF24",
-    symbol: "◆",
     description:
       "World Bible Mode with 4 layers, canon consistency enforcement, story structure, character development, prose editing, and interactive narrative design.",
     tags: ["Worldbuilding", "Story Structure", "Characters", "Prose"],
@@ -93,7 +85,6 @@ const SKILLS = [
     name: "ATHENA",
     role: "Scientific Research",
     color: "#E8EAF6",
-    symbol: "⊕",
     description:
       "Literature Review Mode with 4 phases, hypothesis formation, experiment design, paper critique, methodology selection, and a 6-tier evidence grading system.",
     tags: ["Literature Review", "Hypothesis", "Experiment Design", "Evidence Grading"],
@@ -214,19 +205,18 @@ export default function SkillsPage() {
                   {/* Header */}
                   <div className="flex items-start justify-between mb-4">
                     <div
-                      className="w-11 h-11 flex items-center justify-center text-xl font-bold"
+                      className="w-11 h-11 flex items-center justify-center"
                       style={{
                         clipPath:
                           "polygon(50% 0%, 93% 25%, 93% 75%, 50% 100%, 7% 75%, 7% 25%)",
                         backgroundColor: `${skill.color}12`,
                         border: `1px solid ${skill.color}40`,
-                        color: skill.color,
                         filter: `drop-shadow(0 0 5px ${skill.color}45)`,
                         minWidth: "44px",
                         minHeight: "44px",
                       }}
                     >
-                      {skill.symbol}
+                      <GlitchLogo name={skill.name} size={28} />
                     </div>
                     {skill.badge && (
                       <span
