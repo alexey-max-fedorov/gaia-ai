@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   version="1.1"
+   id="svg3680"
+   width="1080"
+   height="1080"
+   viewBox="0 0 1080 1080"
+   sodipodi:docname="DEMETER Logo.svg"
+   inkscape:version="0.92.0 r15299">
+  <metadata
+     id="metadata3686">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs3684" />
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="958"
+     inkscape:window-height="991"
+     id="namedview3682"
+     showgrid="false"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0"
+     inkscape:zoom="0.19838274"
+     inkscape:cx="789.52399"
+     inkscape:cy="306.92943"
+     inkscape:window-x="952"
+     inkscape:window-y="0"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="svg3680" />
+  <g
+     id="g7249"
+     transform="matrix(17.277197,0,0,17.277197,-2537.8746,-10278.38)">
+    <path
+       id="path5163"
+       d="m 178.13906,596.6804 -0.28103,0.16467 -0.0471,0.0273 c -8.42364,4.9185 -16.8468,9.83779 -25.27073,14.75578 v 29.23817 c 8.53531,4.9282 17.07066,9.85635 25.60644,14.78376 8.53577,-4.92741 17.07112,-9.85556 25.60644,-14.78376 v -29.23817 c -8.53819,-4.9823 -17.07649,-9.96443 -25.61407,-14.94779 z m 6.5e-4,3.01499 c 7.66973,4.47607 15.33945,8.95215 23.00917,13.42822 v 18.73274 l -4.72151,2.7257 V 614.6629 l -6.05096,3.49375 -5.38146,-3.10655 v -6.7885 l -6.84826,-3.95407 -6.84827,3.95407 v 6.7885 l -5.38146,3.10655 -6.05096,-3.49375 v 19.91915 l -4.72149,-2.72633 v -18.73275 c 7.66506,-4.47586 15.33012,-8.95172 22.99518,-13.42758 z"
+       style="color:#000000;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:medium;line-height:normal;font-family:sans-serif;font-variant-ligatures:normal;font-variant-position:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-alternates:normal;font-feature-settings:normal;text-indent:0;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000000;letter-spacing:normal;word-spacing:normal;text-transform:none;writing-mode:lr-tb;direction:ltr;text-orientation:mixed;dominant-baseline:auto;baseline-shift:baseline;text-anchor:start;white-space:normal;shape-padding:0;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;opacity:1;isolation:auto;mix-blend-mode:normal;color-interpolation:sRGB;color-interpolation-filters:linearRGB;solid-color:#000000;solid-opacity:1;vector-effect:none;fill:#325b41;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1.30213022;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;color-rendering:auto;image-rendering:auto;shape-rendering:auto;text-rendering:auto;enable-background:accumulate"
+       inkscape:connector-curvature="0" />
+    <path
+       sodipodi:nodetypes="cccccccccc"
+       style="fill:#93d79c;fill-opacity:1;stroke:none;stroke-width:0.32553256px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 178.14687,652.643 v -48.33547 l -6.84828,3.95386 v 6.78871 l -5.38122,3.10685 -6.05137,-3.49376 v 19.91886 l -4.72149,-2.72633 -0.0405,7.24923 c 7.90742,4.64564 15.09979,8.95243 23.04283,13.53805 z"
+       id="path5167"
+       inkscape:connector-curvature="0" />
+  </g>
+</svg>

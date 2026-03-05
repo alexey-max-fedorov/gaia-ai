@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   version="1.1"
+   id="svg3680"
+   width="1080"
+   height="1080"
+   viewBox="0 0 1080 1080"
+   sodipodi:docname="HEPHAESTUS Logo.svg"
+   inkscape:version="0.92.0 r15299">
+  <metadata
+     id="metadata3686">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs3684" />
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="958"
+     inkscape:window-height="991"
+     id="namedview3682"
+     showgrid="false"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0"
+     inkscape:zoom="0.19838274"
+     inkscape:cx="799.60551"
+     inkscape:cy="306.92943"
+     inkscape:window-x="952"
+     inkscape:window-y="0"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="svg3680" />
+  <g
+     id="g7237"
+     transform="matrix(17.277197,0,0,17.277197,-2537.8746,-6137.4854)">
+    <path
+       sodipodi:nodetypes="cccccccccccccccccccccccccccccccccc"
+       inkscape:connector-curvature="0"
+       id="path5246"
+       d="m 178.13906,357.00636 -0.28103,0.16467 -0.0471,0.0274 c -8.42364,4.91849 -16.8468,9.83779 -25.27073,14.75578 v 29.23816 c 8.53531,4.9282 17.07066,9.85636 25.60644,14.78376 8.53577,-4.9274 17.07112,-9.85556 25.60644,-14.78376 v -29.23816 c -8.53819,-4.98231 -17.07649,-9.96444 -25.61407,-14.9478 z m 1.09358,3.6527 c 7.30543,4.26347 14.6108,8.52704 21.91623,12.79051 v 26.2397 c -3.45264,1.99325 -6.90528,3.9865 -10.35791,5.97975 v -26.02607 l -13.2254,-7.63539 v 7.81532 l -11.97731,6.91503 v 18.96227 l 0.77187,0.46414 c -3.73856,-2.15832 -7.47705,-4.31673 -11.21561,-6.47505 v -26.24034 c 5.46158,-3.18918 10.92313,-6.37842 16.38471,-9.5676 l 0.0426,6.61746 7.66082,-3.54398 z m -0.57413,34.19237 4.83531,2.79182 v 12.23862 c -1.78236,1.02898 -3.56477,2.05787 -5.34713,3.08684 -1.79445,-1.03595 -3.58892,-2.07186 -5.38337,-3.10782 v -5.55885 l 5.89519,-3.40347 z"
+       style="color:#000000;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:medium;line-height:normal;font-family:sans-serif;font-variant-ligatures:normal;font-variant-position:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-alternates:normal;font-feature-settings:normal;text-indent:0;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000000;letter-spacing:normal;word-spacing:normal;text-transform:none;writing-mode:lr-tb;direction:ltr;text-orientation:mixed;dominant-baseline:auto;baseline-shift:baseline;text-anchor:start;white-space:normal;shape-padding:0;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;opacity:1;isolation:auto;mix-blend-mode:normal;color-interpolation:sRGB;color-interpolation-filters:linearRGB;solid-color:#000000;solid-opacity:1;vector-effect:none;fill:#eb183f;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1.30213022;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;color-rendering:auto;image-rendering:auto;shape-rendering:auto;text-rendering:auto;enable-background:accumulate" />
+    <g
+       id="g7232">
+      <path
+         style="fill:#ffdda7;fill-opacity:1;stroke:none;stroke-width:0.32553256px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         d="m 172.76332,409.86089 -7.18196,-4.14651 v -5.40962 l 5.88417,-3.39723 v -6.84606 l 13.56704,-7.83293 v 7.83293 l 5.78593,3.34051 v 12.25461 l -7.28757,4.20748 -0.0371,-12.22082 -4.83531,-2.79182 v 6.04714 l -5.89519,3.40347 z"
+         id="path5258"
+         inkscape:connector-curvature="0" />
+    </g>
+  </g>
+</svg>

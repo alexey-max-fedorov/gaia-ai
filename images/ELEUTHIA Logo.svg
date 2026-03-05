@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   version="1.1"
+   id="svg3680"
+   width="1080"
+   height="1080"
+   viewBox="0 0 1080 1080"
+   sodipodi:docname="ELEUTHIA Logo.svg"
+   inkscape:version="0.92.0 r15299">
+  <metadata
+     id="metadata3686">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs3684" />
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="958"
+     inkscape:window-height="991"
+     id="namedview3682"
+     showgrid="false"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0"
+     inkscape:zoom="0.19838274"
+     inkscape:cx="789.52399"
+     inkscape:cy="306.92943"
+     inkscape:window-x="952"
+     inkscape:window-y="0"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="svg3680" />
+  <g
+     id="g7257"
+     transform="matrix(17.277197,0,0,17.277197,-2537.8763,-13062.097)">
+    <path
+       sodipodi:nodetypes="cccccccccccccccccccccc"
+       inkscape:connector-curvature="0"
+       id="path5094"
+       d="m 178.13906,757.80122 -0.28102,0.16404 -0.047,0.028 c -8.42364,4.9185 -16.84681,9.83779 -25.27074,14.75578 v 29.23817 c 8.53532,4.9282 17.07067,9.85635 25.60644,14.78375 8.53577,-4.9274 17.07113,-9.85555 25.60644,-14.78375 v -29.23817 c -8.53817,-4.98231 -17.0765,-9.96443 -25.61407,-14.94779 z m 6.5e-4,3.01499 c 5.42389,3.1654 10.84765,6.331 16.27154,9.49639 l -5.31917,3.07095 v 6.58249 l -4.43219,2.91454 -6.5774,-3.44225 -8.28328,4.59369 12.05234,6.56088 -9.83465,5.89583 -5.96449,-3.10655 -10.90789,6.80976 v -25.94815 c 7.66507,-4.47586 15.33013,-8.95172 22.99519,-13.42758 z"
+       style="opacity:1;fill:#824c53;fill-opacity:1;stroke:none;stroke-width:0.32553256px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path
+       id="path5113"
+       d="m 194.41145,770.31257 -5.31914,3.07095 v 6.58249 l 7.64364,4.02275 4.43603,-2.84714 v -6.95826 z m -16.32876,9.12572 -8.28328,4.5937 12.05234,6.56088 -9.83465,5.89583 -5.96449,-3.10655 -10.90788,6.81075 6.91883,4.13973 3.91148,-2.4275 12.01228,6.78468 18.74863,-10.7591 v -8.69274 z"
+       style="fill:#e8a6b0;fill-opacity:1;stroke:none;stroke-width:0.32553256px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       inkscape:connector-curvature="0" />
+  </g>
+</svg>

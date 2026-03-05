@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   version="1.1"
+   id="svg3680"
+   width="1080"
+   height="1080"
+   viewBox="0 0 1080 1080"
+   sodipodi:docname="MINERVA Logo.svg"
+   inkscape:version="0.92.0 r15299">
+  <metadata
+     id="metadata3686">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs3684" />
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="958"
+     inkscape:window-height="991"
+     id="namedview3682"
+     showgrid="false"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0"
+     inkscape:zoom="0.39676547"
+     inkscape:cx="637.50393"
+     inkscape:cy="583.83671"
+     inkscape:window-x="952"
+     inkscape:window-y="0"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="svg3680" />
+  <g
+     id="g8712">
+    <path
+       id="path5275"
+       d="M 539.86914 30.583984 L 535.01367 33.417969 L 534.19922 33.902344 C 388.66233 118.88023 243.13369 203.87058 97.591797 288.83984 L 97.591797 793.99414 C 245.05803 879.13962 392.52565 964.28414 540 1049.416 C 687.47418 964.28414 834.9418 879.13962 982.4082 793.99414 L 982.4082 288.83984 C 834.89221 202.75949 687.37459 116.68248 539.86914 30.583984 z M 539.88086 82.673828 C 620.65369 129.81293 701.42447 176.95642 782.19727 224.0957 L 544.8457 361.13281 L 302.57227 221.25 C 381.67539 175.05924 460.77774 128.86441 539.88086 82.673828 z M 612.15039 785.27734 L 756.2168 872.63477 C 708.19495 900.35851 660.17256 928.08165 612.15039 955.80469 L 612.15039 785.27734 z M 467.3125 788.64453 L 467.3125 955.49414 C 419.28632 927.76837 371.2604 900.04238 323.23438 872.31641 L 467.3125 788.64453 z "
+       style="color:#000000;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:medium;line-height:normal;font-family:sans-serif;font-variant-ligatures:normal;font-variant-position:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-alternates:normal;font-feature-settings:normal;text-indent:0;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000000;letter-spacing:normal;word-spacing:normal;text-transform:none;writing-mode:lr-tb;direction:ltr;text-orientation:mixed;dominant-baseline:auto;baseline-shift:baseline;text-anchor:start;white-space:normal;shape-padding:0;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;opacity:1;isolation:auto;mix-blend-mode:normal;color-interpolation:sRGB;color-interpolation-filters:linearRGB;solid-color:#000000;solid-opacity:1;vector-effect:none;fill:#6060aa;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:22.49715996;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;color-rendering:auto;image-rendering:auto;shape-rendering:auto;text-rendering:auto;enable-background:accumulate" />
+    <path
+       id="path5284"
+       d="M 268.66179,252.08437 150.43082,323.61836 V 780.59193 L 274.12138,852.00497 375.80892,793.29049 251.63511,721.60274 V 384.07939 L 374.45767,313.1717 Z m 551.34524,0 -105.79605,61.08733 122.82256,70.90769 V 721.60274 L 712.85991,793.29049 814.54744,852.00497 938.238,780.59193 V 323.61836 Z M 431.4916,361.12093 321.25772,431.72109 v 245.35969 l 111.10171,64.14108 34.95401,-20.17925 V 649.39874 L 419.1885,621.61787 V 485.74516 l 114.07857,-65.85481 z m 216.48016,0 -101.77547,58.76942 114.07857,65.85481 v 135.87271 l -48.12495,27.78087 v 71.64387 l 34.96508,20.17925 111.09065,-64.14108 V 431.72109 Z"
+       style="fill:#aeb1fd;fill-opacity:1;stroke:none;stroke-width:5.62428999px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       inkscape:connector-curvature="0" />
+  </g>
+</svg>
