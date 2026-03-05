@@ -2,284 +2,210 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ============================================================
-   ROOT VARIABLES
-   ============================================================ */
-:root {
-  --font-rajdhani: 'Rajdhani', sans-serif;
-  --font-exo2: 'Exo 2', sans-serif;
-  --font-inter: 'Inter', sans-serif;
-  --font-ibm-mono: 'IBM Plex Mono', monospace;
+@layer base {
+  :root {
+    --background: 220 30% 5%;
+    --foreground: 240 15% 92%;
+
+    --card: 220 25% 8%;
+    --card-foreground: 240 15% 92%;
+
+    --popover: 220 25% 8%;
+    --popover-foreground: 240 15% 92%;
+
+    --primary: 174 83% 48%;
+    --primary-foreground: 220 30% 5%;
+
+    --secondary: 199 95% 74%;
+    --secondary-foreground: 220 30% 5%;
+
+    --muted: 220 15% 15%;
+    --muted-foreground: 220 10% 55%;
+
+    --accent: 174 83% 48%;
+    --accent-foreground: 220 30% 5%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 240 15% 92%;
+
+    --border: 174 83% 48% / 0.12;
+    --input: 174 83% 48% / 0.2;
+    --ring: 174 83% 48%;
+
+    --radius: 0rem;
+  }
 }
 
-/* ============================================================
-   BASE
-   ============================================================ */
-* {
-  box-sizing: border-box;
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  /* Global background with image, grid, and glitch */
+  body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -2;
+    background-image: url("https://raw.githubusercontent.com/alexey-max-fedorov/gaia-ai/master/images/background.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    filter: brightness(0.22);
+    animation: bg-glitch 8s infinite;
+  }
+
+  /* HZD grid overlay */
+  body::after {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1;
+    background-image: linear-gradient(
+        rgba(29, 211, 176, 0.025) 1px,
+        transparent 1px
+      ),
+      linear-gradient(90deg, rgba(29, 211, 176, 0.025) 1px, transparent 1px);
+    background-size: 50px 50px;
+    pointer-events: none;
+  }
 }
 
-html {
-  scroll-behavior: smooth;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
+/* ──────────────────────────────────────────────────────────────
+   LOGO GLITCH ANIMATIONS
+────────────────────────────────────────────────────────────── */
 
-body {
-  background-color: #080C18;
-  color: #E8EAF6;
-  overflow-x: hidden;
-}
-
-::selection {
-  background-color: rgba(29, 211, 176, 0.25);
-  color: #E8EAF6;
-}
-
-/* ============================================================
-   SCROLLBAR
-   ============================================================ */
-::-webkit-scrollbar {
-  width: 3px;
-}
-::-webkit-scrollbar-track {
-  background: #080C18;
-}
-::-webkit-scrollbar-thumb {
-  background: rgba(29, 211, 176, 0.3);
-  border-radius: 2px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: rgba(29, 211, 176, 0.6);
-}
-
-/* ============================================================
-   GLITCH KEYFRAMES (referenced inline in page components)
-   ============================================================ */
-@keyframes glitch-1 {
-  0%, 88%, 100% {
-    transform: translate(0);
+@keyframes logo-glitch-1 {
+  0%,
+  98% {
     opacity: 0;
+    transform: translateX(0);
   }
-  89% {
-    transform: translate(-3px, 0);
-    opacity: 0.9;
+  98.5% {
+    opacity: 0.85;
+    transform: translateX(-4px);
   }
-  90% {
-    transform: translate(3px, 0);
-    opacity: 0.7;
-  }
-  91% {
-    transform: translate(-3px, 0);
-    opacity: 0.9;
-  }
-}
-
-@keyframes glitch-2 {
-  0%, 85%, 100% {
-    transform: translate(0);
+  99% {
     opacity: 0;
+    transform: translateX(2px);
   }
-  86% {
-    transform: translate(3px, 0);
-    opacity: 0.8;
-  }
-  87% {
-    transform: translate(-3px, 0);
-    opacity: 0.6;
-  }
-  88% {
-    transform: translate(0, 0);
-    opacity: 0;
-  }
-}
-
-@keyframes gradient-flow {
-  0% { background-position: 0% center; }
-  100% { background-position: 200% center; }
-}
-
-@keyframes float {
-  0%, 100% { transform: translateY(0px) rotate(0deg); }
-  33% { transform: translateY(-8px) rotate(0.3deg); }
-  66% { transform: translateY(-4px) rotate(-0.3deg); }
-}
-
-@keyframes materialize {
-  0% {
-    opacity: 0;
-    filter: brightness(4) blur(8px);
-    transform: scale(0.85);
-  }
-  50% {
-    opacity: 0.8;
-    filter: brightness(2) blur(2px);
-    transform: scale(1.03);
+  99.5% {
+    opacity: 0.75;
+    transform: translateX(-3px);
   }
   100% {
-    opacity: 1;
-    filter: brightness(1) blur(0);
-    transform: scale(1);
+    opacity: 0;
+    transform: translateX(0);
   }
 }
 
-/* ============================================================
-   UTILITY: HZD PANEL
-   ============================================================ */
-.hzd-panel {
-  background: rgba(13, 21, 38, 0.85);
-  border: 1px solid rgba(29, 211, 176, 0.12);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  position: relative;
+@keyframes logo-glitch-2 {
+  0%,
+  98% {
+    opacity: 0;
+    transform: translateX(0);
+  }
+  98.3% {
+    opacity: 0.8;
+    transform: translateX(3px);
+  }
+  98.8% {
+    opacity: 0;
+    transform: translateX(-2px);
+  }
+  99.3% {
+    opacity: 0.7;
+    transform: translateX(4px);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(0);
+  }
 }
 
-.hzd-panel::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 10%;
-  right: 10%;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(29, 211, 176, 0.4), transparent);
-  pointer-events: none;
+@keyframes logo-shimmer {
+  0% {
+    left: -100%;
+  }
+  50%,
+  100% {
+    left: 100%;
+  }
 }
 
-/* ============================================================
-   UTILITY: HZD CORNER BRACKETS
-   ============================================================ */
-.hzd-corners {
-  position: relative;
+/* ──────────────────────────────────────────────────────────────
+   BACKGROUND GLITCH
+────────────────────────────────────────────────────────────── */
+
+@keyframes bg-glitch {
+  0%,
+  98.5% {
+    background-position: center;
+  }
+  98.7% {
+    background-position: calc(50% + 3px) center;
+  }
+  98.9% {
+    background-position: calc(50% - 2px) center;
+  }
+  99.1% {
+    background-position: calc(50% + 2px) center;
+  }
+  99.3%,
+  100% {
+    background-position: center;
+  }
 }
 
-.hzd-corners::before,
-.hzd-corners::after {
-  content: '';
-  position: absolute;
-  width: 10px;
-  height: 10px;
-  border-color: rgba(29, 211, 176, 0.6);
-  border-style: solid;
-  transition: all 0.3s ease;
-  pointer-events: none;
-  z-index: 10;
+/* ──────────────────────────────────────────────────────────────
+   GRADIENT FLOW (hero text)
+────────────────────────────────────────────────────────────── */
+
+@keyframes gradient-flow {
+  0% {
+    background-position: 0% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
 }
 
-.hzd-corners::before {
-  top: -1px;
-  left: -1px;
-  border-width: 1px 0 0 1px;
-}
+/* ──────────────────────────────────────────────────────────────
+   HZD BUTTON SWEEP
+────────────────────────────────────────────────────────────── */
 
-.hzd-corners::after {
-  bottom: -1px;
-  right: -1px;
-  border-width: 0 1px 1px 0;
-}
-
-.hzd-corners:hover::before,
-.hzd-corners:hover::after {
-  width: 16px;
-  height: 16px;
-  border-color: rgba(29, 211, 176, 0.9);
-}
-
-/* ============================================================
-   UTILITY: GLOW EFFECTS
-   ============================================================ */
-.glow-teal {
-  filter: drop-shadow(0 0 6px rgba(29, 211, 176, 0.6))
-          drop-shadow(0 0 18px rgba(29, 211, 176, 0.3));
-}
-
-.glow-teal-strong {
-  filter: drop-shadow(0 0 10px rgba(29, 211, 176, 0.8))
-          drop-shadow(0 0 30px rgba(29, 211, 176, 0.5));
-}
-
-.text-glow-teal {
-  text-shadow: 0 0 20px rgba(29, 211, 176, 0.7),
-               0 0 40px rgba(29, 211, 176, 0.3);
-}
-
-.text-glow-white {
-  text-shadow: 0 0 20px rgba(255, 255, 255, 0.4),
-               0 0 40px rgba(29, 211, 176, 0.25);
-}
-
-/* ============================================================
-   UTILITY: SCANLINES
-   ============================================================ */
-.scanlines::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: repeating-linear-gradient(
-    0deg,
-    transparent,
-    transparent 2px,
-    rgba(0, 0, 0, 0.06) 2px,
-    rgba(0, 0, 0, 0.06) 4px
-  );
-  pointer-events: none;
-  z-index: 10;
-}
-
-/* ============================================================
-   UTILITY: HZD BUTTON SWEEP
-   ============================================================ */
 .hzd-btn-sweep {
   position: relative;
   overflow: hidden;
 }
 
 .hzd-btn-sweep::before {
-  content: '';
+  content: "";
   position: absolute;
-  inset: 0;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
   background: linear-gradient(
-    105deg,
-    transparent 40%,
-    rgba(255, 255, 255, 0.08) 50%,
-    transparent 60%
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.25),
+    transparent
   );
-  transform: translateX(-200%);
-  transition: transform 0.6s ease;
+  transition: left 0.5s ease;
 }
 
 .hzd-btn-sweep:hover::before {
-  transform: translateX(200%);
-}
-
-/* ============================================================
-   UTILITY: HEX CLIP
-   ============================================================ */
-.hex-clip {
-  clip-path: polygon(50% 0%, 93% 25%, 93% 75%, 50% 100%, 7% 75%, 7% 25%);
-}
-
-/* ============================================================
-   UTILITY: TYPING CURSOR
-   ============================================================ */
-.typing-cursor::after {
-  content: '_';
-  animation: blink 1s step-end infinite;
-  color: #1DD3B0;
-  margin-left: 2px;
-}
-
-@keyframes blink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0; }
-}
-
-/* ============================================================
-   ANIMATE CLASSES (used with JS-driven delays)
-   ============================================================ */
-.animate-materialize {
-  animation: materialize 1s ease-out forwards;
-}
-
-.animate-float {
-  animation: float 6s ease-in-out infinite;
+  left: 100%;
 }
