@@ -53,7 +53,7 @@
     width: 100vw;
     height: 100vh;
     z-index: -2;
-    background-image: url("https://raw.githubusercontent.com/alexey-max-fedorov/gaia-ai/master/images/background.jpg");
+    background-image: url("/images/background.jpg");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
