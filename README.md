@@ -87,11 +87,4 @@ Routing is handled by the `SYSTEM_INSTRUCTIONS.md` file, which is pasted into th
 
 ---
 
-## Lore
-
-> *“GAIA… she was the prime directive. Everything we did, we did in service of her.”*
-> — Elisabet Sobeck, *Horizon Zero Dawn*
-
-In the Horizon universe, GAIA was the master AI overseeing Project Zero Dawn — a system of subordinate functions each responsible for one piece of restoring life to Earth. This project borrows that architecture: one master orchestrator, ten specialized subordinates, each a focused expert in its domain.
-
-APOLLO was sabotaged in the games and never fulfilled its purpose as the repository of human knowledge. This project corrects that.
+> GAIA & subordinate names inspired by Horizon Zero Dawn / Horizon Forbidden West
