@@ -1,6 +1,6 @@
 "use client";
 
-import { CSSProperties } from "react";
+import { useEffect, useRef, CSSProperties } from "react";
 
 const LOGO_BASE_URL =
   "https://raw.githubusercontent.com/alexey-max-fedorov/gaia-ai/master/images";
@@ -30,6 +30,58 @@ export default function GlitchLogo({
   className = "",
 }: GlitchLogoProps) {
   const fileName = LOGO_MAP[name.toUpperCase()];
+  const layer1Ref = useRef<HTMLImageElement>(null);
+  const layer2Ref = useRef<HTMLImageElement>(null);
+
+  useEffect(() => {
+    if (!fileName) return;
+
+    let alive = true;
+    let tid: ReturnType<typeof setTimeout>;
+
+    const glitch = () => {
+      const l1 = layer1Ref.current;
+      const l2 = layer2Ref.current;
+      if (!l1 || !l2) return;
+
+      l1.style.opacity = "0.85";
+      tid = setTimeout(() => {
+        if (!alive) return;
+        l1.style.opacity = "0";
+        l2.style.opacity = "0.8";
+        tid = setTimeout(() => {
+          if (!alive) return;
+          l2.style.opacity = "0";
+          l1.style.opacity = "0.75";
+          tid = setTimeout(() => {
+            if (!alive) return;
+            l1.style.opacity = "0";
+            l2.style.opacity = "0.7";
+            tid = setTimeout(() => {
+              if (!alive) return;
+              l2.style.opacity = "0";
+              scheduleNext();
+            }, 50);
+          }, 50);
+        }, 50);
+      }, 50);
+    };
+
+    const scheduleNext = () => {
+      const wait = 100 + Math.random() * 3900;
+      tid = setTimeout(() => {
+        if (!alive) return;
+        glitch();
+      }, wait);
+    };
+
+    scheduleNext();
+
+    return () => {
+      alive = false;
+      clearTimeout(tid);
+    };
+  }, [fileName]);
 
   // Fallback: if no SVG exists (e.g., ATHENA), render Unicode symbol
   if (!fileName) {
@@ -75,9 +127,9 @@ export default function GlitchLogo({
 
       {/* Glitch layer 1 - teal/cyan shift */}
       <img
+        ref={layer1Ref}
         src={logoUrl}
         alt=""
-        className="glitch-logo-layer-1"
         aria-hidden="true"
         style={{
           width: size,
@@ -85,21 +137,20 @@ export default function GlitchLogo({
           objectFit: "contain",
           position: "absolute",
           top: 0,
-          left: 0,
+          left: "-2px",
           zIndex: 2,
           opacity: 0,
           filter: "hue-rotate(180deg) saturate(6) brightness(2.5)",
           clipPath: "inset(0 0 66% 0)",
-          animation: "logo-glitch-1 5s infinite",
           pointerEvents: "none",
         }}
       />
 
       {/* Glitch layer 2 - magenta/red shift */}
       <img
+        ref={layer2Ref}
         src={logoUrl}
         alt=""
-        className="glitch-logo-layer-2"
         aria-hidden="true"
         style={{
           width: size,
@@ -107,44 +158,14 @@ export default function GlitchLogo({
           objectFit: "contain",
           position: "absolute",
           top: 0,
-          left: 0,
+          left: "2px",
           zIndex: 3,
           opacity: 0,
           filter: "hue-rotate(-90deg) saturate(8) brightness(1.8)",
           clipPath: "inset(66% 0 0 0)",
-          animation: "logo-glitch-2 5s infinite",
-          animationDelay: "0.15s",
           pointerEvents: "none",
         }}
       />
-
-      {/* Shimmer sweep overlay */}
-      <div
-        className="glitch-logo-shimmer"
-        style={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          width: size,
-          height: size,
-          zIndex: 4,
-          pointerEvents: "none",
-          overflow: "hidden",
-        }}
-      >
-        <div
-          style={{
-            position: "absolute",
-            top: 0,
-            left: "-100%",
-            width: "200%",
-            height: "100%",
-            background:
-              "linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.15) 48%, rgba(255,255,255,0.35) 50%, rgba(255,255,255,0.15) 52%, transparent 100%)",
-            animation: "logo-shimmer 4s ease-in-out infinite",
-          }}
-        />
-      </div>
     </div>
   );
 }
