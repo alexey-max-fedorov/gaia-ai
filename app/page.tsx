@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 import { ArrowRight, ChevronDown } from "lucide-react";
 import GlitchLogo from "@/components/GlitchLogo";
 
-// ─── Subfunction data ──────────────────────────────────────
+// ─── Subfunction data ──────────────────────────────────────────────
 const SUBFUNCTIONS = [
   { name: "HEPHAESTUS", color: "#FF8C42" },
   { name: "HADES",      color: "#EF4444" },
@@ -28,7 +28,7 @@ const ROUTE_ROWS = [
   { label: "QUANTITATIVE FINANCE",  fn: "POSEIDON",   color: "#3B82F6" },
 ];
 
-// ─── Scramble text hook ────────────────────────────────────
+// ─── Scramble text hook ────────────────────────────────────────────
 function useScramble(target: string, delay = 400, duration = 1800) {
   const [text, setText] = useState("");
   const CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789#@!%&";
@@ -65,7 +65,7 @@ function useScramble(target: string, delay = 400, duration = 1800) {
   return text;
 }
 
-// ─── Hex icon cell ─────────────────────────────────────────
+// ─── Hex icon cell ───────────────────────────────────────────────
 function HexCell({ fn, idx }: { fn: typeof SUBFUNCTIONS[0]; idx: number }) {
   return (
     <motion.div
@@ -98,7 +98,7 @@ function HexCell({ fn, idx }: { fn: typeof SUBFUNCTIONS[0]; idx: number }) {
   );
 }
 
-// ─── Page ──────────────────────────────────────────────────
+// ─── Page ───────────────────────────────────────────────────────
 export default function Home() {
   const title = useScramble("GAIA AI", 300, 1800);
 
@@ -120,6 +120,7 @@ export default function Home() {
             {[
               { href: "/skills",      label: "SKILLS" },
               { href: "/hephaestus",  label: "HEPHAESTUS" },
+              { href: "/connectors",  label: "CONNECTORS" },
               { href: "/get-started", label: "GET STARTED" },
             ].map((item) => (
               <Link
