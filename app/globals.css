@@ -2,6 +2,18 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ──────────────────────────────────────────────────────────────────
+   HORIZON FONT
+────────────────────────────────────────────────────────────────── */
+
+@font-face {
+  font-family: "Horizon";
+  src: url("/fonts/Horizon-nMeM.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
 @layer base {
   :root {
     --background: 220 30% 5%;
@@ -33,6 +45,8 @@
     --ring: 174 83% 48%;
 
     --radius: 0rem;
+
+    --font-horizon: "Horizon", sans-serif;
   }
 }
 
