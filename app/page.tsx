@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 import { ArrowRight, ChevronDown } from "lucide-react";
 import GlitchLogo from "@/components/GlitchLogo";
 
-// ─── Subfunction data ──────────────────────────────────────────────
+// ─── Subfunction data ────────────────────────────────────────────────
 const SUBFUNCTIONS = [
   { name: "HEPHAESTUS", color: "#FF8C42" },
   { name: "HADES",      color: "#EF4444" },
@@ -28,7 +28,7 @@ const ROUTE_ROWS = [
   { label: "QUANTITATIVE FINANCE",  fn: "POSEIDON",   color: "#3B82F6" },
 ];
 
-// ─── Scramble text hook ────────────────────────────────────────────
+// ─── Scramble text hook ──────────────────────────────────────────────────────
 function useScramble(target: string, delay = 400, duration = 1800) {
   const [text, setText] = useState("");
   const CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789#@!%&";
@@ -65,7 +65,7 @@ function useScramble(target: string, delay = 400, duration = 1800) {
   return text;
 }
 
-// ─── Hex icon cell ───────────────────────────────────────────────
+// ─── Hex icon cell ─────────────────────────────────────────────────────────────
 function HexCell({ fn, idx }: { fn: typeof SUBFUNCTIONS[0]; idx: number }) {
   return (
     <motion.div
@@ -98,19 +98,19 @@ function HexCell({ fn, idx }: { fn: typeof SUBFUNCTIONS[0]; idx: number }) {
   );
 }
 
-// ─── Page ───────────────────────────────────────────────────────
+// ─── Page ────────────────────────────────────────────────────────────────────────
 export default function Home() {
   const title = useScramble("GAIA AI", 300, 1800);
 
   return (
-    <div className="min-h-screen bg-[#080C18] text-[#E8EAF6] overflow-x-hidden font-[var(--font-inter)]">
+    <div className="min-h-screen text-[#E8EAF6] overflow-x-hidden font-[var(--font-inter)]">
 
       {/* ── HEADER ── */}
       <header className="fixed top-0 inset-x-0 z-50 border-b border-[#1DD3B0]/10 backdrop-blur-xl bg-[#080C18]/75">
         <div className="max-w-7xl mx-auto px-5 h-14 flex items-center justify-between">
           <Link
             href="/"
-            className="font-[var(--font-rajdhani)] text-xl font-bold tracking-[0.22em] text-[#1DD3B0]"
+            className="font-[var(--font-horizon)] text-xl font-bold tracking-[0.22em] text-[#1DD3B0]"
             style={{ textShadow: "0 0 16px rgba(29,211,176,0.6)" }}
           >
             GAIA<span className="opacity-40 mx-1">·</span>AI
@@ -158,7 +158,7 @@ export default function Home() {
           {/* Radial hero gradient */}
           <div
             className="absolute inset-0"
-            style={{ background: "radial-gradient(ellipse 80% 55% at 50% 42%, #0D2A35 0%, #080C18 80%)" }}
+            style={{ background: "radial-gradient(ellipse 80% 55% at 50% 42%, #0D2A35 0%, transparent 80%)" }}
           />
 
           {/* Ambient teal glow */}
@@ -208,7 +208,7 @@ export default function Home() {
                 <span className="relative rounded-full h-1.5 w-1.5 bg-[#4ADE80]" />
               </span>
               <span className="font-[var(--font-ibm-mono)] text-[9px] tracking-[0.45em] text-[#4ADE80]/80 uppercase">
-                System Online &middot; v1.0
+                System Online · v1.0
               </span>
             </motion.div>
 
@@ -216,7 +216,7 @@ export default function Home() {
             <div className="relative mb-4 leading-none select-none">
               {/* Main title */}
               <h1
-                className="font-[var(--font-rajdhani)] font-bold leading-none tracking-[0.18em]"
+                className="font-[var(--font-horizon)] font-bold leading-none tracking-[0.18em]"
                 style={{
                   fontSize: "clamp(4.5rem, 16vw, 11rem)",
                   background: "linear-gradient(90deg, #1DD3B0 0%, #7DD3FC 28%, #E8EAF6 50%, #7DD3FC 72%, #1DD3B0 100%)",
@@ -234,7 +234,7 @@ export default function Home() {
               {/* Glitch layer 1 (teal, top clip) */}
               <span
                 aria-hidden
-                className="absolute inset-0 font-[var(--font-rajdhani)] font-bold leading-none tracking-[0.18em] text-[#1DD3B0] opacity-0 pointer-events-none"
+                className="absolute inset-0 font-[var(--font-horizon)] font-bold leading-none tracking-[0.18em] text-[#1DD3B0] opacity-0 pointer-events-none"
                 style={{
                   fontSize: "clamp(4.5rem, 16vw, 11rem)",
                   animation: "glitch-1 5s infinite linear",
@@ -248,7 +248,7 @@ export default function Home() {
               {/* Glitch layer 2 (orange, bottom clip) */}
               <span
                 aria-hidden
-                className="absolute inset-0 font-[var(--font-rajdhani)] font-bold leading-none tracking-[0.18em] text-[#FF6B35] opacity-0 pointer-events-none"
+                className="absolute inset-0 font-[var(--font-horizon)] font-bold leading-none tracking-[0.18em] text-[#FF6B35] opacity-0 pointer-events-none"
                 style={{
                   fontSize: "clamp(4.5rem, 16vw, 11rem)",
                   animation: "glitch-2 5s infinite linear",
@@ -487,7 +487,7 @@ export default function Home() {
       <footer className="border-t border-[#1DD3B0]/8 py-8">
         <div className="max-w-7xl mx-auto px-5 flex flex-col md:flex-row items-center justify-between gap-4">
           <span className="font-[var(--font-ibm-mono)] text-[8px] tracking-[0.35em] text-[#6B7A94]/35 uppercase">
-            GAIA AI &middot; v1.0 &middot; Built for Perplexity
+            GAIA AI · v1.0 · Built for Perplexity
           </span>
           <div className="flex items-center gap-6">
             {[
