@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Rajdhani, Exo_2, Inter, IBM_Plex_Mono } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 
 const rajdhani = Rajdhani({
@@ -29,6 +30,12 @@ const ibmPlexMono = IBM_Plex_Mono({
   display: "swap",
 });
 
+const horizon = localFont({
+  src: "../fonts/Horizon-nMeM.ttf",
+  variable: "--font-horizon",
+  display: "swap",
+});
+
 export const metadata: Metadata = {
   title: {
     default: "GAIA AI",
@@ -52,9 +59,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${
-          rajdhani.variable
-        } ${exo2.variable} ${inter.variable} ${ibmPlexMono.variable} antialiased`}
+        className={`${rajdhani.variable} ${exo2.variable} ${inter.variable} ${ibmPlexMono.variable} ${horizon.variable} antialiased`}
       >
         {children}
       </body>
