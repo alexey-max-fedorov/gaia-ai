@@ -19,7 +19,7 @@ export default function Header() {
 
         <Link
           href="/"
-          className="font-[var(--font-horizon)] text-xl font-bold tracking-[0.22em] text-[#1DD3B0] transition-all duration-200 hover:opacity-80"
+          className="font-horizon text-xl font-bold tracking-[0.22em] text-[#1DD3B0] transition-all duration-200 hover:opacity-80"
           style={{ textShadow: "0 0 16px rgba(29,211,176,0.55)" }}
         >
           GAIA<span className="opacity-35 mx-1">&middot;</span>AI

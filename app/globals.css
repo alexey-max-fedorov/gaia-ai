@@ -45,8 +45,6 @@
     --ring: 174 83% 48%;
 
     --radius: 0rem;
-
-    --font-horizon: "Horizon", sans-serif;
   }
 }
 
@@ -92,6 +90,14 @@
     background-size: 50px 50px;
     pointer-events: none;
   }
+}
+
+/* ──────────────────────────────────────────────────────────────────
+   HORIZON FONT UTILITY CLASS (bypasses Tailwind purge)
+────────────────────────────────────────────────────────────────── */
+
+.font-horizon {
+  font-family: "Horizon", sans-serif !important;
 }
 
 /* ──────────────────────────────────────────────────────────────────
