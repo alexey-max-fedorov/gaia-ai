@@ -298,7 +298,7 @@ export default function Home() {
               className="flex flex-col sm:flex-row items-center gap-3 mb-14"
             >
               <a
-                href="https://perplexity.ai"
+                href="https://www.perplexity.ai/spaces/gaia-ai-public-NKPRvyjfRlGm3jHZcPc_Fg"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="group relative font-[var(--font-rajdhani)] text-sm tracking-[0.3em] font-bold px-8 py-3.5 bg-[#1DD3B0] text-[#080C18] overflow-hidden transition-all duration-300 hover:shadow-[0_0_28px_rgba(29,211,176,0.45)] hzd-btn-sweep"
