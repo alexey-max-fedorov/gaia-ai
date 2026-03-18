@@ -16,6 +16,7 @@ const STEPS = [
     description:
       "Go to Perplexity.ai, navigate to Spaces, and create a new Space.",
     action: { label: "Open Perplexity", href: PERPLEXITY_URL, external: true },
+    optional: false,
   },
   {
     num: "02",
@@ -27,6 +28,7 @@ const STEPS = [
       href: GITHUB_URL + "/blob/master/SYSTEM_INSTRUCTIONS.md",
       external: true,
     },
+    optional: false,
   },
   {
     num: "03",
@@ -34,6 +36,7 @@ const STEPS = [
     description:
       "Upload these ten files as Space Files: HEPHAESTUS_PROMPT.md, HADES_SKILL.md, MINERVA_SKILL.md, AETHER_SKILL.md, POSEIDON_SKILL.md, DEMETER_SKILL.md, ARTEMIS_SKILL.md, ELEUTHIA_SKILL.md, APOLLO_SKILL.md, ATHENA_SKILL.md.",
     action: { label: "Browse files on GitHub", href: GITHUB_URL, external: true },
+    optional: false,
   },
   {
     num: "04",
@@ -41,6 +44,7 @@ const STEPS = [
     description:
       "Choose a model in Perplexity Space settings. Claude Sonnet is recommended for the best reasoning depth across all ten subfunctions.",
     action: null,
+    optional: false,
   },
   {
     num: "05",
@@ -48,6 +52,19 @@ const STEPS = [
     description:
       "GAIA AI will now automatically route every query to the right subfunction. Ask it to write code, design a system, review a contract, or anything else.",
     action: null,
+    optional: false,
+  },
+  {
+    num: "06",
+    title: "Enable Auto-Update Checking",
+    description:
+      "Optionally set up a weekly Perplexity Scheduled Task that automatically checks if your GAIA AI is on the latest version and notifies you when an update is available.",
+    action: {
+      label: "View Update Instructions",
+      href: "/update",
+      external: false,
+    },
+    optional: true,
   },
 ];
 
@@ -97,7 +114,7 @@ export default function GetStartedPage() {
               transition={{ duration: 0.5 }}
               className="font-[var(--font-ibm-mono)] text-[9px] tracking-[0.45em] text-[#1DD3B0]/50 uppercase mb-4"
             >
-              // Setup &middot; 5 Steps
+              // Setup &middot; 5 Steps + 1 Optional
             </motion.p>
             <motion.h1
               initial={{ opacity: 0, y: 12 }}
@@ -156,39 +173,65 @@ export default function GetStartedPage() {
                     className="relative flex gap-4"
                   >
                     <div
-                      className="relative z-10 shrink-0 w-12 h-12 flex items-center justify-center border font-[var(--font-ibm-mono)] text-[9px] tracking-[0.2em] text-[#1DD3B0]"
+                      className="relative z-10 shrink-0 w-12 h-12 flex items-center justify-center border font-[var(--font-ibm-mono)] text-[9px] tracking-[0.2em]"
                       style={{
                         backgroundColor: "#080C18",
-                        borderColor: "rgba(29,211,176,0.35)",
-                        boxShadow: "0 0 10px rgba(29,211,176,0.12)",
+                        borderColor: step.optional ? "rgba(29,211,176,0.18)" : "rgba(29,211,176,0.35)",
+                        boxShadow: step.optional ? "none" : "0 0 10px rgba(29,211,176,0.12)",
+                        color: step.optional ? "rgba(29,211,176,0.45)" : "#1DD3B0",
                       }}
                     >
                       {step.num}
                     </div>
                     <div
-                      className="relative flex-1 p-5 border border-[#1DD3B0]/10 hover:border-[#1DD3B0]/28 transition-colors duration-200"
-                      style={{ backgroundColor: "rgba(13,21,38,0.55)" }}
+                      className="relative flex-1 p-5 border transition-colors duration-200"
+                      style={{
+                        backgroundColor: step.optional ? "rgba(13,21,38,0.35)" : "rgba(13,21,38,0.55)",
+                        borderColor: step.optional ? "rgba(29,211,176,0.07)" : "rgba(29,211,176,0.1)",
+                      }}
                     >
                       <div
-                        className="absolute top-0 left-0 right-0 h-px opacity-22"
-                        style={{ background: "linear-gradient(90deg, #1DD3B0, transparent)" }}
+                        className="absolute top-0 left-0 right-0 h-px"
+                        style={{
+                          background: step.optional
+                            ? "linear-gradient(90deg, rgba(29,211,176,0.12), transparent)"
+                            : "linear-gradient(90deg, #1DD3B0, transparent)",
+                          opacity: step.optional ? 1 : 0.22,
+                        }}
                       />
-                      <h3 className="font-[var(--font-rajdhani)] text-base font-bold tracking-[0.15em] text-[#E8EAF6] mb-1.5">
-                        {step.title}
-                      </h3>
+                      <div className="flex items-center gap-2 mb-1.5">
+                        <h3 className="font-[var(--font-rajdhani)] text-base font-bold tracking-[0.15em] text-[#E8EAF6]">
+                          {step.title}
+                        </h3>
+                        {step.optional && (
+                          <span className="font-[var(--font-ibm-mono)] text-[7px] tracking-[0.3em] text-[#1DD3B0]/40 uppercase border border-[#1DD3B0]/15 px-1.5 py-0.5">
+                            optional
+                          </span>
+                        )}
+                      </div>
                       <p className="font-[var(--font-inter)] text-xs text-[#6B7A94]/80 leading-relaxed mb-3">
                         {step.description}
                       </p>
                       {step.action && (
-                        <a
-                          href={step.action.href}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center gap-1.5 font-[var(--font-ibm-mono)] text-[8px] tracking-[0.3em] text-[#1DD3B0]/55 hover:text-[#1DD3B0] transition-colors uppercase"
-                        >
-                          {step.action.label}
-                          <ExternalLink className="w-2.5 h-2.5" />
-                        </a>
+                        step.action.external ? (
+                          <a
+                            href={step.action.href}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-1.5 font-[var(--font-ibm-mono)] text-[8px] tracking-[0.3em] text-[#1DD3B0]/55 hover:text-[#1DD3B0] transition-colors uppercase"
+                          >
+                            {step.action.label}
+                            <ExternalLink className="w-2.5 h-2.5" />
+                          </a>
+                        ) : (
+                          <Link
+                            href={step.action.href}
+                            className="inline-flex items-center gap-1.5 font-[var(--font-ibm-mono)] text-[8px] tracking-[0.3em] text-[#1DD3B0]/55 hover:text-[#1DD3B0] transition-colors uppercase"
+                          >
+                            {step.action.label}
+                            <ArrowRight className="w-2.5 h-2.5" />
+                          </Link>
+                        )
                       )}
                     </div>
                   </motion.div>
