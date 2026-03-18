@@ -14,7 +14,7 @@ This guide sets up a weekly Perplexity Scheduled Task that automatically checks 
 ```
 Compare the current version of GAIA AI to https://raw.githubusercontent.com/alexey-max-fedorov/gaia-ai/refs/heads/master/VERSION.
 - If the versions are the same, say "GAIA AI is up to date".
-- If the versions are different, say "GAIA AI can be updated to [new version from the url]. Update now: [url to the new update instructions page referenced in step 2b, the domain is use-gaia-ai.vercel.app]"
+- If the versions are different, say "GAIA AI can be updated to [new version from the url]. Update now: https://use-gaia-ai.vercel.app/update?auto=1"
 ```
 
 5. Set **Schedule** to **Weekly**
