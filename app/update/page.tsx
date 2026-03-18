@@ -57,7 +57,7 @@ function CopyButton({ getText, label = "Copy", className }: { getText: () => Pro
       onClick={handleCopy}
       disabled={state === "loading"}
       className={`inline-flex items-center gap-1.5 font-[var(--font-ibm-mono)] text-[8px] tracking-[0.3em] uppercase transition-colors disabled:opacity-50 ${
-        state === "copied" ? "text-[#1DD3B0]" : "text-[#6B7A94]/60 hover:text-[#1DD3B0]"
+        state === "copied" ? "text-[#1DD3B0]" : "text-[#B0B8CC]/60 hover:text-[#1DD3B0]"
       } ${className ?? ""}`}
     >
       {state === "copied" ? <Check className="w-2.5 h-2.5" /> : <Copy className="w-2.5 h-2.5" />}
@@ -123,7 +123,7 @@ function UpdatePageContent() {
       num: "01",
       title: "Open Your GAIA AI Space",
       body: (
-        <p className="font-[var(--font-inter)] text-xs text-[#6B7A94]/80 leading-relaxed">
+        <p className="font-[var(--font-inter)] text-xs text-[#B0B8CC] leading-relaxed">
           Navigate to your GAIA AI Space on{" "}
           <a href="https://www.perplexity.ai" target="_blank" rel="noopener noreferrer" className="text-[#1DD3B0]/70 hover:text-[#1DD3B0] transition-colors">
             Perplexity.ai
@@ -137,7 +137,7 @@ function UpdatePageContent() {
       title: "Replace System Instructions",
       body: (
         <div className="space-y-3">
-          <p className="font-[var(--font-inter)] text-xs text-[#6B7A94]/80 leading-relaxed">
+          <p className="font-[var(--font-inter)] text-xs text-[#B0B8CC] leading-relaxed">
             In your Space settings, clear the existing System Instructions field and paste the latest version.
           </p>
           <div
@@ -150,7 +150,7 @@ function UpdatePageContent() {
               </span>
               <CopyButton getText={fetchSystemInstructions} label="Copy Full Contents" />
             </div>
-            <p className="font-[var(--font-ibm-mono)] text-[9px] text-[#6B7A94]/40 leading-relaxed">
+            <p className="font-[var(--font-ibm-mono)] text-[9px] text-[#B0B8CC]/50 leading-relaxed">
               Click &ldquo;Copy Full Contents&rdquo; above to fetch and copy the latest SYSTEM_INSTRUCTIONS.md directly from GitHub.
             </p>
           </div>
@@ -161,7 +161,7 @@ function UpdatePageContent() {
       num: "03",
       title: "Delete All Existing Space Files",
       body: (
-        <p className="font-[var(--font-inter)] text-xs text-[#6B7A94]/80 leading-relaxed">
+        <p className="font-[var(--font-inter)] text-xs text-[#B0B8CC] leading-relaxed">
           In your Space settings, go to the Space Files section and remove all previously uploaded files. This ensures no outdated skill files remain.
         </p>
       ),
@@ -171,7 +171,7 @@ function UpdatePageContent() {
       title: "Download the Latest Files",
       body: (
         <div className="space-y-3">
-          <p className="font-[var(--font-inter)] text-xs text-[#6B7A94]/80 leading-relaxed">
+          <p className="font-[var(--font-inter)] text-xs text-[#B0B8CC] leading-relaxed">
             Download all ten skill and engine files from the latest release on GitHub.
           </p>
           <DownloadAllButton />
@@ -182,7 +182,7 @@ function UpdatePageContent() {
       num: "05",
       title: "Re-Upload Files as Space Files",
       body: (
-        <p className="font-[var(--font-inter)] text-xs text-[#6B7A94]/80 leading-relaxed">
+        <p className="font-[var(--font-inter)] text-xs text-[#B0B8CC] leading-relaxed">
           Upload all ten downloaded files back into your Space as Space Files. GAIA AI will now run on the latest version.
         </p>
       ),
@@ -275,7 +275,7 @@ function UpdatePageContent() {
                         optional
                       </span>
                     </div>
-                    <p className="font-[var(--font-inter)] text-xs text-[#6B7A94]/70 leading-relaxed mb-4">
+                    <p className="font-[var(--font-inter)] text-xs text-[#B0B8CC]/80 leading-relaxed mb-4">
                       Set up a weekly Perplexity Scheduled Task that automatically checks for new GAIA AI versions.
                     </p>
                     <ol className="space-y-2 mb-4">
@@ -287,7 +287,7 @@ function UpdatePageContent() {
                           >
                             {String(idx + 1).padStart(2, "0")}
                           </span>
-                          <span className="font-[var(--font-inter)] text-xs text-[#6B7A94]/70 leading-relaxed">
+                          <span className="font-[var(--font-inter)] text-xs text-[#B0B8CC]/80 leading-relaxed">
                             {s}
                           </span>
                         </li>
@@ -303,7 +303,7 @@ function UpdatePageContent() {
                         </span>
                         <CopyButton getText={() => AUTO_UPDATE_PROMPT} />
                       </div>
-                      <pre className="font-[var(--font-ibm-mono)] text-[9px] text-[#6B7A94]/70 leading-relaxed whitespace-pre-wrap break-words">
+                      <pre className="font-[var(--font-ibm-mono)] text-[9px] text-[#B0B8CC]/60 leading-relaxed whitespace-pre-wrap break-words">
                         {AUTO_UPDATE_PROMPT}
                       </pre>
                     </div>
@@ -327,7 +327,7 @@ function UpdatePageContent() {
           >
             <Link
               href="/get-started"
-              className="inline-flex items-center gap-2 font-[var(--font-rajdhani)] text-xs tracking-[0.3em] text-[#6B7A94] hover:text-[#E8EAF6] transition-colors"
+              className="inline-flex items-center gap-2 font-[var(--font-rajdhani)] text-xs tracking-[0.3em] text-[#B0B8CC] hover:text-[#E8EAF6] transition-colors"
             >
               <ArrowLeft className="w-3 h-3" />
               BACK TO SETUP
@@ -409,7 +409,7 @@ export default function UpdatePage() {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.18, duration: 0.7 }}
-              className="font-[var(--font-inter)] text-[#6B7A94] text-sm md:text-base max-w-md mx-auto leading-relaxed"
+              className="font-[var(--font-inter)] text-[#B0B8CC] text-sm md:text-base max-w-md mx-auto leading-relaxed"
             >
               Replace your Space’s system instructions and skill files with the latest version.
             </motion.p>

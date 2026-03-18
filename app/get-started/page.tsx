@@ -3,71 +3,13 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { ArrowRight, ExternalLink, Copy, Check } from "lucide-react";
+import { ArrowRight, ExternalLink, Copy, Check, Download } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
 const GITHUB_URL = "https://github.com/alexey-max-fedorov/gaia-ai";
 const PERPLEXITY_URL = "https://www.perplexity.ai";
-
-const AUTO_UPDATE_PROMPT = `Compare the current version of GAIA AI to https://raw.githubusercontent.com/alexey-max-fedorov/gaia-ai/refs/heads/master/VERSION.
-- If the versions are the same, say "GAIA AI is up to date".
-- If the versions are different, say "GAIA AI can be updated to [new version from the url]. Update now: https://use-gaia-ai.vercel.app/update?auto=1"`;
-
-const AUTO_UPDATE_STEPS = [
-  "Go to your GAIA AI Perplexity Space.",
-  "Click Scheduled Tasks in the left sidebar.",
-  "Click Create Task.",
-  "In the Instructions field, paste the prompt below.",
-  "Set Schedule to Weekly. Optionally turn off email notifications.",
-  "Click Save.",
-];
-
-const MAIN_STEPS = [
-  {
-    num: "01",
-    title: "Open Perplexity Spaces",
-    description: "Go to Perplexity.ai, navigate to Spaces, and create a new Space.",
-    action: { label: "Open Perplexity", href: PERPLEXITY_URL, external: true },
-    optional: false,
-  },
-  {
-    num: "02",
-    title: "Paste System Instructions",
-    description:
-      "Copy the full contents of SYSTEM_INSTRUCTIONS.md from the GitHub repo and paste into the Space\u2019s System Instructions field. This is what makes GAIA AI route queries.",
-    action: {
-      label: "View SYSTEM_INSTRUCTIONS.md",
-      href: GITHUB_URL + "/blob/master/SYSTEM_INSTRUCTIONS.md",
-      external: true,
-    },
-    optional: false,
-  },
-  {
-    num: "03",
-    title: "Upload All Skill Files",
-    description:
-      "Upload these ten files as Space Files: HEPHAESTUS_PROMPT.md, HADES_SKILL.md, MINERVA_SKILL.md, AETHER_SKILL.md, POSEIDON_SKILL.md, DEMETER_SKILL.md, ARTEMIS_SKILL.md, ELEUTHIA_SKILL.md, APOLLO_SKILL.md, ATHENA_SKILL.md.",
-    action: { label: "Browse files on GitHub", href: GITHUB_URL, external: true },
-    optional: false,
-  },
-  {
-    num: "04",
-    title: "Select Your Model",
-    description:
-      "Choose a model in Perplexity Space settings. Claude Sonnet is recommended for the best reasoning depth across all ten subfunctions.",
-    action: null,
-    optional: false,
-  },
-  {
-    num: "05",
-    title: "Start Using GAIA AI",
-    description:
-      "GAIA AI will now automatically route every query to the right subfunction. Ask it to write code, design a system, review a contract, or anything else.",
-    action: null,
-    optional: false,
-  },
-];
+const RAW_BASE = "https://raw.githubusercontent.com/alexey-max-fedorov/gaia-ai/refs/heads/master";
 
 const SKILL_FILES = [
   "HEPHAESTUS_PROMPT.md",
@@ -82,27 +24,93 @@ const SKILL_FILES = [
   "ATHENA_SKILL.md",
 ];
 
-function CopyButton({ text, className }: { text: string; className?: string }) {
-  const [copied, setCopied] = useState(false);
+const AUTO_UPDATE_PROMPT = `Compare the current version of GAIA AI to https://raw.githubusercontent.com/alexey-max-fedorov/gaia-ai/refs/heads/master/VERSION.
+- If the versions are the same, say "GAIA AI is up to date".
+- If the versions are different, say "GAIA AI can be updated to [new version from the url]. Update now: https://use-gaia-ai.vercel.app/update?auto=1"`;
+
+const AUTO_UPDATE_STEPS = [
+  "Go to your GAIA AI Perplexity Space.",
+  "Click Scheduled Tasks in the left sidebar.",
+  "Click Create Task.",
+  "In the Instructions field, paste the prompt below.",
+  "Set Schedule to Weekly. Optionally turn off email notifications.",
+  "Click Save.",
+];
+
+function CopyButton({ getText, label = "Copy", className }: { getText: () => Promise<string> | string; label?: string; className?: string }) {
+  const [state, setState] = useState<"idle" | "loading" | "copied">("idle");
   const handleCopy = async () => {
-    await navigator.clipboard.writeText(text);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+    setState("loading");
+    try {
+      const text = await getText();
+      await navigator.clipboard.writeText(text);
+      setState("copied");
+      setTimeout(() => setState("idle"), 2000);
+    } catch {
+      setState("idle");
+    }
   };
   return (
     <button
       onClick={handleCopy}
-      className={`inline-flex items-center gap-1.5 font-[var(--font-ibm-mono)] text-[8px] tracking-[0.3em] uppercase transition-colors ${
-        copied ? "text-[#1DD3B0]" : "text-[#6B7A94]/60 hover:text-[#1DD3B0]"
+      disabled={state === "loading"}
+      className={`inline-flex items-center gap-1.5 font-[var(--font-ibm-mono)] text-[8px] tracking-[0.3em] uppercase transition-colors disabled:opacity-50 ${
+        state === "copied" ? "text-[#1DD3B0]" : "text-[#B0B8CC]/60 hover:text-[#1DD3B0]"
       } ${className ?? ""}`}
     >
-      {copied ? <Check className="w-2.5 h-2.5" /> : <Copy className="w-2.5 h-2.5" />}
-      {copied ? "Copied" : "Copy"}
+      {state === "copied" ? <Check className="w-2.5 h-2.5" /> : <Copy className="w-2.5 h-2.5" />}
+      {state === "loading" ? "Fetching..." : state === "copied" ? "Copied" : label}
+    </button>
+  );
+}
+
+function DownloadAllButton() {
+  const [state, setState] = useState<"idle" | "loading" | "done">("idle");
+  const handleDownload = async () => {
+    setState("loading");
+    for (const file of SKILL_FILES) {
+      try {
+        const res = await fetch(`${RAW_BASE}/${file}`);
+        const text = await res.text();
+        const blob = new Blob([text], { type: "text/markdown" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = file;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        await new Promise((r) => setTimeout(r, 120));
+      } catch {
+        // skip
+      }
+    }
+    setState("done");
+    setTimeout(() => setState("idle"), 3000);
+  };
+  return (
+    <button
+      onClick={handleDownload}
+      disabled={state === "loading"}
+      className={`inline-flex items-center gap-2 font-[var(--font-rajdhani)] text-xs tracking-[0.3em] font-bold px-5 py-2.5 border transition-all duration-200 disabled:opacity-60 ${
+        state === "done"
+          ? "border-[#1DD3B0]/60 text-[#1DD3B0] bg-[#1DD3B0]/10"
+          : "border-[#1DD3B0]/30 text-[#1DD3B0] hover:bg-[#1DD3B0]/10"
+      }`}
+    >
+      <Download className="w-3 h-3" />
+      {state === "loading" ? "Downloading..." : state === "done" ? "Downloaded" : "Download All Files"}
     </button>
   );
 }
 
 export default function GetStartedPage() {
+  const fetchSystemInstructions = async () => {
+    const res = await fetch(`${RAW_BASE}/SYSTEM_INSTRUCTIONS.md`);
+    return res.text();
+  };
+
   return (
     <div className="min-h-screen bg-[#080C18] text-[#E8EAF6] overflow-x-hidden">
       <Header />
@@ -163,15 +171,15 @@ export default function GetStartedPage() {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.18, duration: 0.7 }}
-              className="font-[var(--font-inter)] text-[#6B7A94] text-sm md:text-base max-w-md mx-auto leading-relaxed"
+              className="font-[var(--font-inter)] text-[#B0B8CC] text-sm md:text-base max-w-md mx-auto leading-relaxed"
             >
               Five steps to deploy GAIA AI in your Perplexity Space. Takes under 3 minutes.
             </motion.p>
           </div>
         </section>
 
-        {/* Main Steps */}
-        <section className="pb-8">
+        {/* Steps 01 + 04 + 05 (rendered from array) */}
+        <section className="pb-3">
           <div className="max-w-2xl mx-auto px-5">
             <div className="relative">
               <div
@@ -183,7 +191,16 @@ export default function GetStartedPage() {
                 }}
               />
               <div className="space-y-3">
-                {MAIN_STEPS.map((step, i) => (
+
+                {/* Step 01 */}
+                {([
+                  {
+                    num: "01",
+                    title: "Open Perplexity Spaces",
+                    description: "Go to Perplexity.ai, navigate to Spaces, and create a new Space.",
+                    action: { label: "Open Perplexity", href: PERPLEXITY_URL },
+                  },
+                ] as const).map((step, i) => (
                   <motion.div
                     key={step.num}
                     initial={{ opacity: 0, x: -20 }}
@@ -213,20 +230,152 @@ export default function GetStartedPage() {
                       <h3 className="font-[var(--font-rajdhani)] text-base font-bold tracking-[0.15em] text-[#E8EAF6] mb-1.5">
                         {step.title}
                       </h3>
-                      <p className="font-[var(--font-inter)] text-xs text-[#6B7A94]/80 leading-relaxed mb-3">
+                      <p className="font-[var(--font-inter)] text-xs text-[#B0B8CC] leading-relaxed mb-3">
                         {step.description}
                       </p>
-                      {step.action && (
-                        <a
-                          href={step.action.href}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center gap-1.5 font-[var(--font-ibm-mono)] text-[8px] tracking-[0.3em] text-[#1DD3B0]/55 hover:text-[#1DD3B0] transition-colors uppercase"
-                        >
-                          {step.action.label}
-                          <ExternalLink className="w-2.5 h-2.5" />
-                        </a>
-                      )}
+                      <a
+                        href={step.action.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1.5 font-[var(--font-ibm-mono)] text-[8px] tracking-[0.3em] text-[#1DD3B0]/55 hover:text-[#1DD3B0] transition-colors uppercase"
+                      >
+                        {step.action.label}
+                        <ExternalLink className="w-2.5 h-2.5" />
+                      </a>
+                    </div>
+                  </motion.div>
+                ))}
+
+                {/* Step 02 — Paste System Instructions (with live copy button) */}
+                <motion.div
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true, margin: "-20px" }}
+                  transition={{ delay: 0.1, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+                  className="relative flex gap-4"
+                >
+                  <div
+                    className="relative z-10 shrink-0 w-12 h-12 flex items-center justify-center border font-[var(--font-ibm-mono)] text-[9px] tracking-[0.2em] text-[#1DD3B0]"
+                    style={{
+                      backgroundColor: "#080C18",
+                      borderColor: "rgba(29,211,176,0.35)",
+                      boxShadow: "0 0 10px rgba(29,211,176,0.12)",
+                    }}
+                  >
+                    02
+                  </div>
+                  <div
+                    className="relative flex-1 p-5 border border-[#1DD3B0]/10 hover:border-[#1DD3B0]/28 transition-colors duration-200"
+                    style={{ backgroundColor: "rgba(13,21,38,0.55)" }}
+                  >
+                    <div
+                      className="absolute top-0 left-0 right-0 h-px opacity-22"
+                      style={{ background: "linear-gradient(90deg, #1DD3B0, transparent)" }}
+                    />
+                    <h3 className="font-[var(--font-rajdhani)] text-base font-bold tracking-[0.15em] text-[#E8EAF6] mb-2">
+                      Paste System Instructions
+                    </h3>
+                    <p className="font-[var(--font-inter)] text-xs text-[#B0B8CC] leading-relaxed mb-3">
+                      In your Space settings, clear the System Instructions field and paste the latest version.
+                    </p>
+                    <div
+                      className="relative border border-[#1DD3B0]/12 p-4"
+                      style={{ backgroundColor: "rgba(8,12,24,0.7)" }}
+                    >
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="font-[var(--font-ibm-mono)] text-[8px] tracking-[0.3em] text-[#1DD3B0]/35 uppercase">
+                          // SYSTEM_INSTRUCTIONS.md
+                        </span>
+                        <CopyButton getText={fetchSystemInstructions} label="Copy Full Contents" />
+                      </div>
+                      <p className="font-[var(--font-ibm-mono)] text-[9px] text-[#B0B8CC]/50 leading-relaxed">
+                        Click &ldquo;Copy Full Contents&rdquo; to fetch and copy the latest SYSTEM_INSTRUCTIONS.md directly from GitHub.
+                      </p>
+                    </div>
+                  </div>
+                </motion.div>
+
+                {/* Step 03 — Download + upload skill files */}
+                <motion.div
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true, margin: "-20px" }}
+                  transition={{ delay: 0.2, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+                  className="relative flex gap-4"
+                >
+                  <div
+                    className="relative z-10 shrink-0 w-12 h-12 flex items-center justify-center border font-[var(--font-ibm-mono)] text-[9px] tracking-[0.2em] text-[#1DD3B0]"
+                    style={{
+                      backgroundColor: "#080C18",
+                      borderColor: "rgba(29,211,176,0.35)",
+                      boxShadow: "0 0 10px rgba(29,211,176,0.12)",
+                    }}
+                  >
+                    03
+                  </div>
+                  <div
+                    className="relative flex-1 p-5 border border-[#1DD3B0]/10 hover:border-[#1DD3B0]/28 transition-colors duration-200"
+                    style={{ backgroundColor: "rgba(13,21,38,0.55)" }}
+                  >
+                    <div
+                      className="absolute top-0 left-0 right-0 h-px opacity-22"
+                      style={{ background: "linear-gradient(90deg, #1DD3B0, transparent)" }}
+                    />
+                    <h3 className="font-[var(--font-rajdhani)] text-base font-bold tracking-[0.15em] text-[#E8EAF6] mb-2">
+                      Upload Skill Files
+                    </h3>
+                    <p className="font-[var(--font-inter)] text-xs text-[#B0B8CC] leading-relaxed mb-3">
+                      Download all ten skill and engine files, then upload them as Space Files in your Perplexity Space settings.
+                    </p>
+                    <DownloadAllButton />
+                  </div>
+                </motion.div>
+
+                {/* Steps 04 + 05 */}
+                {([
+                  {
+                    num: "04",
+                    title: "Select Your Model",
+                    description: "Choose a model in Perplexity Space settings. Claude Sonnet is recommended for the best reasoning depth across all ten subfunctions.",
+                  },
+                  {
+                    num: "05",
+                    title: "Start Using GAIA AI",
+                    description: "GAIA AI will now automatically route every query to the right subfunction. Ask it to write code, design a system, review a contract, or anything else.",
+                  },
+                ] as const).map((step, i) => (
+                  <motion.div
+                    key={step.num}
+                    initial={{ opacity: 0, x: -20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true, margin: "-20px" }}
+                    transition={{ delay: (i + 3) * 0.1, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+                    className="relative flex gap-4"
+                  >
+                    <div
+                      className="relative z-10 shrink-0 w-12 h-12 flex items-center justify-center border font-[var(--font-ibm-mono)] text-[9px] tracking-[0.2em] text-[#1DD3B0]"
+                      style={{
+                        backgroundColor: "#080C18",
+                        borderColor: "rgba(29,211,176,0.35)",
+                        boxShadow: "0 0 10px rgba(29,211,176,0.12)",
+                      }}
+                    >
+                      {step.num}
+                    </div>
+                    <div
+                      className="relative flex-1 p-5 border border-[#1DD3B0]/10 hover:border-[#1DD3B0]/28 transition-colors duration-200"
+                      style={{ backgroundColor: "rgba(13,21,38,0.55)" }}
+                    >
+                      <div
+                        className="absolute top-0 left-0 right-0 h-px opacity-22"
+                        style={{ background: "linear-gradient(90deg, #1DD3B0, transparent)" }}
+                      />
+                      <h3 className="font-[var(--font-rajdhani)] text-base font-bold tracking-[0.15em] text-[#E8EAF6] mb-1.5">
+                        {step.title}
+                      </h3>
+                      <p className="font-[var(--font-inter)] text-xs text-[#B0B8CC] leading-relaxed">
+                        {step.description}
+                      </p>
                     </div>
                   </motion.div>
                 ))}
@@ -236,7 +385,7 @@ export default function GetStartedPage() {
         </section>
 
         {/* Step 06 — Optional Auto-Update */}
-        <section className="pb-16">
+        <section className="pb-16 pt-3">
           <div className="max-w-2xl mx-auto px-5">
             <motion.div
               initial={{ opacity: 0, x: -20 }}
@@ -271,11 +420,9 @@ export default function GetStartedPage() {
                     optional
                   </span>
                 </div>
-                <p className="font-[var(--font-inter)] text-xs text-[#6B7A94]/70 leading-relaxed mb-5">
+                <p className="font-[var(--font-inter)] text-xs text-[#B0B8CC]/80 leading-relaxed mb-5">
                   Set up a weekly Perplexity Scheduled Task that checks for new GAIA AI versions and notifies you when an update is available.
                 </p>
-
-                {/* Sub-steps */}
                 <ol className="space-y-2 mb-5">
                   {AUTO_UPDATE_STEPS.map((s, i) => (
                     <li key={i} className="flex items-start gap-2.5">
@@ -285,14 +432,12 @@ export default function GetStartedPage() {
                       >
                         {String(i + 1).padStart(2, "0")}
                       </span>
-                      <span className="font-[var(--font-inter)] text-xs text-[#6B7A94]/70 leading-relaxed">
+                      <span className="font-[var(--font-inter)] text-xs text-[#B0B8CC]/80 leading-relaxed">
                         {s}
                       </span>
                     </li>
                   ))}
                 </ol>
-
-                {/* Prompt copy block */}
                 <div
                   className="relative border border-[#1DD3B0]/12 p-4"
                   style={{ backgroundColor: "rgba(8,12,24,0.7)" }}
@@ -301,9 +446,9 @@ export default function GetStartedPage() {
                     <span className="font-[var(--font-ibm-mono)] text-[8px] tracking-[0.3em] text-[#1DD3B0]/35 uppercase">
                       // Scheduled Task Prompt
                     </span>
-                    <CopyButton text={AUTO_UPDATE_PROMPT} />
+                    <CopyButton getText={() => AUTO_UPDATE_PROMPT} />
                   </div>
-                  <pre className="font-[var(--font-ibm-mono)] text-[9px] text-[#6B7A94]/70 leading-relaxed whitespace-pre-wrap break-words">
+                  <pre className="font-[var(--font-ibm-mono)] text-[9px] text-[#B0B8CC]/60 leading-relaxed whitespace-pre-wrap break-words">
                     {AUTO_UPDATE_PROMPT}
                   </pre>
                 </div>
@@ -312,46 +457,8 @@ export default function GetStartedPage() {
           </div>
         </section>
 
-        {/* File list */}
-        <section className="py-14 border-t border-[#1DD3B0]/8">
-          <div className="max-w-2xl mx-auto px-5">
-            <motion.p
-              initial={{ opacity: 0, y: -8 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="font-[var(--font-ibm-mono)] text-[9px] tracking-[0.45em] text-[#1DD3B0]/40 uppercase mb-6 text-center"
-            >
-              // Files to Upload as Space Files
-            </motion.p>
-            <div className="grid grid-cols-2 gap-2">
-              {SKILL_FILES.map((file, i) => (
-                <motion.a
-                  key={file}
-                  href={`${GITHUB_URL}/blob/master/${file}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  initial={{ opacity: 0, y: 8 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.04, duration: 0.4 }}
-                  className="flex items-center gap-2.5 px-3 py-2.5 border border-[#1DD3B0]/10 hover:border-[#1DD3B0]/30 transition-colors group"
-                  style={{ backgroundColor: "rgba(13,21,38,0.4)" }}
-                >
-                  <span
-                    className="w-1 h-1 rounded-full shrink-0 opacity-45 group-hover:opacity-100 transition-opacity"
-                    style={{ backgroundColor: "#1DD3B0" }}
-                  />
-                  <span className="font-[var(--font-ibm-mono)] text-[8px] tracking-[0.12em] text-[#6B7A94] group-hover:text-[#E8EAF6] transition-colors truncate">
-                    {file}
-                  </span>
-                </motion.a>
-              ))}
-            </div>
-          </div>
-        </section>
-
         {/* Open source CTA */}
-        <section className="pb-28">
+        <section className="pb-28 border-t border-[#1DD3B0]/8 pt-14">
           <div className="max-w-2xl mx-auto px-5">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -373,7 +480,7 @@ export default function GetStartedPage() {
               <h3 className="font-[var(--font-rajdhani)] text-2xl font-bold tracking-[0.15em] text-[#E8EAF6] mb-3">
                 EVERYTHING IS PUBLIC
               </h3>
-              <p className="font-[var(--font-inter)] text-[#6B7A94] text-xs leading-relaxed mb-6 max-w-sm mx-auto">
+              <p className="font-[var(--font-inter)] text-[#B0B8CC] text-xs leading-relaxed mb-6 max-w-sm mx-auto">
                 All system prompt files, skill files, and this website are open source.
                 Fork it, modify it, or use it as-is.
               </p>
@@ -389,7 +496,7 @@ export default function GetStartedPage() {
                 </a>
                 <Link
                   href="/skills"
-                  className="inline-flex items-center gap-2 font-[var(--font-rajdhani)] text-xs tracking-[0.3em] text-[#6B7A94] hover:text-[#E8EAF6] transition-colors"
+                  className="inline-flex items-center gap-2 font-[var(--font-rajdhani)] text-xs tracking-[0.3em] text-[#B0B8CC] hover:text-[#E8EAF6] transition-colors"
                 >
                   EXPLORE SKILLS
                   <ArrowRight className="w-3 h-3" />
