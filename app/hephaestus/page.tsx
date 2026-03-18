@@ -118,7 +118,7 @@ export default function HephaestusPage() {
                   initial={{ opacity: 0, y: 14 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.2, duration: 0.7 }}
-                  className="font-[var(--font-rajdhani)] text-5xl md:text-7xl font-bold tracking-[0.15em] mb-2"
+                  className="font-horizon text-5xl md:text-7xl tracking-[0.1em] mb-2"
                   style={{
                     color: "#FF8C42",
                     textShadow:
@@ -131,7 +131,7 @@ export default function HephaestusPage() {
                   initial={{ opacity: 0, y: 8 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.3, duration: 0.6 }}
-                  className="font-[var(--font-exo2)] text-sm tracking-[0.3em] text-[#6B7A94] uppercase"
+                  className="font-[var(--font-exo2)] text-sm tracking-[0.3em] text-[#B8C0D4] uppercase"
                 >
                   Claude Code &middot; In Perplexity
                 </motion.p>
@@ -161,7 +161,7 @@ export default function HephaestusPage() {
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.7 }}
-                  className="font-[var(--font-inter)] text-[#6B7A94] leading-relaxed text-sm md:text-base mb-5"
+                  className="font-[var(--font-inter)] text-[#B8C0D4] leading-relaxed text-sm md:text-base mb-5"
                 >
                   HEPHAESTUS is the coding engine behind GAIA AI. When you ask GAIA to write,
                   debug, review, or reason about code, HEPHAESTUS takes over — bringing the
@@ -172,7 +172,7 @@ export default function HephaestusPage() {
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: 0.08, duration: 0.7 }}
-                  className="font-[var(--font-inter)] text-[#6B7A94] leading-relaxed text-sm md:text-base mb-8"
+                  className="font-[var(--font-inter)] text-[#B8C0D4] leading-relaxed text-sm md:text-base mb-8"
                 >
                   It operates with the GitHub MCP server as a first-class tool: it reads your
                   repo, plans the implementation, pushes commits, and opens PRs — all without
@@ -234,7 +234,7 @@ export default function HephaestusPage() {
                         className="w-1 h-1 rounded-full shrink-0 opacity-55 group-hover:opacity-100 transition-opacity"
                         style={{ backgroundColor: "#FF8C42" }}
                       />
-                      <span className="font-[var(--font-ibm-mono)] text-[10px] tracking-[0.2em] text-[#6B7A94] group-hover:text-[#E8EAF6] transition-colors">
+                      <span className="font-[var(--font-ibm-mono)] text-[10px] tracking-[0.2em] text-[#B8C0D4] group-hover:text-[#E8EAF6] transition-colors">
                         {cap}
                       </span>
                     </motion.div>
@@ -325,7 +325,7 @@ export default function HephaestusPage() {
                   >
                     {f.title}
                   </h3>
-                  <p className="font-[var(--font-inter)] text-xs text-[#6B7A94] leading-relaxed">
+                  <p className="font-[var(--font-inter)] text-xs text-[#B8C0D4] leading-relaxed">
                     {f.description}
                   </p>
                 </motion.div>
@@ -361,7 +361,7 @@ export default function HephaestusPage() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.08 }}
-              className="font-[var(--font-inter)] text-[#6B7A94] text-sm md:text-base max-w-md mx-auto mb-8 leading-relaxed"
+              className="font-[var(--font-inter)] text-[#B8C0D4] text-sm md:text-base max-w-md mx-auto mb-8 leading-relaxed"
             >
               Get the full system — Hephaestus plus nine other specialized subfunctions —
               in one Perplexity Space.
@@ -382,7 +382,7 @@ export default function HephaestusPage() {
               </Link>
               <Link
                 href="/skills"
-                className="font-[var(--font-rajdhani)] text-sm tracking-[0.3em] text-[#6B7A94] hover:text-[#E8EAF6] transition-colors"
+                className="font-[var(--font-rajdhani)] text-sm tracking-[0.3em] text-[#B8C0D4] hover:text-[#E8EAF6] transition-colors"
               >
                 EXPLORE ALL SKILLS
               </Link>

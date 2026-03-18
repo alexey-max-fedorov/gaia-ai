@@ -153,7 +153,7 @@ export default function SkillsPage() {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.18, duration: 0.7 }}
-              className="font-[var(--font-inter)] text-[#6B7A94] text-sm md:text-base max-w-md mx-auto leading-relaxed"
+              className="font-[var(--font-inter)] text-[#B8C0D4] text-sm md:text-base max-w-md mx-auto leading-relaxed"
             >
               Ten specialized subfunctions, each an expert in its domain. GAIA routes
               every query to exactly the right one.
@@ -232,16 +232,17 @@ export default function SkillsPage() {
                     )}
                   </div>
 
+                  {/* Skill name — Horizon font */}
                   <h3
-                    className="font-[var(--font-rajdhani)] text-lg font-bold tracking-[0.2em] mb-1"
+                    className="font-horizon text-base tracking-[0.2em] mb-1"
                     style={{ color: skill.color }}
                   >
                     {skill.name}
                   </h3>
-                  <p className="font-[var(--font-exo2)] text-[10px] tracking-[0.2em] text-[#6B7A94] uppercase mb-3">
+                  <p className="font-[var(--font-exo2)] text-[10px] tracking-[0.2em] text-[#B8C0D4] uppercase mb-3">
                     {skill.role}
                   </p>
-                  <p className="font-[var(--font-inter)] text-xs text-[#6B7A94]/80 leading-relaxed mb-4">
+                  <p className="font-[var(--font-inter)] text-xs text-[#B8C0D4] leading-relaxed mb-4">
                     {skill.description}
                   </p>
 
@@ -271,7 +272,7 @@ export default function SkillsPage() {
               transition={{ duration: 0.7 }}
               className="text-center mt-16"
             >
-              <p className="font-[var(--font-ibm-mono)] text-[9px] tracking-[0.4em] text-[#6B7A94]/35 uppercase mb-5">
+              <p className="font-[var(--font-ibm-mono)] text-[9px] tracking-[0.4em] text-[#B8C0D4]/50 uppercase mb-5">
                 Ready to use all ten subfunctions?
               </p>
               <Link

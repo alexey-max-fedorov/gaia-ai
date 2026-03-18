@@ -1,6 +1,6 @@
 # GAIA AI
 
-**Version:** 1.0  **Repository:** `alexey-max-fedorov/gaia-ai`
+**Version:** 2.1  **Repository:** `alexey-max-fedorov/gaia-ai`
 
 GAIA AI is a unified Perplexity Space that orchestrates a suite of domain-specialized skills under a single intelligent routing layer. Named after the master AI system from *Horizon Zero Dawn*, GAIA controls a set of subordinate functions — each a focused expert in its domain.
 
@@ -59,6 +59,7 @@ Routing is handled by the `SYSTEM_INSTRUCTIONS.md` file, which is pasted into th
    - `ATHENA_SKILL.md`
 4. Set the Space model (Claude Sonnet recommended for reasoning depth)
 5. Done — GAIA AI will automatically route queries to the appropriate skill
+6. **(Optional)** Enable auto-update checking — see [`UPDATE_INSTRUCTIONS.md`](./UPDATE_INSTRUCTIONS.md)
 
 ---
 
@@ -84,6 +85,7 @@ Routing is handled by the `SYSTEM_INSTRUCTIONS.md` file, which is pasted into th
 | Version | Date | Notes |
 |---|---|---|
 | 1.0 | March 2026 | Initial release — 9 skills + Hephaestus engine |
+| 2.1 | March 2026 | Auto-update checking; HEPHAESTUS commit-batching rules |
 
 ---
 

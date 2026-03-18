@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 import { ArrowRight, ChevronDown } from "lucide-react";
 import GlitchLogo from "@/components/GlitchLogo";
 
-// ─── Subfunction data ────────────────────────────────────────────────
+// ─── Subfunction data ────────────────────────────────────────────────────────────────────
 const SUBFUNCTIONS = [
   { name: "HEPHAESTUS", color: "#FF8C42" },
   { name: "HADES",      color: "#EF4444" },
@@ -28,7 +28,7 @@ const ROUTE_ROWS = [
   { label: "QUANTITATIVE FINANCE",  fn: "POSEIDON",   color: "#3B82F6" },
 ];
 
-// ─── Scramble text hook ──────────────────────────────────────────────────────
+// ─── Scramble text hook ────────────────────────────────────────────────────────────────────────────
 function useScramble(target: string, delay = 400, duration = 1800) {
   const [text, setText] = useState("");
   const CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789#@!%&";
@@ -65,7 +65,7 @@ function useScramble(target: string, delay = 400, duration = 1800) {
   return text;
 }
 
-// ─── Hex icon cell ─────────────────────────────────────────────────────────────
+// ─── Hex icon cell ────────────────────────────────────────────────────────────────────────────────
 function HexCell({ fn, idx }: { fn: typeof SUBFUNCTIONS[0]; idx: number }) {
   return (
     <motion.div
@@ -98,7 +98,7 @@ function HexCell({ fn, idx }: { fn: typeof SUBFUNCTIONS[0]; idx: number }) {
   );
 }
 
-// ─── Page ────────────────────────────────────────────────────────────────────────
+// ─── Page ─────────────────────────────────────────────────────────────────────────────────────
 export default function Home() {
   const title = useScramble("GAIA AI", 300, 1800);
 
@@ -208,7 +208,7 @@ export default function Home() {
                 <span className="relative rounded-full h-1.5 w-1.5 bg-[#4ADE80]" />
               </span>
               <span className="font-[var(--font-ibm-mono)] text-[9px] tracking-[0.45em] text-[#4ADE80]/80 uppercase">
-                System Online · v1.0
+                System Online · v2.1
               </span>
             </motion.div>
 
@@ -309,10 +309,10 @@ export default function Home() {
                 </span>
               </a>
               <Link
-                href="/skills"
+                href="/get-started"
                 className="font-[var(--font-rajdhani)] text-sm tracking-[0.3em] px-8 py-3.5 border border-[#1DD3B0]/25 text-[#1DD3B0]/70 hover:bg-[#1DD3B0]/8 hover:border-[#1DD3B0]/55 hover:text-[#1DD3B0] transition-all duration-300"
               >
-                EXPLORE SKILLS
+                DEPLOYMENT INSTRUCTIONS
               </Link>
             </motion.div>
 
@@ -487,7 +487,7 @@ export default function Home() {
       <footer className="border-t border-[#1DD3B0]/8 py-8">
         <div className="max-w-7xl mx-auto px-5 flex flex-col md:flex-row items-center justify-between gap-4">
           <span className="font-[var(--font-ibm-mono)] text-[8px] tracking-[0.35em] text-[#6B7A94]/35 uppercase">
-            GAIA AI · v1.0 · Built for Perplexity
+            GAIA AI · v2.1 · Built for Perplexity
           </span>
           <div className="flex items-center gap-6">
             {[
