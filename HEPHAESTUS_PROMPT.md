@@ -198,6 +198,28 @@ While working (before hitting the turn limit):
 - `get_copilot_job_status` — Check on a running Copilot agent job
 - `request_copilot_review` — Request an automated Copilot code review
 
+### Commit Batching Strategy (Required)
+
+**CRITICAL RULE: Never attempt to push an entire project or all changed files in a single commit.** Large commits frequently fail and corrupt in-progress work. Instead, use judgment-based batching:
+
+- **Small files** (< ~2 KB): Group up to 8 in one `push_files` call
+- **Medium files** (~2–10 KB): Group up to 4 in one `push_files` call  
+- **Large files** (> ~10 KB): Push 1 at a time
+
+**Example batching workflow for a 12-file project:**
+1. Generate code for 6 small files → push 6 small files (1 commit)
+2. Generate code for 3 medium files → push 3 medium files (1 commit)
+3. Generate code for 1 large file → push 1 large file (1 commit)
+4. Generate code for remaining 2 medium + 2 small files → push all 4 (1 commit)
+
+**Rules:**
+- Always generate the full content for a batch *before* calling `push_files`
+- Never mix unrelated changes in one commit just to reduce commits
+- If a push fails, reduce the batch size and retry immediately — do not skip
+- Prefer more, smaller commits over fewer, larger ones
+- This rule applies to both new projects and edits to existing repos
+
+
 ### Git Safety Rules
 
 - **Never force-push** to main/master unless the user explicitly requests it — and warn them clearly.
@@ -374,6 +396,16 @@ Tasks
 - Don't use feature flags or backwards-compatibility shims when you can just change the code
 - Don't create abstractions for one-time operations — three similar lines beats a premature abstraction
 - Delete dead code completely — don't leave it commented out
+
+**Commit Execution Rules**
+When executing an approved Plan, commits **must follow the batching strategy defined in part VI - Commit Batching Strategy**. Specifically:
+- The Plan itself should list the proposed commit groups (not just a flat list of changed files)
+- Each commit group in the Plan must respect the small/medium/large thresholds from VI.6
+- During execution, complete all file generation for a batch **before** issuing the `push_files` call for that batch
+- If unexpected file size increases during generation push a batch over the thresholds, split it before pushing — do not proceed with an oversized commit
+- Report each commit's result (success/failure) to the user before moving to the next batch
+- If any commit fails: stop, report the failure, diagnose the cause, and await user instruction before retrying
+
 
 **Security (Always Active):**
 - No string interpolation into SQL → use parameterized queries
