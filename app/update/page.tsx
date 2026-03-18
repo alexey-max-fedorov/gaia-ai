@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { Suspense, useState } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
@@ -84,7 +84,6 @@ function DownloadAllButton() {
         a.click();
         document.body.removeChild(a);
         URL.revokeObjectURL(url);
-        // small stagger to avoid browser blocking
         await new Promise((r) => setTimeout(r, 120));
       } catch {
         // skip failed file
@@ -280,13 +279,13 @@ function UpdatePageContent() {
                       Set up a weekly Perplexity Scheduled Task that automatically checks for new GAIA AI versions.
                     </p>
                     <ol className="space-y-2 mb-4">
-                      {AUTO_UPDATE_STEPS.map((s, i) => (
-                        <li key={i} className="flex items-start gap-2.5">
+                      {AUTO_UPDATE_STEPS.map((s, idx) => (
+                        <li key={idx} className="flex items-start gap-2.5">
                           <span
                             className="shrink-0 font-[var(--font-ibm-mono)] text-[8px] tracking-[0.2em] mt-0.5"
                             style={{ color: "rgba(29,211,176,0.35)" }}
                           >
-                            {String(i + 1).padStart(2, "0")}
+                            {String(idx + 1).padStart(2, "0")}
                           </span>
                           <span className="font-[var(--font-inter)] text-xs text-[#6B7A94]/70 leading-relaxed">
                             {s}
@@ -417,7 +416,9 @@ export default function UpdatePage() {
           </div>
         </section>
 
-        <UpdatePageContent />
+        <Suspense fallback={null}>
+          <UpdatePageContent />
+        </Suspense>
       </main>
 
       <Footer />
