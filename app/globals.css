@@ -32,7 +32,7 @@
     --secondary-foreground: 220 30% 5%;
 
     --muted: 220 15% 15%;
-    --muted-foreground: 220 10% 55%;
+    --muted-foreground: 220 10% 78%;
 
     --accent: 174 83% 48%;
     --accent-foreground: 220 30% 5%;
@@ -54,6 +54,11 @@
     background: transparent;
     position: relative;
     overflow-x: hidden;
+  }
+
+  /* Default body text colour — overrides the dark gray inherited everywhere */
+  p, li, span, td, th, label {
+    color: inherit;
   }
 
   /* Global background with image, grid, and glitch */
@@ -98,6 +103,14 @@
 
 .font-horizon {
   font-family: "Horizon", sans-serif !important;
+}
+
+/* ──────────────────────────────────────────────────────────────────
+   BODY TEXT BRIGHTNESS — replace the sitewide dark gray default
+────────────────────────────────────────────────────────────────── */
+
+.text-body {
+  color: #C8CFDF;
 }
 
 /* ──────────────────────────────────────────────────────────────────
