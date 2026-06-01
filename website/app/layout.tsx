@@ -31,15 +31,15 @@ const ibmPlexMono = IBM_Plex_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "GAIA AI",
-    template: "%s · GAIA AI",
+    default: "GAIA Code",
+    template: "%s · GAIA Code",
   },
   description:
-    "The universal AI orchestrator. Ten specialized subfunctions. Built for Perplexity.",
-  keywords: ["GAIA AI", "Perplexity", "AI assistant", "Horizon Zero Dawn"],
+    "Claude Code workflow inside a Perplexity Space. Plan Mode, GitHub MCP, task tracking.",
+  keywords: ["GAIA Code", "Perplexity", "AI coding", "Claude Code", "Horizon Zero Dawn"],
   openGraph: {
-    title: "GAIA AI",
-    description: "The universal AI orchestrator. Built for Perplexity.",
+    title: "GAIA Code",
+    description: "Claude Code workflow inside a Perplexity Space.",
     type: "website",
   },
 };

@@ -3,7 +3,7 @@
 import { useEffect, useRef, CSSProperties } from "react";
 
 const LOGO_BASE_URL =
-  "https://raw.githubusercontent.com/alexey-max-fedorov/gaia-ai/master/images";
+  "https://raw.githubusercontent.com/alexey-max-fedorov/gaia-ai/master/website/images";
 
 const LOGO_MAP: Record<string, string> = {
   HEPHAESTUS: "HEPHAESTUS%20Logo.svg",

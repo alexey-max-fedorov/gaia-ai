@@ -4,8 +4,6 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 const NAV = [
-  { href: "/skills",      label: "SKILLS" },
-  { href: "/hephaestus",  label: "HEPHAESTUS" },
   { href: "/connectors",  label: "CONNECTORS" },
   { href: "/get-started", label: "GET STARTED" },
 ];
@@ -22,7 +20,7 @@ export default function Header() {
           className="font-horizon text-xl font-bold tracking-[0.22em] text-[#1DD3B0] transition-all duration-200 hover:opacity-80"
           style={{ textShadow: "0 0 16px rgba(29,211,176,0.55)" }}
         >
-          GAIA<span className="opacity-35 mx-1">&middot;</span>AI
+          GAIA<span className="opacity-35 mx-1">&middot;</span>CODE
         </Link>
 
         <nav className="hidden md:flex items-center gap-8">

@@ -6,29 +6,13 @@ import { motion } from "framer-motion";
 import { ArrowRight, ChevronDown } from "lucide-react";
 import GlitchLogo from "@/components/GlitchLogo";
 
-// ─── Subfunction data ────────────────────────────────────────────────────────────────────
-const SUBFUNCTIONS = [
-  { name: "HEPHAESTUS", color: "#FF8C42" },
-  { name: "HADES",      color: "#EF4444" },
-  { name: "MINERVA",    color: "#60A5FA" },
-  { name: "AETHER",     color: "#1DD3B0" },
-  { name: "POSEIDON",   color: "#3B82F6" },
-  { name: "DEMETER",    color: "#4ADE80" },
-  { name: "ARTEMIS",    color: "#F472B6" },
-  { name: "ELEUTHIA",   color: "#A78BFA" },
-  { name: "APOLLO",     color: "#FBBF24" },
-  { name: "ATHENA",     color: "#E8EAF6" },
+const FEATURES = [
+  { id: "01", title: "PLAN MODE",            description: "Every non-trivial task starts with an explicit plan — files to change, ordered steps, dependencies. You approve before a line is written." },
+  { id: "02", title: "GITHUB MCP",           description: "Full GitHub access via MCP. Read repos, create branches, push commits, open PRs, and manage issues — all in one conversation." },
+  { id: "03", title: "TASK TRACKING",        description: "Live checkbox task list updated in real time. Every step confirmed before starting, marked complete only when fully done." },
+  { id: "04", title: "COMMIT BATCHING",      description: "Automatic size-aware commit grouping. Small files group; large files push solo. Predictable history, no broken mega-commits." },
 ];
 
-const ROUTE_ROWS = [
-  { label: "CODING & REASONING",    fn: "HEPHAESTUS", color: "#FF8C42" },
-  { label: "SECURITY & PENTESTING", fn: "HADES",      color: "#EF4444" },
-  { label: "SYSTEM ARCHITECTURE",   fn: "MINERVA",    color: "#60A5FA" },
-  { label: "DATA SCIENCE & ML",     fn: "AETHER",     color: "#1DD3B0" },
-  { label: "QUANTITATIVE FINANCE",  fn: "POSEIDON",   color: "#3B82F6" },
-];
-
-// ─── Scramble text hook ────────────────────────────────────────────────────────────────────────────
 function useScramble(target: string, delay = 400, duration = 1800) {
   const [text, setText] = useState("");
   const CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789#@!%&";
@@ -55,52 +39,15 @@ function useScramble(target: string, delay = 400, duration = 1800) {
       else setText(target);
     };
 
-    const t = setTimeout(() => {
-      raf = requestAnimationFrame(tick);
-    }, delay);
-
+    const t = setTimeout(() => { raf = requestAnimationFrame(tick); }, delay);
     return () => { clearTimeout(t); cancelAnimationFrame(raf); };
   }, [target, delay, duration]);
 
   return text;
 }
 
-// ─── Hex icon cell ────────────────────────────────────────────────────────────────────────────────
-function HexCell({ fn, idx }: { fn: typeof SUBFUNCTIONS[0]; idx: number }) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, scale: 0.4, filter: "blur(12px) brightness(5)" }}
-      animate={{ opacity: 1, scale: 1, filter: "blur(0px) brightness(1)" }}
-      transition={{ delay: 1.6 + idx * 0.1, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-      whileHover={{ scale: 1.18 }}
-      className="flex flex-col items-center gap-1 cursor-pointer group"
-    >
-      <div
-        className="w-11 h-11 md:w-13 md:h-13 flex items-center justify-center transition-all duration-300"
-        style={{
-          clipPath: "polygon(50% 0%, 93% 25%, 93% 75%, 50% 100%, 7% 75%, 7% 25%)",
-          backgroundColor: `${fn.color}14`,
-          border: `1px solid ${fn.color}50`,
-          filter: `drop-shadow(0 0 5px ${fn.color}50)`,
-          width: "44px",
-          height: "44px",
-        }}
-      >
-        <GlitchLogo name={fn.name} size={28} />
-      </div>
-      <span
-        className="text-[7px] md:text-[8px] font-display font-semibold tracking-[0.2em] opacity-50 group-hover:opacity-90 transition-opacity"
-        style={{ color: fn.color }}
-      >
-        {fn.name}
-      </span>
-    </motion.div>
-  );
-}
-
-// ─── Page ─────────────────────────────────────────────────────────────────────────────────────
 export default function Home() {
-  const title = useScramble("GAIA AI", 300, 1800);
+  const title = useScramble("GAIA CODE", 300, 1800);
 
   return (
     <div className="min-h-screen text-[#E8EAF6] overflow-x-hidden font-[var(--font-inter)]">
@@ -113,13 +60,11 @@ export default function Home() {
             className="font-horizon text-xl font-bold tracking-[0.22em] text-[#1DD3B0]"
             style={{ textShadow: "0 0 16px rgba(29,211,176,0.6)" }}
           >
-            GAIA<span className="opacity-40 mx-1">·</span>AI
+            GAIA<span className="opacity-40 mx-1">·</span>CODE
           </Link>
 
           <nav className="hidden md:flex items-center gap-8">
             {[
-              { href: "/skills",      label: "SKILLS" },
-              { href: "/hephaestus",  label: "HEPHAESTUS" },
               { href: "/connectors",  label: "CONNECTORS" },
               { href: "/get-started", label: "GET STARTED" },
             ].map((item) => (
@@ -160,7 +105,6 @@ export default function Home() {
             className="absolute inset-0"
             style={{ background: "radial-gradient(ellipse 80% 55% at 50% 42%, #0D2A35 0%, transparent 80%)" }}
           />
-
           {/* Ambient teal glow */}
           <motion.div
             initial={{ opacity: 0, scale: 0.7 }}
@@ -172,7 +116,6 @@ export default function Home() {
               filter: "blur(40px)",
             }}
           />
-
           {/* Scanlines */}
           <div
             className="absolute inset-0 pointer-events-none"
@@ -181,7 +124,6 @@ export default function Home() {
               opacity: 0.4,
             }}
           />
-
           {/* Corner brackets */}
           {["top-[72px] left-4", "top-[72px] right-4", "bottom-16 left-4", "bottom-16 right-4"].map((pos, i) => (
             <div
@@ -212,9 +154,8 @@ export default function Home() {
               </span>
             </motion.div>
 
-            {/* GAIA AI title with scramble + glitch */}
+            {/* Title with scramble + glitch */}
             <div className="relative mb-4 leading-none select-none">
-              {/* Main title */}
               <h1
                 className="font-horizon font-bold leading-none tracking-[0.18em]"
                 style={{
@@ -230,8 +171,6 @@ export default function Home() {
               >
                 {title}
               </h1>
-
-              {/* Glitch layer 1 (teal, top clip) */}
               <span
                 aria-hidden
                 className="absolute inset-0 font-horizon font-bold leading-none tracking-[0.18em] text-[#1DD3B0] opacity-0 pointer-events-none"
@@ -244,8 +183,6 @@ export default function Home() {
               >
                 {title}
               </span>
-
-              {/* Glitch layer 2 (orange, bottom clip) */}
               <span
                 aria-hidden
                 className="absolute inset-0 font-horizon font-bold leading-none tracking-[0.18em] text-[#FF6B35] opacity-0 pointer-events-none"
@@ -276,7 +213,7 @@ export default function Home() {
               transition={{ delay: 0.95, duration: 0.7 }}
               className="font-[var(--font-exo2)] text-xs md:text-sm tracking-[0.55em] uppercase text-[#1DD3B0]/60 mb-3"
             >
-              Universal AI Orchestrator
+              AI Coding Engine · Built for Perplexity
             </motion.p>
 
             {/* Description */}
@@ -286,8 +223,8 @@ export default function Home() {
               transition={{ delay: 1.1, duration: 0.8 }}
               className="font-[var(--font-inter)] text-[#6B7A94] text-sm md:text-base max-w-lg mx-auto leading-relaxed mb-10"
             >
-              One AI. Ten specialized subfunctions. Built for Perplexity.
-              Route any query — code, security, architecture, finance, and more — to its perfect expert.
+              Plan Mode, GitHub MCP integration, and Claude Code workflow — all inside a Perplexity Space.
+              Paste one system prompt. Start coding.
             </motion.p>
 
             {/* CTA */}
@@ -295,7 +232,7 @@ export default function Home() {
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 1.25, duration: 0.7 }}
-              className="flex flex-col sm:flex-row items-center gap-3 mb-14"
+              className="flex flex-col sm:flex-row items-center gap-3 mb-16"
             >
               <a
                 href="https://www.perplexity.ai/spaces/gaia-ai-public-NKPRvyjfRlGm3jHZcPc_Fg"
@@ -304,7 +241,7 @@ export default function Home() {
                 className="group relative font-[var(--font-rajdhani)] text-sm tracking-[0.3em] font-bold px-8 py-3.5 bg-[#1DD3B0] text-[#080C18] overflow-hidden transition-all duration-300 hover:shadow-[0_0_28px_rgba(29,211,176,0.45)] hzd-btn-sweep"
               >
                 <span className="relative z-10 flex items-center gap-2">
-                  LAUNCH GAIA AI
+                  LAUNCH GAIA CODE
                   <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                 </span>
               </a>
@@ -316,21 +253,17 @@ export default function Home() {
               </Link>
             </motion.div>
 
-            {/* Subfunction hex matrix */}
+            {/* GAIA logo */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ delay: 1.5, duration: 0.5 }}
-              className="w-full max-w-xl"
+              transition={{ delay: 1.5, duration: 0.7 }}
+              className="flex flex-col items-center gap-3"
             >
-              <p className="font-[var(--font-ibm-mono)] text-[9px] tracking-[0.45em] text-[#6B7A94]/40 uppercase mb-5">
-                Active Subfunctions
+              <p className="font-[var(--font-ibm-mono)] text-[9px] tracking-[0.45em] text-[#6B7A94]/40 uppercase">
+                System Active
               </p>
-              <div className="flex flex-wrap justify-center gap-3 md:gap-4">
-                {SUBFUNCTIONS.map((fn, i) => (
-                  <HexCell key={fn.name} fn={fn} idx={i} />
-                ))}
-              </div>
+              <GlitchLogo name="GAIA" size={72} />
             </motion.div>
           </div>
 
@@ -346,7 +279,7 @@ export default function Home() {
           </motion.div>
         </section>
 
-        {/* ── ROUTING DEMO SECTION ── */}
+        {/* ── FEATURES SECTION ── */}
         <section className="relative py-24 md:py-36 overflow-hidden">
           <div
             className="absolute inset-0 opacity-40"
@@ -366,7 +299,7 @@ export default function Home() {
                   transition={{ duration: 0.7 }}
                   className="font-[var(--font-ibm-mono)] text-[9px] tracking-[0.45em] text-[#1DD3B0]/50 uppercase mb-4"
                 >
-                  // System Architecture
+                  // How It Works
                 </motion.p>
                 <motion.h2
                   initial={{ opacity: 0, x: -16 }}
@@ -375,8 +308,8 @@ export default function Home() {
                   transition={{ delay: 0.08, duration: 0.7 }}
                   className="font-[var(--font-rajdhani)] text-4xl md:text-5xl font-bold tracking-[0.1em] text-[#E8EAF6] mb-5 leading-tight"
                 >
-                  ONE MASTER.<br />
-                  <span style={{ color: "#1DD3B0", textShadow: "0 0 20px rgba(29,211,176,0.4)" }}>TEN EXPERTS.</span>
+                  CLAUDE CODE.<br />
+                  <span style={{ color: "#1DD3B0", textShadow: "0 0 20px rgba(29,211,176,0.4)" }}>IN PERPLEXITY.</span>
                 </motion.h2>
                 <motion.p
                   initial={{ opacity: 0, x: -16 }}
@@ -385,15 +318,15 @@ export default function Home() {
                   transition={{ delay: 0.16, duration: 0.7 }}
                   className="font-[var(--font-inter)] text-[#6B7A94] leading-relaxed text-sm md:text-base"
                 >
-                  GAIA AI reads every query and routes it to the right subfunction automatically.
-                  No switching. No context loss. One interface, every domain.
+                  GAIA Code brings structured implementation workflow into a Perplexity Space.
+                  Explore before changing. Plan before implementing. Confirm before committing.
                 </motion.p>
               </div>
 
               <div className="space-y-2">
-                {ROUTE_ROWS.map((row, i) => (
+                {FEATURES.map((f, i) => (
                   <motion.div
-                    key={row.fn}
+                    key={f.id}
                     initial={{ opacity: 0, x: 16 }}
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true }}
@@ -401,25 +334,13 @@ export default function Home() {
                     className="flex items-center justify-between px-4 py-3 border border-[#1DD3B0]/10 bg-[#0D1526]/50 hover:border-[#1DD3B0]/30 transition-colors duration-200 group"
                   >
                     <span className="font-[var(--font-ibm-mono)] text-[9px] tracking-[0.25em] text-[#6B7A94] group-hover:text-[#E8EAF6] transition-colors">
-                      {row.label}
+                      {f.title}
                     </span>
-                    <span
-                      className="font-[var(--font-rajdhani)] text-xs font-bold tracking-[0.25em]"
-                      style={{ color: row.color }}
-                    >
-                      {row.fn}
+                    <span className="font-[var(--font-ibm-mono)] text-[8px] tracking-[0.2em] text-[#1DD3B0]/35">
+                      {f.id}
                     </span>
                   </motion.div>
                 ))}
-                <motion.p
-                  initial={{ opacity: 0 }}
-                  whileInView={{ opacity: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: 0.4 }}
-                  className="font-[var(--font-ibm-mono)] text-[8px] tracking-[0.35em] text-[#6B7A94]/35 text-center pt-2"
-                >
-                  + 5 MORE SUBFUNCTIONS — SEE ALL
-                </motion.p>
               </div>
             </div>
           </div>
@@ -454,7 +375,7 @@ export default function Home() {
               transition={{ delay: 0.15, duration: 0.7 }}
               className="font-[var(--font-inter)] text-[#6B7A94] max-w-lg mx-auto text-sm md:text-base leading-relaxed mb-8"
             >
-              Paste one system prompt. Upload ten skill files. GAIA AI handles everything else.
+              Paste one system prompt. GAIA Code handles everything else.
             </motion.p>
             <motion.div
               initial={{ opacity: 0, y: 12 }}
@@ -487,15 +408,14 @@ export default function Home() {
       <footer className="border-t border-[#1DD3B0]/8 py-8">
         <div className="max-w-7xl mx-auto px-5 flex flex-col md:flex-row items-center justify-between gap-4">
           <span className="font-[var(--font-ibm-mono)] text-[8px] tracking-[0.35em] text-[#6B7A94]/35 uppercase">
-            GAIA AI · v2.1 · Built for Perplexity
+            GAIA CODE · v2.1 · Built for Perplexity
           </span>
           <div className="flex items-center gap-6">
             {[
-              { href: "/skills", label: "SKILLS" },
-              { href: "/hephaestus", label: "HEPHAESTUS" },
+              { href: "/connectors", label: "CONNECTORS" },
               { href: "https://github.com/alexey-max-fedorov/gaia-ai", label: "GITHUB", external: true },
             ].map((l) =>
-              l.external ? (
+              "external" in l ? (
                 <a key={l.label} href={l.href} target="_blank" rel="noopener noreferrer"
                   className="font-[var(--font-ibm-mono)] text-[8px] tracking-[0.25em] text-[#6B7A94]/35 hover:text-[#1DD3B0]/55 transition-colors uppercase">
                   {l.label}

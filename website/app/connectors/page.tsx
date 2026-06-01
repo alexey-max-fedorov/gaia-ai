@@ -10,7 +10,7 @@ const CONNECTORS = [
     id: "github",
     name: "GitHub",
     status: "live" as const,
-    tagline: "Connect your GitHub account to give GAIA AI read/write access to your repositories.",
+    tagline: "Connect your GitHub account to give GAIA Code read/write access to your repositories.",
     steps: [
       {
         num: "01",
@@ -31,7 +31,7 @@ const CONNECTORS = [
     id: "n8n",
     name: "n8n",
     status: "live" as const,
-    tagline: "Expose any n8n workflow as an MCP server so GAIA AI can trigger automations directly.",
+    tagline: "Expose any n8n workflow as an MCP server so GAIA Code can trigger automations directly.",
     steps: [
       {
         num: "01",
@@ -53,7 +53,7 @@ const CONNECTORS = [
     id: "supabase",
     name: "Supabase",
     status: "soon" as const,
-    tagline: "Query your Supabase database and run edge functions directly from GAIA AI.",
+    tagline: "Query your Supabase database and run edge functions directly from GAIA Code.",
     steps: [],
   },
 ];
@@ -140,7 +140,7 @@ export default function ConnectorsPage() {
               transition={{ delay: 0.18, duration: 0.7 }}
               className="font-[var(--font-inter)] text-[#6B7A94] text-sm md:text-base max-w-md mx-auto leading-relaxed"
             >
-              Wire up external tools so GAIA AI can act — not just answer.
+              Wire up external tools so GAIA Code can act — not just answer.
               Each connector exposes a live MCP server to Perplexity.
             </motion.p>
           </div>
