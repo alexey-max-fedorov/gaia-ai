@@ -3,13 +3,11 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { ExternalLink, Copy, Check, ArrowRight, Download } from "lucide-react";
+import { ExternalLink, Copy, Check, Download, ArrowRight } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-
-const GITHUB_URL = "https://github.com/alexey-max-fedorov/gaia-ai";
-const PERPLEXITY_URL = "https://www.perplexity.ai";
-const RAW_BASE = "https://raw.githubusercontent.com/alexey-max-fedorov/gaia-ai/refs/heads/master";
+import Step from "@/components/Step";
+import { SETUP_STEPS, SPACE_FILES, URLS } from "@/lib/site";
 
 function CopyButton({ getText, label = "Copy", className }: { getText: () => Promise<string> | string; label?: string; className?: string }) {
   const [state, setState] = useState<"idle" | "loading" | "copied">("idle");
@@ -40,66 +38,27 @@ function CopyButton({ getText, label = "Copy", className }: { getText: () => Pro
   );
 }
 
-const STEPS = [
-  {
-    num: "01",
-    title: "Open Perplexity Spaces",
-    body: (
-      <div className="space-y-3">
-        <p className="font-[var(--font-inter)] text-xs text-[#B0B8CC] leading-relaxed">
-          Go to{" "}
-          <a href={PERPLEXITY_URL} target="_blank" rel="noopener noreferrer" className="text-[#1DD3B0]/70 hover:text-[#1DD3B0] transition-colors">
-            Perplexity.ai
-          </a>
-          , navigate to Spaces, and create a new Space.
-        </p>
-      </div>
-    ),
-  },
-  {
-    num: "02",
-    title: "Paste System Prompt",
-    body: null,
-  },
-  {
-    num: "03",
-    title: "Select Your Model",
-    body: (
-      <p className="font-[var(--font-inter)] text-xs text-[#B0B8CC] leading-relaxed">
-        Choose a model in Perplexity Space settings. Claude Sonnet is recommended for best reasoning depth.
-      </p>
-    ),
-  },
-  {
-    num: "04",
-    title: "Start Using GAIA Code",
-    body: (
-      <p className="font-[var(--font-inter)] text-xs text-[#B0B8CC] leading-relaxed">
-        Ask it to write code, review a repo, plan a feature, or debug anything. GAIA Code will enter Plan Mode for significant tasks and check in before implementing.
-      </p>
-    ),
-  },
-];
+const fetchFile = (path: string) => async () => {
+  const res = await fetch(`${URLS.rawBase}/${path}`);
+  return res.text();
+};
+
+const downloadFile = (path: string, file: string) => async () => {
+  const res = await fetch(`${URLS.rawBase}/${path}`);
+  const blob = new Blob([await res.text()], { type: "text/markdown" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = file;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+};
 
 export default function GetStartedPage() {
-  const fetchSystemInstructions = async () => {
-    const res = await fetch(`${RAW_BASE}/prompts/SYSTEM_INSTRUCTIONS.md`);
-    return res.text();
-  };
-
-  const downloadSystemPrompt = async () => {
-    const res = await fetch(`${RAW_BASE}/prompts/SYSTEM_PROMPT.md`);
-    const text = await res.text();
-    const blob = new Blob([text], { type: "text/markdown" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "SYSTEM_PROMPT.md";
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-  };
+  const instructionsFile = SPACE_FILES.find((f) => f.id === "instructions")!;
+  const uploadFiles = SPACE_FILES.filter((f) => f.deploy === "upload");
 
   return (
     <div className="min-h-screen bg-[#080C18] text-[#E8EAF6] overflow-x-hidden">
@@ -129,7 +88,7 @@ export default function GetStartedPage() {
               transition={{ duration: 0.5 }}
               className="font-[var(--font-ibm-mono)] text-[9px] tracking-[0.45em] text-[#1DD3B0]/50 uppercase mb-4"
             >
-              // Setup · 5 Steps
+              // Setup · 6 Steps
             </motion.p>
             <motion.h1
               initial={{ opacity: 0, y: 12 }}
@@ -160,7 +119,7 @@ export default function GetStartedPage() {
               transition={{ delay: 0.18, duration: 0.7 }}
               className="font-[var(--font-inter)] text-[#B0B8CC] text-sm md:text-base max-w-md mx-auto leading-relaxed"
             >
-              Five steps to deploy GAIA Code in your Perplexity Space.
+              Six steps to deploy GAIA Code v3 in your Perplexity Space.
             </motion.p>
           </div>
         </section>
@@ -178,160 +137,69 @@ export default function GetStartedPage() {
                 }}
               />
               <div className="space-y-3">
-
-                {/* Step 01 */}
-                <motion.div
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true, margin: "-20px" }}
-                  transition={{ delay: 0, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-                  className="relative flex gap-4"
-                >
-                  <div
-                    className="relative z-10 shrink-0 w-12 h-12 flex items-center justify-center border font-[var(--font-ibm-mono)] text-[9px] tracking-[0.2em] text-[#1DD3B0]"
-                    style={{ backgroundColor: "#080C18", borderColor: "rgba(29,211,176,0.35)", boxShadow: "0 0 10px rgba(29,211,176,0.12)" }}
-                  >
-                    01
-                  </div>
-                  <div
-                    className="relative flex-1 p-5 border border-[#1DD3B0]/10 hover:border-[#1DD3B0]/28 transition-colors duration-200"
-                    style={{ backgroundColor: "rgba(13,21,38,0.55)" }}
-                  >
-                    <div className="absolute top-0 left-0 right-0 h-px opacity-22" style={{ background: "linear-gradient(90deg, #1DD3B0, transparent)" }} />
-                    <h3 className="font-[var(--font-rajdhani)] text-base font-bold tracking-[0.15em] text-[#E8EAF6] mb-1.5">
-                      Open Perplexity Spaces
-                    </h3>
-                    <p className="font-[var(--font-inter)] text-xs text-[#B0B8CC] leading-relaxed mb-3">
-                      Go to Perplexity.ai, navigate to Spaces, and create a new Space.
-                    </p>
-                    <a
-                      href={PERPLEXITY_URL}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1.5 font-[var(--font-ibm-mono)] text-[8px] tracking-[0.3em] text-[#1DD3B0]/55 hover:text-[#1DD3B0] transition-colors uppercase"
-                    >
-                      Open Perplexity
-                      <ExternalLink className="w-2.5 h-2.5" />
-                    </a>
-                  </div>
-                </motion.div>
-
-                {/* Step 02 — Paste System Prompt */}
-                <motion.div
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true, margin: "-20px" }}
-                  transition={{ delay: 0.1, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-                  className="relative flex gap-4"
-                >
-                  <div
-                    className="relative z-10 shrink-0 w-12 h-12 flex items-center justify-center border font-[var(--font-ibm-mono)] text-[9px] tracking-[0.2em] text-[#1DD3B0]"
-                    style={{ backgroundColor: "#080C18", borderColor: "rgba(29,211,176,0.35)", boxShadow: "0 0 10px rgba(29,211,176,0.12)" }}
-                  >
-                    02
-                  </div>
-                  <div
-                    className="relative flex-1 p-5 border border-[#1DD3B0]/10 hover:border-[#1DD3B0]/28 transition-colors duration-200"
-                    style={{ backgroundColor: "rgba(13,21,38,0.55)" }}
-                  >
-                    <div className="absolute top-0 left-0 right-0 h-px opacity-22" style={{ background: "linear-gradient(90deg, #1DD3B0, transparent)" }} />
-                    <h3 className="font-[var(--font-rajdhani)] text-base font-bold tracking-[0.15em] text-[#E8EAF6] mb-2">
-                      Paste System Instructions
-                    </h3>
-                    <p className="font-[var(--font-inter)] text-xs text-[#B0B8CC] leading-relaxed mb-3">
-                      In your Space settings, clear the System Instructions field and paste the contents of <code className="font-[var(--font-ibm-mono)] text-[10px] text-[#7DD3FC]/80 bg-[#7DD3FC]/8 px-1 py-0.5">SYSTEM_INSTRUCTIONS.md</code>. This is the short routing file — not the full prompt.
-                    </p>
-                    <div
-                      className="relative border border-[#1DD3B0]/12 p-4"
-                      style={{ backgroundColor: "rgba(8,12,24,0.7)" }}
-                    >
-                      <div className="flex items-center justify-between mb-2">
-                        <span className="font-[var(--font-ibm-mono)] text-[8px] tracking-[0.3em] text-[#1DD3B0]/35 uppercase">
-                          // prompts/SYSTEM_INSTRUCTIONS.md
-                        </span>
-                        <CopyButton getText={fetchSystemInstructions} label="Copy Full Contents" />
-                      </div>
-                      <p className="font-[var(--font-ibm-mono)] text-[9px] text-[#B0B8CC]/50 leading-relaxed">
-                        Click &ldquo;Copy Full Contents&rdquo; to fetch and copy the latest SYSTEM_INSTRUCTIONS.md directly from GitHub.
-                      </p>
-                    </div>
-                  </div>
-                </motion.div>
-
-                {/* Step 03 — Upload SYSTEM_PROMPT.md */}
-                <motion.div
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true, margin: "-20px" }}
-                  transition={{ delay: 0.2, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-                  className="relative flex gap-4"
-                >
-                  <div
-                    className="relative z-10 shrink-0 w-12 h-12 flex items-center justify-center border font-[var(--font-ibm-mono)] text-[9px] tracking-[0.2em] text-[#1DD3B0]"
-                    style={{ backgroundColor: "#080C18", borderColor: "rgba(29,211,176,0.35)", boxShadow: "0 0 10px rgba(29,211,176,0.12)" }}
-                  >
-                    03
-                  </div>
-                  <div
-                    className="relative flex-1 p-5 border border-[#1DD3B0]/10 hover:border-[#1DD3B0]/28 transition-colors duration-200"
-                    style={{ backgroundColor: "rgba(13,21,38,0.55)" }}
-                  >
-                    <div className="absolute top-0 left-0 right-0 h-px opacity-22" style={{ background: "linear-gradient(90deg, #1DD3B0, transparent)" }} />
-                    <h3 className="font-[var(--font-rajdhani)] text-base font-bold tracking-[0.15em] text-[#E8EAF6] mb-2">
-                      Upload System Prompt as Space File
-                    </h3>
-                    <p className="font-[var(--font-inter)] text-xs text-[#B0B8CC] leading-relaxed mb-3">
-                      In your Space settings, go to Space Files and upload <code className="font-[var(--font-ibm-mono)] text-[10px] text-[#7DD3FC]/80 bg-[#7DD3FC]/8 px-1 py-0.5">SYSTEM_PROMPT.md</code>. This is the full 8k+ prompt that GAIA Code reads on startup.
-                    </p>
-                    <button
-                      onClick={downloadSystemPrompt}
-                      className="inline-flex items-center gap-1.5 font-[var(--font-ibm-mono)] text-[8px] tracking-[0.3em] text-[#1DD3B0]/55 hover:text-[#1DD3B0] transition-colors uppercase"
-                    >
-                      <Download className="w-2.5 h-2.5" />
-                      Download SYSTEM_PROMPT.md
-                    </button>
-                  </div>
-                </motion.div>
-
-                {/* Steps 04 + 05 */}
-                {[
-                  {
-                    num: "04",
-                    title: "Select Your Model",
-                    description: "Choose a model in Perplexity Space settings. Claude Sonnet is recommended for best reasoning depth.",
-                  },
-                  {
-                    num: "05",
-                    title: "Start Using GAIA Code",
-                    description: "Ask it to write code, review a repo, plan a feature, or debug anything. GAIA Code enters Plan Mode for significant tasks and checks in before implementing.",
-                  },
-                ].map((step, i) => (
+                {SETUP_STEPS.map((s, i) => (
                   <motion.div
-                    key={step.num}
+                    key={s.num}
                     initial={{ opacity: 0, x: -20 }}
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true, margin: "-20px" }}
-                    transition={{ delay: (i + 3) * 0.1, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-                    className="relative flex gap-4"
+                    transition={{ delay: i * 0.1, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
                   >
-                    <div
-                      className="relative z-10 shrink-0 w-12 h-12 flex items-center justify-center border font-[var(--font-ibm-mono)] text-[9px] tracking-[0.2em] text-[#1DD3B0]"
-                      style={{ backgroundColor: "#080C18", borderColor: "rgba(29,211,176,0.35)", boxShadow: "0 0 10px rgba(29,211,176,0.12)" }}
+                    <Step
+                      num={s.num}
+                      title={s.title}
+                      action={
+                        s.num === "01"
+                          ? { label: "Open Perplexity", href: URLS.perplexity }
+                          : s.num === "05"
+                          ? { label: "Open Connectors", href: URLS.connectors }
+                          : undefined
+                      }
                     >
-                      {step.num}
-                    </div>
-                    <div
-                      className="relative flex-1 p-5 border border-[#1DD3B0]/10 hover:border-[#1DD3B0]/28 transition-colors duration-200"
-                      style={{ backgroundColor: "rgba(13,21,38,0.55)" }}
-                    >
-                      <div className="absolute top-0 left-0 right-0 h-px opacity-22" style={{ background: "linear-gradient(90deg, #1DD3B0, transparent)" }} />
-                      <h3 className="font-[var(--font-rajdhani)] text-base font-bold tracking-[0.15em] text-[#E8EAF6] mb-1.5">
-                        {step.title}
-                      </h3>
-                      <p className="font-[var(--font-inter)] text-xs text-[#B0B8CC] leading-relaxed">
-                        {step.description}
-                      </p>
-                    </div>
+                      <p className="mb-2">{s.body}</p>
+
+                      {/* Step 02 — paste: copy control for SYSTEM_INSTRUCTIONS.md */}
+                      {s.num === "02" && (
+                        <div
+                          className="relative border border-[#1DD3B0]/12 p-4 mt-3"
+                          style={{ backgroundColor: "rgba(8,12,24,0.7)" }}
+                        >
+                          <div className="flex items-center justify-between mb-2">
+                            <span className="font-[var(--font-ibm-mono)] text-[8px] tracking-[0.3em] text-[#1DD3B0]/35 uppercase">
+                              // {instructionsFile.path}
+                            </span>
+                            <CopyButton getText={fetchFile(instructionsFile.path)} label="Copy Full Contents" />
+                          </div>
+                          <p className="font-[var(--font-ibm-mono)] text-[9px] text-[#B0B8CC]/50 leading-relaxed">
+                            Click &ldquo;Copy Full Contents&rdquo; to fetch and copy the latest SYSTEM_INSTRUCTIONS.md directly from GitHub.
+                          </p>
+                        </div>
+                      )}
+
+                      {/* Step 03 — upload: list all three engine files with Copy + Download */}
+                      {s.num === "03" && (
+                        <div className="mt-3">
+                          {uploadFiles.map((f) => (
+                            <div
+                              key={f.id}
+                              className="flex items-center justify-between border border-[#1DD3B0]/12 px-3 py-2 mt-2"
+                              style={{ backgroundColor: "rgba(8,12,24,0.7)" }}
+                            >
+                              <span className="font-[var(--font-ibm-mono)] text-[10px] text-[#7DD3FC]/80">{f.file}</span>
+                              <div className="flex items-center gap-4">
+                                <CopyButton getText={fetchFile(f.path)} label="Copy" />
+                                <button
+                                  onClick={downloadFile(f.path, f.file)}
+                                  className="inline-flex items-center gap-1.5 font-[var(--font-ibm-mono)] text-[8px] tracking-[0.3em] text-[#1DD3B0]/55 hover:text-[#1DD3B0] transition-colors uppercase"
+                                >
+                                  <Download className="w-2.5 h-2.5" /> Download
+                                </button>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </Step>
                   </motion.div>
                 ))}
               </div>
@@ -366,7 +234,7 @@ export default function GetStartedPage() {
               </p>
               <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
                 <a
-                  href={GITHUB_URL}
+                  href={URLS.github}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 font-[var(--font-rajdhani)] text-xs tracking-[0.3em] font-bold px-6 py-2.5 border border-[#1DD3B0]/30 text-[#1DD3B0] hover:bg-[#1DD3B0]/10 transition-all duration-200"
