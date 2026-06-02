@@ -35,11 +35,12 @@ export const metadata: Metadata = {
     template: "%s · GAIA Code",
   },
   description:
-    "Claude Code workflow inside a Perplexity Space. Plan Mode, GitHub MCP, task tracking.",
-  keywords: ["GAIA Code", "Perplexity", "AI coding", "Claude Code", "Horizon Zero Dawn"],
+    "Claude Code's workflow inside a Perplexity Space — persistent memory, a plan engine, context-budgeted turns, and a skill engine. Four prompt files, one Space.",
+  keywords: ["GAIA Code", "Perplexity", "Perplexity Spaces", "AI coding", "Claude Code", "MCP", "Horizon Zero Dawn"],
   openGraph: {
     title: "GAIA Code",
-    description: "Claude Code workflow inside a Perplexity Space.",
+    description:
+      "Claude Code's workflow inside a Perplexity Space: memory, plan, turn, and skill engines.",
     type: "website",
   },
 };
