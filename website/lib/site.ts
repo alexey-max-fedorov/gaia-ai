@@ -19,7 +19,7 @@ export const URLS = {
   site: "https://gaiacode.pro",
   github: "https://github.com/alexey-max-fedorov/gaia-ai",
   perplexity: "https://www.perplexity.ai",
-  space: "https://www.perplexity.ai/spaces/gaia-ai-public-NKPRvyjfRlGm3jHZcPc_Fg",
+  space: "https://www.perplexity.ai/spaces/gaia-code-v3-public-EomKu5eoQtavBtnDvEDH6w",
   connectors: "https://www.perplexity.ai/account/connectors",
   instagram: "https://www.instagram.com/alexeyfedorov._",
   rawBase: "https://raw.githubusercontent.com/alexey-max-fedorov/gaia-ai/refs/heads/master",
