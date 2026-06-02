@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   version="1.1"
+   id="svg3680"
+   width="1080"
+   height="1080"
+   viewBox="0 0 1080 1080"
+   sodipodi:docname="GAIA Logo.svg"
+   inkscape:version="0.92.0 r15299">
+  <metadata
+     id="metadata3686">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs3684" />
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="958"
+     inkscape:window-height="991"
+     id="namedview3682"
+     showgrid="false"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0"
+     inkscape:zoom="0.39676547"
+     inkscape:cx="52.807801"
+     inkscape:cy="632.15392"
+     inkscape:window-x="952"
+     inkscape:window-y="0"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="svg3680" />
+  <g
+     id="g7270"
+     transform="matrix(7.5068594,0,0,7.5068594,-3492.2846,-885.29954)">
+    <path
+       id="path5388"
+       d="m 564.32469,119.95104 -15.52278,8.96242 a 58.933887,61.853633 0 0 0 -11.65522,-1.28632 58.933887,61.853633 0 0 0 -58.93377,61.85293 58.933887,61.853633 0 0 0 33.88426,55.90731 l 24.9315,14.39416 26.02149,-14.78789 a 58.933887,61.853633 0 0 0 33.03028,-55.51358 58.933887,61.853633 0 0 0 -31.75576,-54.85594 z"
+       style="opacity:1;fill:#bbdf8b;fill-opacity:1;stroke:none;stroke-width:2.98957801;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       inkscape:connector-curvature="0" />
+    <path
+       id="ellipse5390"
+       d="m 535.94834,130.93789 c -25.77651,0.31088 -48.85725,21.37054 -53.28317,46.45139 -1.73205,8.24336 -1.54192,16.84796 0.31434,25.09241 h 47.83856 v -27.05247 l -18.62862,-11.12311 v -26.18992 l 21.81385,12.59502 v 23.26111 l 10.13502,5.85121 v 22.65816 h 47.14873 c 3.44217,-15.73837 0.86889,-32.78103 -8.3906,-46.26793 -4.72499,-7.14105 -11.16268,-13.27337 -18.57176,-17.71135 v 8.22646 l -23.72457,13.73222 v -26.81216 l 3.91262,-2.25938 c -2.42109,-0.33675 -4.87109,-0.49635 -7.33494,-0.45059 -0.41045,-0.006 -0.82031,-0.006 -1.22946,-0.001 z m -1.93002,74.36964 v 22.52835 l -9.78314,5.64738 v 15.52063 l 13.08531,7.76729 13.53589,-7.81557 v -15.48844 l -9.34113,-5.39312 v -22.76652 z"
+       style="opacity:1;fill:#264759;fill-opacity:1;stroke:none;stroke-width:2.98957801;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       inkscape:connector-curvature="0" />
+  </g>
+</svg>
