@@ -36,7 +36,7 @@ function Node({
         className="absolute top-0 left-0 right-0 h-px opacity-50"
         style={{ background: "linear-gradient(90deg, #1DD3B0, transparent)" }}
       />
-      <span className="inline-block font-[var(--font-ibm-mono)] text-[7px] tracking-[0.3em] text-[#1DD3B0]/55 uppercase border border-[#1DD3B0]/22 px-1.5 py-0.5 mb-3">
+      <span className="inline-block font-[var(--font-ibm-mono)] text-[7px] tracking-[0.3em] text-[#1DD3B0]/55 uppercase mb-3">
         {tag}
       </span>
       <code className={`block font-[var(--font-ibm-mono)] text-sm ${code} mb-1`}>{file}</code>
