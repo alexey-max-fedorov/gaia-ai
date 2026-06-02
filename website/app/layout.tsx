@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import { Rajdhani, Exo_2, Inter, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
+import { SITE } from "@/lib/site";
+import { SITE_URL, organizationLd, websiteLd, softwareApplicationLd } from "@/lib/seo";
+import JsonLd from "@/components/JsonLd";
 
 const rajdhani = Rajdhani({
   subsets: ["latin"],
@@ -30,18 +33,44 @@ const ibmPlexMono = IBM_Plex_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: {
-    default: "GAIA Code",
+    default: "GAIA Code — Claude Code's workflow inside a Perplexity Space",
     template: "%s · GAIA Code",
   },
-  description:
-    "Claude Code's workflow inside a Perplexity Space — persistent memory, a plan engine, context-budgeted turns, and a skill engine. Four prompt files, one Space.",
-  keywords: ["GAIA Code", "Perplexity", "Perplexity Spaces", "AI coding", "Claude Code", "MCP", "Horizon Zero Dawn"],
+  description: SITE.description,
+  keywords: [
+    "GAIA Code",
+    "Perplexity",
+    "Perplexity Spaces",
+    "AI coding",
+    "Claude Code",
+    "Claude Code alternative",
+    "MCP",
+    "Model Context Protocol",
+    "prompt system",
+    "Horizon Zero Dawn",
+  ],
+  alternates: { canonical: "/" },
+  applicationName: SITE.name,
+  authors: [{ name: "Alexey Fedorov" }],
+  creator: "Alexey Fedorov",
   openGraph: {
     title: "GAIA Code",
-    description:
-      "Claude Code's workflow inside a Perplexity Space: memory, plan, turn, and skill engines.",
+    description: SITE.description,
+    url: SITE_URL,
+    siteName: SITE.name,
     type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "GAIA Code",
+    description: SITE.description,
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true, "max-image-preview": "large", "max-snippet": -1 },
   },
 };
 
@@ -55,6 +84,7 @@ export default function RootLayout({
       <body
         className={`${rajdhani.variable} ${exo2.variable} ${inter.variable} ${ibmPlexMono.variable} antialiased`}
       >
+        <JsonLd data={[organizationLd(), websiteLd(), softwareApplicationLd()]} />
         {children}
       </body>
     </html>
