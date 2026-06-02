@@ -10,7 +10,7 @@ import Footer from "@/components/Footer";
 import Background from "@/components/Background";
 import SectionLabel from "@/components/SectionLabel";
 import EngineCard from "@/components/EngineCard";
-import { ENGINES, INTEGRATIONS, RELIABILITY, URLS, VERSION } from "@/lib/site";
+import { ENGINES, INTEGRATIONS, RELIABILITY, URLS } from "@/lib/site";
 
 function useScramble(target: string, delay = 400, duration = 1800) {
   const [text, setText] = useState("");
@@ -71,22 +71,6 @@ export default function Home() {
           />
 
           <div className="relative z-10 max-w-5xl mx-auto px-5 flex flex-col items-center text-center gap-0">
-
-            {/* Status badge */}
-            <motion.div
-              initial={{ opacity: 0, y: -8 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.15, duration: 0.5 }}
-              className="inline-flex items-center gap-2.5 px-4 py-1.5 mb-8 border border-[#1DD3B0]/20 bg-[#1DD3B0]/5"
-            >
-              <span className="relative flex h-1.5 w-1.5">
-                <span className="animate-ping absolute inset-0 rounded-full bg-[#4ADE80] opacity-70" />
-                <span className="relative rounded-full h-1.5 w-1.5 bg-[#4ADE80]" />
-              </span>
-              <span className="font-[var(--font-ibm-mono)] text-[9px] tracking-[0.45em] text-[#4ADE80]/80 uppercase">
-                System Online · v{VERSION}
-              </span>
-            </motion.div>
 
             {/* Title with scramble + glitch */}
             <div className="relative mb-4 leading-none select-none">
