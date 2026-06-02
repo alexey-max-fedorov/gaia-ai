@@ -18,7 +18,7 @@ GAIA Code is a Claude Code-inspired prompt system for Perplexity Spaces. It brin
 5. *(Optional)* Connect GitHub via Perplexity Connectors so GAIA can read and write your repositories.
 6. Done — GAIA Code is ready to use.
 
-> GAIA reads all three uploaded files on startup; skipping any one disables that engine. The website's [Get Started](https://use-gaia-ai.vercel.app/get-started) page mirrors these steps with copy/download buttons for each file.
+> GAIA reads all three uploaded files on startup; skipping any one disables that engine. The website's [Get Started](https://gaiacode.pro/get-started) page mirrors these steps with copy/download buttons for each file.
 
 ---
 
@@ -52,7 +52,7 @@ Context-budget estimation so a turn never overflows the window, a 15-call tool b
 
 ### `website/`
 
-The Next.js marketing site at [use-gaia-ai.vercel.app](https://use-gaia-ai.vercel.app).
+The Next.js marketing site at [gaiacode.pro](https://gaiacode.pro).
 
 ---
 
