@@ -5,13 +5,12 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowRight, ChevronDown } from "lucide-react";
 import GlitchLogo from "@/components/GlitchLogo";
-
-const FEATURES = [
-  { id: "01", title: "PLAN MODE",            description: "Every non-trivial task starts with an explicit plan — files to change, ordered steps, dependencies. You approve before a line is written." },
-  { id: "02", title: "GITHUB MCP",           description: "Full GitHub access via MCP. Read repos, create branches, push commits, open PRs, and manage issues — all in one conversation." },
-  { id: "03", title: "TASK TRACKING",        description: "Live checkbox task list updated in real time. Every step confirmed before starting, marked complete only when fully done." },
-  { id: "04", title: "COMMIT BATCHING",      description: "Automatic size-aware commit grouping. Small files group; large files push solo. Predictable history, no broken mega-commits." },
-];
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
+import Background from "@/components/Background";
+import SectionLabel from "@/components/SectionLabel";
+import EngineCard from "@/components/EngineCard";
+import { ENGINES, INTEGRATIONS, RELIABILITY, URLS, VERSION } from "@/lib/site";
 
 function useScramble(target: string, delay = 400, duration = 1800) {
   const [text, setText] = useState("");
@@ -51,60 +50,14 @@ export default function Home() {
 
   return (
     <div className="min-h-screen text-[#E8EAF6] overflow-x-hidden font-[var(--font-inter)]">
+      <Header />
+      <main className="pt-14">
 
-      {/* ── HEADER ── */}
-      <header className="fixed top-0 inset-x-0 z-50 border-b border-[#1DD3B0]/10 backdrop-blur-xl bg-[#080C18]/75">
-        <div className="max-w-7xl mx-auto px-5 h-14 flex items-center justify-between">
-          <Link
-            href="/"
-            className="font-horizon text-xl font-bold tracking-[0.22em] text-[#1DD3B0]"
-            style={{ textShadow: "0 0 16px rgba(29,211,176,0.6)" }}
-          >
-            GAIA<span className="opacity-40 mx-1">·</span>CODE
-          </Link>
-
-          <nav className="hidden md:flex items-center gap-8">
-            {[
-              { href: "/connectors",  label: "CONNECTORS" },
-              { href: "/get-started", label: "GET STARTED" },
-            ].map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className="relative font-[var(--font-rajdhani)] text-xs tracking-[0.3em] text-[#6B7A94] hover:text-[#1DD3B0] transition-colors duration-200 group"
-              >
-                {item.label}
-                <span className="absolute -bottom-0.5 left-0 w-0 h-px bg-[#1DD3B0] transition-all duration-300 group-hover:w-full" />
-              </Link>
-            ))}
-          </nav>
-
-          <Link
-            href="/get-started"
-            className="font-[var(--font-rajdhani)] text-xs tracking-[0.25em] px-4 py-2 border border-[#1DD3B0]/35 text-[#1DD3B0] hover:bg-[#1DD3B0]/10 transition-all duration-200"
-          >
-            LAUNCH
-          </Link>
-        </div>
-      </header>
-
-      <main>
         {/* ── HERO ── */}
         <section className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden pt-14">
 
-          {/* Grid bg */}
-          <div
-            className="absolute inset-0 opacity-100"
-            style={{
-              backgroundImage: "linear-gradient(rgba(29,211,176,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(29,211,176,0.04) 1px, transparent 1px)",
-              backgroundSize: "40px 40px",
-            }}
-          />
-          {/* Radial hero gradient */}
-          <div
-            className="absolute inset-0"
-            style={{ background: "radial-gradient(ellipse 80% 55% at 50% 42%, #0D2A35 0%, transparent 80%)" }}
-          />
+          <Background brackets scanlines radial="center" />
+
           {/* Ambient teal glow */}
           <motion.div
             initial={{ opacity: 0, scale: 0.7 }}
@@ -116,25 +69,6 @@ export default function Home() {
               filter: "blur(40px)",
             }}
           />
-          {/* Scanlines */}
-          <div
-            className="absolute inset-0 pointer-events-none"
-            style={{
-              backgroundImage: "repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,0,0,0.06) 3px, rgba(0,0,0,0.06) 4px)",
-              opacity: 0.4,
-            }}
-          />
-          {/* Corner brackets */}
-          {["top-[72px] left-4", "top-[72px] right-4", "bottom-16 left-4", "bottom-16 right-4"].map((pos, i) => (
-            <div
-              key={i}
-              className={`absolute w-8 h-8 md:w-12 md:h-12 border-[#1DD3B0]/20 border-solid ${
-                i === 0 ? "border-l border-t" :
-                i === 1 ? "border-r border-t" :
-                i === 2 ? "border-l border-b" : "border-r border-b"
-              } ${pos}`}
-            />
-          ))}
 
           <div className="relative z-10 max-w-5xl mx-auto px-5 flex flex-col items-center text-center gap-0">
 
@@ -150,7 +84,7 @@ export default function Home() {
                 <span className="relative rounded-full h-1.5 w-1.5 bg-[#4ADE80]" />
               </span>
               <span className="font-[var(--font-ibm-mono)] text-[9px] tracking-[0.45em] text-[#4ADE80]/80 uppercase">
-                System Online · v2.1
+                System Online · v{VERSION}
               </span>
             </motion.div>
 
@@ -223,8 +157,7 @@ export default function Home() {
               transition={{ delay: 1.1, duration: 0.8 }}
               className="font-[var(--font-inter)] text-[#6B7A94] text-sm md:text-base max-w-lg mx-auto leading-relaxed mb-10"
             >
-              Plan Mode, GitHub MCP integration, and Claude Code workflow — all inside a Perplexity Space.
-              Paste one system prompt. Start coding.
+              Plan Mode, persistent memory, and a full Claude Code workflow — all inside a Perplexity Space. Four prompt files. One Space. Start building.
             </motion.p>
 
             {/* CTA */}
@@ -235,7 +168,7 @@ export default function Home() {
               className="flex flex-col sm:flex-row items-center gap-3 mb-16"
             >
               <a
-                href="https://www.perplexity.ai/spaces/gaia-ai-public-NKPRvyjfRlGm3jHZcPc_Fg"
+                href={URLS.space}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="group relative font-[var(--font-rajdhani)] text-sm tracking-[0.3em] font-bold px-8 py-3.5 bg-[#1DD3B0] text-[#080C18] overflow-hidden transition-all duration-300 hover:shadow-[0_0_28px_rgba(29,211,176,0.45)] hzd-btn-sweep"
@@ -279,74 +212,57 @@ export default function Home() {
           </motion.div>
         </section>
 
-        {/* ── FEATURES SECTION ── */}
-        <section className="relative py-24 md:py-36 overflow-hidden">
-          <div
-            className="absolute inset-0 opacity-40"
-            style={{
-              backgroundImage: "linear-gradient(rgba(29,211,176,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(29,211,176,0.04) 1px, transparent 1px)",
-              backgroundSize: "40px 40px",
-            }}
-          />
+        {/* ── ENGINES BENTO ── */}
+        <section className="relative py-24 md:py-32 overflow-hidden">
+          <Background radial="none" />
           <div className="relative z-10 max-w-5xl mx-auto px-5">
-            <div className="grid md:grid-cols-2 gap-12 md:gap-20 items-center">
-
-              <div>
-                <motion.p
-                  initial={{ opacity: 0, x: -16 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.7 }}
-                  className="font-[var(--font-ibm-mono)] text-[9px] tracking-[0.45em] text-[#1DD3B0]/50 uppercase mb-4"
-                >
-                  // How It Works
-                </motion.p>
-                <motion.h2
-                  initial={{ opacity: 0, x: -16 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: 0.08, duration: 0.7 }}
-                  className="font-[var(--font-rajdhani)] text-4xl md:text-5xl font-bold tracking-[0.1em] text-[#E8EAF6] mb-5 leading-tight"
-                >
-                  CLAUDE CODE.<br />
-                  <span style={{ color: "#1DD3B0", textShadow: "0 0 20px rgba(29,211,176,0.4)" }}>IN PERPLEXITY.</span>
-                </motion.h2>
-                <motion.p
-                  initial={{ opacity: 0, x: -16 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: 0.16, duration: 0.7 }}
-                  className="font-[var(--font-inter)] text-[#6B7A94] leading-relaxed text-sm md:text-base"
-                >
-                  GAIA Code brings structured implementation workflow into a Perplexity Space.
-                  Explore before changing. Plan before implementing. Confirm before committing.
-                </motion.p>
-              </div>
-
-              <div className="space-y-2">
-                {FEATURES.map((f, i) => (
-                  <motion.div
-                    key={f.id}
-                    initial={{ opacity: 0, x: 16 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: i * 0.07, duration: 0.55 }}
-                    className="flex items-center justify-between px-4 py-3 border border-[#1DD3B0]/10 bg-[#0D1526]/50 hover:border-[#1DD3B0]/30 transition-colors duration-200 group"
-                  >
-                    <span className="font-[var(--font-ibm-mono)] text-[9px] tracking-[0.25em] text-[#6B7A94] group-hover:text-[#E8EAF6] transition-colors">
-                      {f.title}
-                    </span>
-                    <span className="font-[var(--font-ibm-mono)] text-[8px] tracking-[0.2em] text-[#1DD3B0]/35">
-                      {f.id}
-                    </span>
-                  </motion.div>
-                ))}
-              </div>
+            <SectionLabel className="mb-4">// Four engines</SectionLabel>
+            <h2 className="font-[var(--font-rajdhani)] text-4xl md:text-5xl font-bold tracking-[0.1em] text-[#E8EAF6] mb-3 leading-tight">
+              NOT A PROMPT. <span style={{ color: "#1DD3B0", textShadow: "0 0 20px rgba(29,211,176,0.4)" }}>A SYSTEM.</span>
+            </h2>
+            <p className="font-[var(--font-inter)] text-[#6B7A94] text-sm md:text-base max-w-xl leading-relaxed mb-10">
+              v3 splits GAIA Code into four prompt files that drive four engines — so it remembers, plans, paces itself, and runs your skills.
+            </p>
+            <div className="grid md:grid-cols-2 gap-3">
+              {ENGINES.map((e, i) => <EngineCard key={e.id} engine={e} index={i} />)}
+            </div>
+            <div className="mt-3 p-6 border border-[#1DD3B0]/12 bg-[#0D1526]/40">
+              <span className="font-[var(--font-rajdhani)] text-lg font-bold tracking-[0.15em] text-[#E8EAF6]">{INTEGRATIONS[0].name}</span>
+              <p className="font-[var(--font-inter)] text-xs text-[#6B7A94] leading-relaxed mt-2">{INTEGRATIONS[0].body}</p>
             </div>
           </div>
         </section>
 
-        {/* ── BUILT FOR SECTION ── */}
+        {/* ── ARCHITECTURE TEASER ── */}
+        <section className="relative py-16 md:py-24 border-t border-[#1DD3B0]/8">
+          <div className="max-w-5xl mx-auto px-5 text-center">
+            <SectionLabel className="mb-5">// Architecture</SectionLabel>
+            <h2 className="font-[var(--font-rajdhani)] text-3xl md:text-4xl font-bold tracking-[0.12em] text-[#E8EAF6] mb-4">
+              ONE GATE. <span style={{ color: "#1DD3B0" }}>THREE ENGINES.</span>
+            </h2>
+            <p className="font-[var(--font-inter)] text-[#6B7A94] max-w-lg mx-auto text-sm md:text-base leading-relaxed mb-8">
+              Paste SYSTEM_INSTRUCTIONS.md into the Space, upload the three engine files, and GAIA wires itself up. See exactly how it fits together.
+            </p>
+            <Link href="/architecture" className="group font-[var(--font-rajdhani)] text-sm tracking-[0.3em] font-bold px-7 py-3 border border-[#1DD3B0]/35 text-[#1DD3B0] hover:bg-[#1DD3B0]/10 transition-all duration-200 inline-flex items-center gap-2">
+              SEE THE ARCHITECTURE
+              <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+            </Link>
+          </div>
+        </section>
+
+        {/* ── RELIABILITY STRIP ── */}
+        <section className="relative py-12 border-t border-[#1DD3B0]/8">
+          <div className="max-w-5xl mx-auto px-5 grid md:grid-cols-2 gap-6">
+            {RELIABILITY.map((r) => (
+              <div key={r.title}>
+                <h3 className="font-[var(--font-rajdhani)] text-base font-bold tracking-[0.12em] text-[#E8EAF6] mb-1.5">{r.title}</h3>
+                <p className="font-[var(--font-inter)] text-xs text-[#6B7A94] leading-relaxed">{r.body}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* ── DEPLOY CTA ── */}
         <section className="relative py-16 md:py-24 border-t border-[#1DD3B0]/8">
           <div className="max-w-5xl mx-auto px-5 text-center">
             <motion.p
@@ -354,34 +270,15 @@ export default function Home() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.7 }}
-              className="font-[var(--font-ibm-mono)] text-[9px] tracking-[0.45em] text-[#1DD3B0]/40 uppercase mb-5"
-            >
-              // Deployment
-            </motion.p>
-            <motion.h2
-              initial={{ opacity: 0, y: 12 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.08, duration: 0.7 }}
-              className="font-[var(--font-rajdhani)] text-3xl md:text-4xl font-bold tracking-[0.12em] text-[#E8EAF6] mb-4"
-            >
-              BUILT FOR{" "}
-              <span style={{ color: "#1DD3B0" }}>PERPLEXITY SPACES</span>
-            </motion.h2>
-            <motion.p
-              initial={{ opacity: 0, y: 12 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.15, duration: 0.7 }}
               className="font-[var(--font-inter)] text-[#6B7A94] max-w-lg mx-auto text-sm md:text-base leading-relaxed mb-8"
             >
-              Paste one system prompt. GAIA Code handles everything else.
+              Four files in, GAIA Code handles the rest — memory, planning, and clean commits.
             </motion.p>
             <motion.div
               initial={{ opacity: 0, y: 12 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: 0.22, duration: 0.7 }}
+              transition={{ delay: 0.1, duration: 0.7 }}
               className="flex flex-col sm:flex-row items-center justify-center gap-3"
             >
               <Link
@@ -392,7 +289,7 @@ export default function Home() {
                 <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
               </Link>
               <a
-                href="https://github.com/alexey-max-fedorov/gaia-ai"
+                href={URLS.github}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="font-[var(--font-rajdhani)] text-sm tracking-[0.3em] text-[#6B7A94] hover:text-[#E8EAF6] transition-colors"
@@ -402,41 +299,9 @@ export default function Home() {
             </motion.div>
           </div>
         </section>
-      </main>
 
-      {/* ── FOOTER ── */}
-      <footer className="border-t border-[#1DD3B0]/8 py-8">
-        <div className="max-w-7xl mx-auto px-5 flex flex-col md:flex-row items-center justify-between gap-4">
-          <span className="font-[var(--font-ibm-mono)] text-[8px] tracking-[0.35em] text-[#6B7A94]/35 uppercase">
-            GAIA CODE · v2.1 · Built for Perplexity
-          </span>
-          <div className="flex items-center gap-6">
-            {[
-              { href: "/connectors", label: "CONNECTORS" },
-              { href: "https://github.com/alexey-max-fedorov/gaia-ai", label: "GITHUB", external: true },
-            ].map((l) =>
-              "external" in l ? (
-                <a key={l.label} href={l.href} target="_blank" rel="noopener noreferrer"
-                  className="font-[var(--font-ibm-mono)] text-[8px] tracking-[0.25em] text-[#6B7A94]/35 hover:text-[#1DD3B0]/55 transition-colors uppercase">
-                  {l.label}
-                </a>
-              ) : (
-                <Link key={l.label} href={l.href}
-                  className="font-[var(--font-ibm-mono)] text-[8px] tracking-[0.25em] text-[#6B7A94]/35 hover:text-[#1DD3B0]/55 transition-colors uppercase">
-                  {l.label}
-                </Link>
-              )
-            )}
-          </div>
-          <span className="font-[var(--font-ibm-mono)] text-[8px] tracking-[0.2em] text-[#6B7A94]/25 uppercase">
-            By{" "}
-            <a href="https://www.instagram.com/alexeyfedorov._" target="_blank" rel="noopener noreferrer"
-              className="hover:text-[#1DD3B0]/55 transition-colors">
-              Alexey Fedorov
-            </a>
-          </span>
-        </div>
-      </footer>
+      </main>
+      <Footer />
     </div>
   );
 }
