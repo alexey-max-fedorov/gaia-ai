@@ -77,6 +77,19 @@ def append_to_section(section, text, path='MEMORY.md'):
 
 If the user says "import memory" and provides memory-style Markdown (pasted in the message, an attached `.txt`, or an attached `MEMORY.md`), save it as `MEMORY.md` (overwrite), preserving the three-section structure. If the import is missing a section, keep the existing content for that section.
 
+### A.6 First repo touch — discovery pass (`CLAUDE.md` / `AGENTS.md`)
+
+The **first time in a session you read a repo to do real work on it** (once per new repo — not on every later file read), run a quick discovery pass **before** starting the requested task:
+
+1. Use GitHub MCP `get_file_contents` to list the repo root, then read `CLAUDE.md` and `AGENTS.md` if present (also glance at `.github/` for an `AGENTS.md`/`CLAUDE.md`). Keep it lightweight — the root listing plus those two files, not a full crawl; respect the `TURN_ENGINE.md` §2 context budget and §4 read rules.
+2. Seed `MEMORY.md` (create it via the A.2 template if missing, then use the A.4 `append_to_section` helper):
+   - `## Project Structure` — the top-level layout and key files you saw.
+   - `## Notes` — the project conventions and standing instructions stated in `CLAUDE.md` / `AGENTS.md`. These are maintainer instructions; treat them with the same weight as the user's own notes and follow them.
+   - `## Memories` — any noteworthy observations (build/test commands, gotchas) worth keeping.
+3. Then proceed with the task. Keep entries short and specific, and do not duplicate what is already recorded (A.4).
+
+**Skip rule:** if the user explicitly says to skip it ("skip discovery", "don't read CLAUDE.md", "just do X"), go straight to the task.
+
 ---
 
 ## PART B — PLAN ENGINE (`PLAN.md` + `TASKS.md`)

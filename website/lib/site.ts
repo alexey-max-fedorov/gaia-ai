@@ -1,7 +1,7 @@
 // website/lib/site.ts
 // Single source of truth for the GAIA Code site: version, links, nav, and the v3 content model.
 
-export const VERSION = "3.0.1";
+export const VERSION = "3.0.2";
 
 // Canonical site identity — single source of truth for the live domain.
 export const SITE = {
@@ -50,7 +50,7 @@ export const SPACE_FILES: SpaceFile[] = [
     deploy: "paste",
     role: "The gate",
     summary:
-      "Pasted into the Space Instructions field. Switches GAIA on, points it at the other three files, and hosts the slash-command skill engine.",
+      "Pasted into the Space Instructions field. Switches GAIA on, points it at the other three files, and hosts the slash-command skill engine — including installing skills straight from GitHub.",
   },
   {
     id: "prompt",
@@ -97,7 +97,7 @@ export const ENGINES: Engine[] = [
     name: "Persistent Memory",
     tagline: "Survives auto-compaction.",
     body:
-      "GAIA keeps a MEMORY.md in its sandbox — project structure, your standing notes, and observations it records itself. It re-reads memory after every compaction and writes down mistakes it fixed so it never repeats them.",
+      "GAIA keeps a MEMORY.md in its sandbox — project structure, your standing notes, and observations it records itself. On first contact with a repo it reads the project's CLAUDE.md and AGENTS.md and seeds memory with its structure and conventions. It re-reads memory after every compaction and writes down mistakes it fixed so it never repeats them.",
   },
   {
     id: "plan",
@@ -121,7 +121,7 @@ export const ENGINES: Engine[] = [
     name: "Skill Engine",
     tagline: "Slash-command skills.",
     body:
-      "Drop a skill file into the Space and call it with a slash command (e.g. /humanizer). GAIA adapts external, non-ported skills to the tools it actually has.",
+      "Drop a skill file into the Space and call it with a slash command (e.g. /humanizer) — or install one straight from a GitHub repo. GAIA adapts external, non-ported skills to the tools it actually has.",
   },
 ];
 
@@ -285,7 +285,7 @@ export const TURN_FLOW: TurnStep[] = [
   {
     n: "01",
     title: "Explore",
-    body: "GAIA reads MEMORY.md and the repo before touching anything, rebuilding context after every auto-compaction.",
+    body: "GAIA reads MEMORY.md, the repo's CLAUDE.md and AGENTS.md, and the code before touching anything, rebuilding context after every auto-compaction.",
   },
   {
     n: "02",

@@ -1,6 +1,6 @@
 # GAIA Code
 
-**Version:** 3.0.1  **Repository:** `alexey-max-fedorov/gaia-ai`
+**Version:** 3.0.2  **Repository:** `alexey-max-fedorov/gaia-ai`
 
 GAIA Code is a Claude Code-inspired prompt system for Perplexity Spaces. It brings persistent memory, a plan engine, context-budgeted turns, GitHub MCP integration, and a slash-command skill engine into a Perplexity conversation.
 
@@ -36,7 +36,7 @@ Identity, tool philosophy, dependency & version rules (versions are pinned from 
 
 ### `prompts/MEMORY_ENGINE.md` — memory + planning
 
-- **Persistent memory** (`MEMORY.md`) — survives auto-compaction: project structure, your standing notes, and observations GAIA records itself, including mistakes it fixed so they don't repeat.
+- **Persistent memory** (`MEMORY.md`) — survives auto-compaction: project structure, your standing notes, and observations GAIA records itself, including mistakes it fixed so they don't repeat. On first contact with a repo it reads `CLAUDE.md` / `AGENTS.md` and seeds memory with the project's structure and conventions.
 - **Plan engine** (`PLAN.md` + `TASKS.md`) — explore → plan → approve → execute, with checkboxes flipped per task as work lands.
 
 ### `prompts/TURN_ENGINE.md` — turns + budget
@@ -48,7 +48,7 @@ Context-budget estimation so a turn never overflows the window, a 15-call tool b
 - **Plan Mode** — structured planning with an explicit approval gate before any code is written.
 - **GitHub MCP** — read repos, create branches, push commits, open PRs, manage issues.
 - **Persistent memory** — coherent across auto-compaction and context-overflow crashes.
-- **Skill engine** — slash-command skills loaded from Space files (e.g. `/humanizer`).
+- **Skill engine** — slash-command skills loaded from Space files (e.g. `/humanizer`), installable straight from a GitHub repo ("install the skill from gh owner/repo").
 
 ### `website/`
 
@@ -64,6 +64,7 @@ The Next.js marketing site at [gaiacode.pro](https://gaiacode.pro).
 | 2.1 | March 2026 | Commit batching rules; GAIA Code rebrand |
 | 3.0.0 | June 2026 | Prompt-system overhaul: memory, plan & turn engines, skill engine, multi-file architecture |
 | 3.0.1 | June 2026 | Registry-JSON version lookup; per-task TASKS.md writes; record mistakes to memory; self-review before push |
+| 3.0.2 | June 2026 | Auto-reads CLAUDE.md/AGENTS.md into memory on first repo touch; install skills from GitHub via the skill engine |
 
 ---
 
