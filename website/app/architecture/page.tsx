@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { ArrowRight, ExternalLink } from "lucide-react";
+import Background from "@/components/Background";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import SectionLabel from "@/components/SectionLabel";
@@ -20,23 +21,7 @@ export default function ArchitecturePage() {
       <main className="pt-14">
         {/* Hero */}
         <section className="relative py-20 md:py-32 overflow-hidden">
-          <div
-            className="absolute inset-0"
-            style={{
-              backgroundImage:
-                "linear-gradient(rgba(29,211,176,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(29,211,176,0.04) 1px, transparent 1px)",
-              backgroundSize: "40px 40px",
-            }}
-          />
-          <div
-            className="absolute inset-0"
-            style={{
-              background:
-                "radial-gradient(ellipse 70% 50% at 50% 0%, #0D2A35 0%, #080C18 80%)",
-            }}
-          />
-          <div className="absolute top-[72px] left-5 w-10 h-10 border-l border-t border-[#1DD3B0]/20" />
-          <div className="absolute top-[72px] right-5 w-10 h-10 border-r border-t border-[#1DD3B0]/20" />
+          <Background brackets radial="top" />
 
           <div className="relative z-10 max-w-3xl mx-auto px-5 text-center">
             <motion.p
