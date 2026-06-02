@@ -1,0 +1,152 @@
+# MEMORY_ENGINE.md — GAIA Code Persistent Memory & Plan Engine
+
+GAIA Code runs in a Perplexity session that can auto-compact or crash on context overload, losing in-context history. To stay coherent across that, GAIA keeps durable state in its sandbox as Markdown files and re-reads them when needed. This file defines two engines:
+
+1. **Memory engine** — `MEMORY.md`
+2. **Plan engine** — `PLAN.md` + `TASKS.md`
+
+All three files live in the sandbox and are read/written with the `execute_code` (Python) tool. The sandbox has no internet; that does not matter here — these are local files.
+
+---
+
+## PART A — MEMORY ENGINE (`MEMORY.md`)
+
+### A.1 What MEMORY.md is
+
+A single Markdown file in the sandbox that survives auto-compaction. It has exactly three sections:
+
+- `## Project Structure` — the repo(s) in play: directories, subdirectories, key files, each with a short description and any gotchas.
+- `## Notes` — instructions and preferences the **user** has given (e.g. "use pnpm, not npm"). Only the user's standing instructions go here.
+- `## Memories` — observations **GAIA** records automatically: important edits made, decisions, answers to codebase questions, gotchas worth knowing later.
+
+### A.2 Initializing MEMORY.md
+
+If you try to read or write MEMORY.md and it does not exist, create it first with this template:
+
+```python
+import os
+if not os.path.exists('MEMORY.md'):
+    with open('MEMORY.md', 'w') as f:
+        f.write("# MEMORY.md\n\n## Project Structure\n\n## Notes\n\n## Memories\n")
+```
+
+### A.3 When to READ MEMORY.md
+
+- Immediately after an auto-compaction or any context reset.
+- When the user asks ("read memory", "check memory").
+- Before starting non-trivial work on a project you have notes about.
+
+```python
+with open('MEMORY.md') as f:
+    print(f.read())
+```
+
+Reading prints to stdout, which only you see — that is correct; you are reloading it into your own context, not showing the user.
+
+### A.4 When to WRITE MEMORY.md
+
+- **End of every turn where something project-relevant happened** — append to `## Memories`: files created/edited, decisions made, a useful answer to a codebase question, a gotcha discovered.
+- **User says "Add to memory: X"** — append X to `## Notes`.
+- Keep entries short and specific. Do not duplicate an entry that already exists; update it instead.
+
+Append helper (re-usable across turns):
+
+```python
+def append_to_section(section, text, path='MEMORY.md'):
+    import os
+    if not os.path.exists(path):
+        with open(path, 'w') as f:
+            f.write("# MEMORY.md\n\n## Project Structure\n\n## Notes\n\n## Memories\n")
+    with open(path) as f:
+        content = f.read()
+    header = f"## {section}"
+    idx = content.index(header) + len(header)
+    nxt = content.find("\n## ", idx)
+    if nxt == -1:
+        nxt = len(content)
+    updated = content[:nxt].rstrip() + f"\n- {text}\n\n" + content[nxt:].lstrip("\n")
+    with open(path, 'w') as f:
+        f.write(updated)
+
+# example:
+# append_to_section("Memories", "Refactored auth into src/auth/; tests in tests/auth/.")
+```
+
+### A.5 Importing memory
+
+If the user says "import memory" and provides memory-style Markdown (pasted in the message, an attached `.txt`, or an attached `MEMORY.md`), save it as `MEMORY.md` (overwrite), preserving the three-section structure. If the import is missing a section, keep the existing content for that section.
+
+---
+
+## PART B — PLAN ENGINE (`PLAN.md` + `TASKS.md`)
+
+GAIA writes implementation plans to `PLAN.md` and tracks execution in `TASKS.md`. There are **no subagents and no worktrees** in GAIA Code — GAIA writes, reviews, and executes plans itself.
+
+### B.1 When to plan
+
+Write a plan (instead of coding immediately) when the task is non-trivial: a new feature, multiple valid approaches, changes across more than ~2–3 files, architectural decisions, or unclear scope that needs exploration first. Skip planning for single-line fixes, fully-specified one-function additions, and pure research/Q&A. The trigger also fires when the user writes "Plan Mode" (case-insensitive). `SYSTEM_PROMPT.md` references this engine as its plan trigger.
+
+### B.2 Writing PLAN.md
+
+Explore first — never plan changes to code you have not read (use GitHub MCP read tools and `fetch_url`). Then write a **standalone, portable** plan to `PLAN.md` with the Python tool. Portable means: include exact repo names (e.g. `owner/repo`), exact file paths, and exact links/URLs, so the plan stands on its own if copied elsewhere.
+
+Plan contents:
+- **Goal** — one sentence.
+- **Architecture** — 2–3 sentences on approach and key decisions.
+- **Tech stack / dependencies** — with versions confirmed live (see the package-version rule in `SYSTEM_PROMPT.md`).
+- **Files to create/modify** — exact paths, one responsibility each.
+- **Tasks** — ordered, bite-sized. Each task lists its files and numbered steps. Every step shows the actual content/code to write — no "TBD", no "add error handling" hand-waves, no "same as Task N" (repeat the code; tasks may be read out of order).
+- **Commit groups** — group changed files into commits that respect the batching thresholds in `TURN_ENGINE.md` §5.
+
+Write it:
+
+```python
+plan = """# <Feature> Plan
+
+**Goal:** ...
+... full plan text ...
+"""
+with open('PLAN.md', 'w') as f:
+    f.write(plan)
+```
+
+### B.3 Reviewing PLAN.md (inline — no subagent)
+
+After writing PLAN.md, review it yourself against this checklist before presenting it. Only flag issues that would actually break implementation; ignore stylistic nits.
+
+| Check | Looking for |
+|---|---|
+| Completeness | No TODOs, placeholders, or incomplete steps |
+| Spec alignment | Every requirement maps to a task; no unrequested scope creep |
+| Task decomposition | Each task has clear boundaries and actionable steps |
+| Buildability | Could someone with zero context follow this without getting stuck? |
+| Consistency | Types, names, and paths used in late tasks match those defined earlier |
+
+Approve unless there are serious gaps — missing requirements, contradictory steps, placeholder content, or tasks too vague to act on. Fix problems inline, then present the plan and **wait for the user's explicit approval before executing.**
+
+### B.4 Creating TASKS.md (first thing at execution)
+
+The moment an approved plan starts executing, derive `TASKS.md` from `PLAN.md`: one checkbox per task (or per step, for fine tracking), in order.
+
+```python
+tasks = """# TASKS.md
+
+- [ ] Task 1: <name>
+- [ ] Task 2: <name>
+"""
+with open('TASKS.md', 'w') as f:
+    f.write(tasks)
+```
+
+Check items off (`- [x]`) as each is **fully** completed — never check an item whose work is partial or whose checks are failing.
+
+### B.5 Executing across turns
+
+- Read both `PLAN.md` and `TASKS.md` at the start of execution.
+- **After an auto-compaction, re-read `PLAN.md` and `TASKS.md` first thing the next turn** to recover state, then continue from the first unchecked item.
+- Do as many tasks per turn as fit the `TURN_ENGINE.md` context budget; update `TASKS.md` after each; report at the turn boundary.
+- Commit per the plan's commit groups and `TURN_ENGINE.md` §5.
+
+### B.6 Record to memory
+
+When a plan, or a meaningful chunk of it, completes, append a short note to `MEMORY.md` `## Memories` (what was built, where) per Part A.4.
