@@ -3,7 +3,20 @@
 
 export const VERSION = "3.0.1";
 
+// Canonical site identity — single source of truth for the live domain.
+export const SITE = {
+  url: "https://gaiacode.pro",
+  name: "GAIA Code",
+  tagline: "Claude Code's workflow, inside a Perplexity Space.",
+  description:
+    "GAIA Code brings Claude Code's engineering workflow into a Perplexity Space: persistent memory, a plan engine, context-budgeted turns, GitHub MCP, and a slash-command skill engine. Four prompt files, one Space.",
+} as const;
+
+// Shown as a freshness signal on pages and used for sitemap lastModified.
+export const LAST_UPDATED = "2026-06-02";
+
 export const URLS = {
+  site: "https://gaiacode.pro",
   github: "https://github.com/alexey-max-fedorov/gaia-ai",
   perplexity: "https://www.perplexity.ai",
   space: "https://www.perplexity.ai/spaces/gaia-ai-public-NKPRvyjfRlGm3jHZcPc_Fg",
@@ -186,3 +199,268 @@ export const SETUP_STEPS: SetupStep[] = [
     fileId: null,
   },
 ];
+
+// ── SEO: per-page title/description/keywords ────────────────────────────────
+export interface PageSeo {
+  title: string;
+  description: string;
+  keywords: string[];
+}
+
+export const PAGE_SEO: Record<"architecture" | "connectors" | "getStarted", PageSeo> = {
+  architecture: {
+    title: "Architecture",
+    description:
+      "How GAIA Code fits together: one gate you paste into Perplexity Space Instructions and three engine files you upload — memory, plan, and turn engines — plus the slash-command skill engine.",
+    keywords: [
+      "GAIA Code architecture",
+      "Perplexity Spaces prompt system",
+      "Claude Code memory engine",
+      "plan engine",
+      "turn engine",
+      "MCP",
+    ],
+  },
+  connectors: {
+    description:
+      "Connect GitHub, n8n, and more to GAIA Code via Perplexity MCP connectors so it can act on your repos and automations — not just answer. Step-by-step setup for each connector.",
+    title: "Connectors",
+    keywords: [
+      "Perplexity connectors",
+      "GitHub MCP",
+      "n8n MCP server",
+      "GAIA Code integrations",
+      "Model Context Protocol",
+    ],
+  },
+  getStarted: {
+    title: "Get Started",
+    description:
+      "Deploy GAIA Code in your Perplexity Space in about two minutes: paste the gate, upload three engine files, pick a model, optionally connect GitHub. No install, fully open source.",
+    keywords: [
+      "GAIA Code setup",
+      "install GAIA Code",
+      "Perplexity Space setup",
+      "Claude Code in Perplexity",
+      "deploy prompt system",
+    ],
+  },
+};
+
+// ── Hero stat chips (one row per page) ──────────────────────────────────────
+export interface Stat {
+  value: string;
+  label: string;
+}
+
+export const ARCH_STATS: Stat[] = [
+  { value: "1", label: "Gate" },
+  { value: "3", label: "Engine files" },
+  { value: "4", label: "Engines" },
+  { value: "15", label: "Tool calls / msg" },
+];
+
+export const CONN_STATS: Stat[] = [
+  { value: "2", label: "Live connectors" },
+  { value: "MCP", label: "Protocol" },
+  { value: "R/W", label: "Repo access" },
+  { value: "∞", label: "n8n workflows" },
+];
+
+export const START_STATS: Stat[] = [
+  { value: "~2", label: "Minutes" },
+  { value: "4", label: "Files" },
+  { value: "0", label: "Installs" },
+  { value: "100%", label: "Open source" },
+];
+
+// ── Architecture: the runtime loop (explore → plan → approve → execute) ──────
+export interface TurnStep {
+  n: string;
+  title: string;
+  body: string;
+}
+
+export const TURN_FLOW: TurnStep[] = [
+  {
+    n: "01",
+    title: "Explore",
+    body: "GAIA reads MEMORY.md and the repo before touching anything, rebuilding context after every auto-compaction.",
+  },
+  {
+    n: "02",
+    title: "Plan",
+    body: "Non-trivial work becomes a written PLAN.md and TASKS.md you approve before a single line is generated.",
+  },
+  {
+    n: "03",
+    title: "Execute",
+    body: "It works task-by-task within a 15-call tool budget, flipping each TASKS.md checkbox the moment that task lands.",
+  },
+  {
+    n: "04",
+    title: "Commit",
+    body: "Changes are batched by file size and self-reviewed for the errors a build would catch before anything is pushed.",
+  },
+];
+
+// ── Connectors (moved here from the page; enriched). `icon` maps to a Lucide
+//    component in ConnectorsClient. ───────────────────────────────────────────
+export type ConnectorStatus = "live" | "soon";
+
+export interface ConnectorStep {
+  num: string;
+  title: string;
+  description: string;
+  action: { label: string; href: string } | null;
+}
+
+export interface Connector {
+  id: string;
+  name: string;
+  icon: "github" | "workflow" | "database";
+  status: ConnectorStatus;
+  category: string;
+  tagline: string;
+  steps: ConnectorStep[];
+}
+
+export const CONNECTORS: Connector[] = [
+  {
+    id: "github",
+    name: "GitHub",
+    icon: "github",
+    status: "live",
+    category: "Source control",
+    tagline:
+      "Give GAIA Code read/write access to your repositories — read code, create branches, push commits, open PRs, and manage issues.",
+    steps: [
+      {
+        num: "01",
+        title: "Open Perplexity Connectors",
+        description: "Go to `perplexity.ai/account/connectors`.",
+        action: { label: "Open Connectors", href: "https://www.perplexity.ai/account/connectors" },
+      },
+      {
+        num: "02",
+        title: "Find GitHub & Log In",
+        description:
+          "Locate the GitHub connector in the list. Click it, log in to your GitHub account, and follow the authorization prompts to complete the connection.",
+        action: null,
+      },
+    ],
+  },
+  {
+    id: "n8n",
+    name: "n8n",
+    icon: "workflow",
+    status: "live",
+    category: "Automation",
+    tagline: "Expose any n8n workflow as an MCP server so GAIA Code can trigger automations directly.",
+    steps: [
+      {
+        num: "01",
+        title: "Enable MCP in n8n",
+        description:
+          "Navigate to your n8n instance at `[yourproject].app.n8n.cloud/settings/mcp`. Enable the MCP server toggle and copy the MCP Server URL shown on that page.",
+        action: null,
+      },
+      {
+        num: "02",
+        title: "Add Custom Connector in Perplexity",
+        description:
+          'Go to `perplexity.ai/account/connectors` and click "+ Custom Connector". Paste the MCP Server URL you copied from n8n, then click Add.',
+        action: { label: "Open Connectors", href: "https://www.perplexity.ai/account/connectors" },
+      },
+    ],
+  },
+  {
+    id: "supabase",
+    name: "Supabase",
+    icon: "database",
+    status: "soon",
+    category: "Database",
+    tagline: "Query your Supabase database and run edge functions directly from GAIA Code.",
+    steps: [],
+  },
+];
+
+// ── Get Started: prerequisites ──────────────────────────────────────────────
+export interface Prereq {
+  title: string;
+  body: string;
+}
+
+export const PREREQS: Prereq[] = [
+  {
+    title: "A Perplexity account",
+    body: "Spaces are available on Perplexity. You'll create one new Space for GAIA Code.",
+  },
+  {
+    title: "A capable model",
+    body: "Claude Sonnet is recommended for the deepest reasoning. You'll select it in Space settings.",
+  },
+  {
+    title: "A GitHub account (optional)",
+    body: "Only needed if you want GAIA to read and write your repositories via the GitHub connector.",
+  },
+];
+
+// ── FAQs (rendered as accordions + emitted as FAQPage JSON-LD) ───────────────
+export interface Faq {
+  q: string;
+  a: string;
+}
+
+export const FAQS: Record<"architecture" | "connectors" | "getStarted", Faq[]> = {
+  architecture: [
+    {
+      q: "What is GAIA Code?",
+      a: "GAIA Code is a four-file prompt system that runs inside a Perplexity Space. It brings Claude Code's engineering workflow — persistent memory, a plan engine, context-budgeted turns, and a slash-command skill engine — into a Perplexity conversation.",
+    },
+    {
+      q: "Why is it split into four files instead of one prompt?",
+      a: "One gate file (SYSTEM_INSTRUCTIONS.md) is pasted into Space Instructions and routes to three uploaded engine files. Splitting behavior, memory, and turn management keeps each engine focused and lets GAIA re-read memory and rules after Perplexity auto-compacts the conversation.",
+    },
+    {
+      q: "What does each engine do?",
+      a: "The behavior file defines identity, tool philosophy, and version rules. The memory engine maintains MEMORY.md, PLAN.md, and TASKS.md across compaction. The turn engine estimates token cost per turn, enforces a 15-call tool budget, and batches commits by file size.",
+    },
+    {
+      q: "Do I need all four files?",
+      a: "Yes. The gate is pasted into Space Instructions and the three engine files are uploaded as Space Files. GAIA reads all three on startup — skipping any one disables that engine.",
+    },
+  ],
+  connectors: [
+    {
+      q: "What are GAIA Code connectors?",
+      a: "Connectors are Perplexity MCP (Model Context Protocol) integrations that let GAIA Code act on external systems — like reading and writing GitHub repositories or triggering n8n workflows — instead of only answering questions.",
+    },
+    {
+      q: "Which connectors are available?",
+      a: "GitHub and n8n are live today. GitHub gives GAIA read/write repo access (branches, commits, PRs, issues). n8n exposes any workflow as an MCP server. A Supabase connector is coming soon.",
+    },
+    {
+      q: "Is the GitHub connector safe?",
+      a: "You authorize the connection through Perplexity's standard OAuth flow and control which scopes GitHub grants. You can revoke access at any time from your Perplexity connectors settings or your GitHub account.",
+    },
+  ],
+  getStarted: [
+    {
+      q: "How long does it take to set up GAIA Code?",
+      a: "About two minutes. You paste one gate file into your Space Instructions, upload three engine files, pick a model, and optionally connect GitHub. There is nothing to install.",
+    },
+    {
+      q: "Do I need to install anything?",
+      a: "No. GAIA Code runs entirely inside a Perplexity Space from four Markdown prompt files. There is no CLI, package, or local environment to set up.",
+    },
+    {
+      q: "Which model should I use?",
+      a: "Claude Sonnet is recommended for the deepest reasoning. You select the model in your Space settings after uploading the files.",
+    },
+    {
+      q: "Is GAIA Code free and open source?",
+      a: "Yes. The full prompt system and this website are open source on GitHub. You can fork it, modify it, or use it as-is.",
+    },
+  ],
+};
