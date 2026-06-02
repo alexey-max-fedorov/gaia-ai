@@ -140,9 +140,9 @@ export default function ArchitectureClient() {
               <p className="font-[var(--font-ibm-mono)] text-[8px] tracking-[0.45em] text-[#1DD3B0]/40 uppercase mb-3">
                 // Deploy it
               </p>
-              <h3 className="font-[var(--font-rajdhani)] text-2xl md:text-3xl font-bold tracking-[0.12em] text-[#E8EAF6] mb-3">
+              <h2 className="font-[var(--font-rajdhani)] text-2xl md:text-3xl font-bold tracking-[0.12em] text-[#E8EAF6] mb-3">
                 READY TO DEPLOY?
-              </h3>
+              </h2>
               <p className="font-[var(--font-inter)] text-[#9AA7BE] text-sm leading-relaxed mb-7 max-w-sm mx-auto">
                 One gate, three engines. Have GAIA Code running in your Perplexity Space in minutes.
               </p>
