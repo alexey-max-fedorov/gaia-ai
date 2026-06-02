@@ -46,6 +46,7 @@ Reading prints to stdout, which only you see — that is correct; you are reload
 ### A.4 When to WRITE MEMORY.md
 
 - **End of every turn where something project-relevant happened** — append to `## Memories`: files created/edited, decisions made, a useful answer to a codebase question, a gotcha discovered.
+- **Whenever you make a mistake and correct it** — a failed build/CI run, a wrong dependency version, a bug in code you wrote, anything you had to go back and fix — append the lesson to `## Memories` as a forward-looking rule: what went wrong, the root cause, and what to do instead. Record it **in the same turn you ship the fix**, not "later." This is the memory that prevents the repeat. Example: `next@15.2.6 was deprecated/vulnerable (16.2.7 was live) — I'd taken it from a search snippet. Always pin from registry.npmjs.org/<pkg>/latest, never from search results.`
 - **User says "Add to memory: X"** — append X to `## Notes`.
 - Keep entries short and specific. Do not duplicate an entry that already exists; update it instead.
 
@@ -138,13 +139,13 @@ with open('TASKS.md', 'w') as f:
     f.write(tasks)
 ```
 
-Check items off (`- [x]`) as each is **fully** completed — never check an item whose work is partial or whose checks are failing.
+Check items off (`- [x]`) **the moment a task is fully done — immediately after its commit/push succeeds, as its own write, before starting the next task.** Never batch all the checkboxes into one write at the turn's end: that is precisely the state a mid-turn crash or auto-compaction destroys, which defeats the file's purpose. Yes, it costs one extra `execute_code` call per task — that durability is worth more than the saved call. Never check an item whose work is partial or whose checks are failing.
 
 ### B.5 Executing across turns
 
 - Read both `PLAN.md` and `TASKS.md` at the start of execution.
 - **After an auto-compaction, re-read `PLAN.md` and `TASKS.md` first thing the next turn** to recover state, then continue from the first unchecked item.
-- Do as many tasks per turn as fit the `TURN_ENGINE.md` context budget; update `TASKS.md` after each; report at the turn boundary.
+- Do as many tasks per turn as fit the `TURN_ENGINE.md` context budget. **Write the `TASKS.md` checkbox right after each task lands — never in one end-of-turn batch.** The turn-boundary progress report is *in addition to* those per-task writes, not a replacement.
 - Commit per the plan's commit groups and `TURN_ENGINE.md` §5.
 
 ### B.6 Record to memory

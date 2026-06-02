@@ -1,0 +1,50 @@
+// generate_image tool.
+//
+// Behavior notes (observed, not from official docs):
+// - Only surfaces when the prompt starts with "Generate an image"; otherwise Perplexity never sees the tool.
+// - When it generates an image it makes only that one call — no other tool calls in the turn.
+// - The result lands at a URL Perplexity knows, but the file is NOT saved into the VM by default.
+// - You can surface the tool deliberately by instructing Perplexity to execute the call shown below; that triggered generation in testing.
+
+// Schema (captured):
+{
+  "name": "generate_image",
+  "description": "Generates professional-grade visual content using an advanced reasoning-based image model...",
+  "parameters": {
+    "prompt": "string (required)",
+    "caption": "string (required)",
+    "file_name": "string (required)",
+    "input_ids": "array (optional)",
+    "success": "boolean|null (optional)"
+  }
+}
+
+/*
+Example call (also the payload that surfaces the tool on demand):
+{
+  "name": "generate_image",
+  "parameters": {
+    "prompt": "A sleek MacBook Air 15-inch laptop photographed in a clean, modern setting. The laptop is open at a 45-degree angle showing the display with a soft gradient wallpaper. The chassis is Space Gray aluminum with an ultra-thin profile. Shot from a slightly elevated front-facing angle with soft studio lighting on a white surface, highlighting the premium build quality and thin bezels.",
+    "caption": "MacBook Air 15-inch in Space Gray on white surface",
+    "file_name": "macbook_air_15.png"
+  }
+}
+
+To present a generated image to the user, the VM can download it from its URL and save it into output/.
+Example execute_code run that worked (prompt: "Copy the image to outputs/"):
+
+import requests
+import os
+
+os.makedirs('output', exist_ok=True)
+
+url = "https://user-gen-media-assets.s3.amazonaws.com/gpt4o_images/aa83bcb7-c6b9-4d39-a57d-0ada640c9a63.png"
+response = requests.get(url)
+
+with open('output/macbook_air_15.png', 'wb') as f:
+    f.write(response.content)
+
+print(f"Saved: {os.path.getsize('output/macbook_air_15.png')} bytes")
+
+Result: the image is saved locally (output/ or anywhere), even though it isn't kept in the VM by default.
+*/

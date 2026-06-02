@@ -1,0 +1,842 @@
+// GitHub MCP tools available in Perplexity (running Claude Sonnet 4.6).
+// The ones most central to GAIA Code — and worth documenting most thoroughly — are
+// get_file_contents, push_files, and create_or_update_file.
+
+[
+  { // GITHUB ADD REVIEW COMMENT TOOL
+    "description": "Add review comment to the requester's latest pending pull request review. A pending review needs to already exist to call this (check with the user if not sure).",
+    "name": "mcp_tool_github_mcp_direct_add_comment_to_pending_review",
+    "parameters": {
+      "additionalProperties": false,
+      "properties": {
+        "_requires_user_approval": {
+          "description": "Set to true if this tool performs any action that creates, modifies, deletes, or affects external systems or data...",
+          "type": "boolean"
+        },
+        "_tool_input_summary": {
+          "description": "A summary of all other tool inputs in Markdown format.",
+          "type": "string"
+        },
+        "body": { "description": "The text of the review comment", "type": "string" },
+        "line": { "description": "The line of the blob in the pull request diff that the comment applies to.", "type": "number" },
+        "owner": { "description": "Repository owner", "type": "string" },
+        "path": { "description": "The relative path to the file that necessitates a comment", "type": "string" },
+        "pullNumber": { "description": "Pull request number", "type": "number" },
+        "repo": { "description": "Repository name", "type": "string" },
+        "side": { "enum": ["LEFT", "RIGHT"], "type": "string" },
+        "startLine": { "type": "number" },
+        "startSide": { "enum": ["LEFT", "RIGHT"], "type": "string" },
+        "subjectType": { "enum": ["FILE", "LINE"], "type": "string" }
+      },
+      "required": ["owner", "repo", "pullNumber", "path", "body", "subjectType", "_tool_input_summary", "_requires_user_approval"],
+      "type": "object"
+    }
+  },
+  { // GITHUB ADD ISSUE COMMENT TOOL
+    "description": "Add a comment to a specific issue in a GitHub repository. Use this tool to add comments to pull requests as well (in this case pass pull request number as issue_number), but only if user is not asking specifically to add review comments.",
+    "name": "mcp_tool_github_mcp_direct_add_issue_comment",
+    "parameters": {
+      "additionalProperties": false,
+      "properties": {
+        "_requires_user_approval": { "type": "boolean" },
+        "_tool_input_summary": { "type": "string" },
+        "body": { "description": "Comment content", "type": "string" },
+        "issue_number": { "description": "Issue number to comment on", "type": "number" },
+        "owner": { "type": "string" },
+        "repo": { "type": "string" }
+      },
+      "required": ["owner", "repo", "issue_number", "body", "_tool_input_summary", "_requires_user_approval"],
+      "type": "object"
+    }
+  },
+  { // GITHUB ADD REPLY TO PULL REQUEST COMMENT TOOL
+    "description": "Add a reply to an existing pull request comment.",
+    "name": "mcp_tool_github_mcp_direct_add_reply_to_pull_request_comment",
+    "parameters": {
+      "additionalProperties": false,
+      "properties": {
+        "_requires_user_approval": { "type": "boolean" },
+        "_tool_input_summary": { "type": "string" },
+        "body": { "description": "The text of the reply", "type": "string" },
+        "commentId": { "description": "The ID of the comment to reply to", "type": "number" },
+        "owner": { "type": "string" },
+        "pullNumber": { "type": "number" },
+        "repo": { "type": "string" }
+      },
+      "required": ["owner", "repo", "pullNumber", "commentId", "body", "_tool_input_summary", "_requires_user_approval"],
+      "type": "object"
+    }
+  },
+  { // GITHUB CREATE BRANCH TOOL
+    "description": "Create a new branch in a GitHub repository",
+    "name": "mcp_tool_github_mcp_direct_create_branch",
+    "parameters": {
+      "additionalProperties": false,
+      "properties": {
+        "_requires_user_approval": { "type": "boolean" },
+        "_tool_input_summary": { "type": "string" },
+        "branch": { "description": "Name for new branch", "type": "string" },
+        "from_branch": { "description": "Source branch (defaults to repo default)", "type": "string" },
+        "owner": { "type": "string" },
+        "repo": { "type": "string" }
+      },
+      "required": ["owner", "repo", "branch", "_tool_input_summary", "_requires_user_approval"],
+      "type": "object"
+    }
+  },
+  { // create_or_update_file — single-file push. Prefer push_files (below) when committing more than one file.
+    "description": "Create or update a single file in a GitHub repository. SHA MUST be provided for existing file updates.",
+    "name": "mcp_tool_github_mcp_direct_create_or_update_file",
+    "parameters": {
+      "additionalProperties": false,
+      "properties": {
+        "_requires_user_approval": { "type": "boolean" },
+        "_tool_input_summary": { "type": "string" },
+        "branch": { "type": "string" },
+        "content": { "type": "string" },
+        "message": { "description": "Commit message", "type": "string" },
+        "owner": { "type": "string" },
+        "path": { "type": "string" },
+        "repo": { "type": "string" },
+        "sha": { "description": "The blob SHA of the file being replaced. Required if the file already exists.", "type": "string" }
+      },
+      "required": ["owner", "repo", "path", "content", "message", "branch", "_tool_input_summary", "_requires_user_approval"],
+      "type": "object"
+    }
+  },
+  { // GITHUB CREATE PULL REQUEST TOOL
+    "description": "Create a new pull request in a GitHub repository.",
+    "name": "mcp_tool_github_mcp_direct_create_pull_request",
+    "parameters": {
+      "additionalProperties": false,
+      "properties": {
+        "_requires_user_approval": { "type": "boolean" },
+        "_tool_input_summary": { "type": "string" },
+        "base": { "description": "Branch to merge into", "type": "string" },
+        "body": { "description": "PR description", "type": "string" },
+        "draft": { "type": "boolean" },
+        "head": { "description": "Branch containing changes", "type": "string" },
+        "maintainer_can_modify": { "type": "boolean" },
+        "owner": { "type": "string" },
+        "repo": { "type": "string" },
+        "title": { "type": "string" }
+      },
+      "required": ["owner", "repo", "title", "head", "base", "_tool_input_summary", "_requires_user_approval"],
+      "type": "object"
+    }
+  },
+  { // GITHUB CREATE REPOSITORY TOOL
+    "description": "Create a new GitHub repository in your account or specified organization",
+    "name": "mcp_tool_github_mcp_direct_create_repository",
+    "parameters": {
+      "additionalProperties": false,
+      "properties": {
+        "_requires_user_approval": { "type": "boolean" },
+        "_tool_input_summary": { "type": "string" },
+        "autoInit": { "type": "boolean" },
+        "description": { "type": "string" },
+        "name": { "type": "string" },
+        "organization": { "type": "string" },
+        "private": { "type": "boolean" }
+      },
+      "required": ["name", "_tool_input_summary", "_requires_user_approval"],
+      "type": "object"
+    }
+  },
+  { // GITHUB DELETE FILE TOOL
+    "description": "Delete a file from a GitHub repository",
+    "name": "mcp_tool_github_mcp_direct_delete_file",
+    "parameters": {
+      "additionalProperties": false,
+      "properties": {
+        "_requires_user_approval": { "type": "boolean" },
+        "_tool_input_summary": { "type": "string" },
+        "branch": { "type": "string" },
+        "message": { "type": "string" },
+        "owner": { "type": "string" },
+        "path": { "type": "string" },
+        "repo": { "type": "string" }
+      },
+      "required": ["owner", "repo", "path", "message", "branch", "_tool_input_summary", "_requires_user_approval"],
+      "type": "object"
+    }
+  },
+  { // GITHUB FORK REPOSITORY TOOL
+    "description": "Fork a GitHub repository to your account or specified organization",
+    "name": "mcp_tool_github_mcp_direct_fork_repository",
+    "parameters": {
+      "additionalProperties": false,
+      "properties": {
+        "_requires_user_approval": { "type": "boolean" },
+        "_tool_input_summary": { "type": "string" },
+        "organization": { "type": "string" },
+        "owner": { "type": "string" },
+        "repo": { "type": "string" }
+      },
+      "required": ["owner", "repo", "_tool_input_summary", "_requires_user_approval"],
+      "type": "object"
+    }
+  },
+  { // GITHUB GET FILE CONTENTS TOOL
+    "description": "Get details for a commit from a GitHub repository",
+    "name": "mcp_tool_github_mcp_direct_get_commit",
+    "parameters": {
+      "additionalProperties": false,
+      "properties": {
+        "_requires_user_approval": { "type": "boolean" },
+        "_tool_input_summary": { "type": "string" },
+        "include_diff": { "default": true, "type": "boolean" },
+        "owner": { "type": "string" },
+        "page": { "minimum": 1, "type": "number" },
+        "perPage": { "maximum": 100, "minimum": 1, "type": "number" },
+        "repo": { "type": "string" },
+        "sha": { "description": "Commit SHA, branch name, or tag name", "type": "string" }
+      },
+      "required": ["owner", "repo", "sha", "_tool_input_summary", "_requires_user_approval"],
+      "type": "object"
+    }
+  },
+  { // GITHUB GET FILE CONTENTS TOOL
+    "description": "Get the contents of a file or directory from a GitHub repository",
+    "name": "mcp_tool_github_mcp_direct_get_file_contents",
+    "parameters": {
+      "additionalProperties": false,
+      "properties": {
+        "_requires_user_approval": { "type": "boolean" },
+        "_tool_input_summary": { "type": "string" },
+        "owner": { "type": "string" },
+        "path": { "default": "/", "type": "string" },
+        "ref": { "type": "string" },
+        "repo": { "type": "string" },
+        "sha": { "type": "string" }
+      },
+      "required": ["owner", "repo", "_tool_input_summary", "_requires_user_approval"],
+      "type": "object"
+    }
+  },
+  { // GITHUB GET LABEL TOOL
+    "description": "Get a specific label from a repository.",
+    "name": "mcp_tool_github_mcp_direct_get_label",
+    "parameters": {
+      "additionalProperties": false,
+      "properties": {
+        "_requires_user_approval": { "type": "boolean" },
+        "_tool_input_summary": { "type": "string" },
+        "name": { "type": "string" },
+        "owner": { "type": "string" },
+        "repo": { "type": "string" }
+      },
+      "required": ["owner", "repo", "name", "_tool_input_summary", "_requires_user_approval"],
+      "type": "object"
+    }
+  },
+  { // GITHUB GET LATEST RELEASE TOOL
+    "description": "Get the latest release in a GitHub repository",
+    "name": "mcp_tool_github_mcp_direct_get_latest_release",
+    "parameters": {
+      "additionalProperties": false,
+      "properties": {
+        "_requires_user_approval": { "type": "boolean" },
+        "_tool_input_summary": { "type": "string" },
+        "owner": { "type": "string" },
+        "repo": { "type": "string" }
+      },
+      "required": ["owner", "repo", "_tool_input_summary", "_requires_user_approval"],
+      "type": "object"
+    }
+  },
+  { // GITHUB WHOAMI TOOL
+    "description": "Get details of the authenticated GitHub user.",
+    "name": "mcp_tool_github_mcp_direct_get_me",
+    "parameters": {
+      "additionalProperties": false,
+      "properties": {
+        "_requires_user_approval": { "type": "boolean" },
+        "_tool_input_summary": { "type": "string" }
+      },
+      "required": ["_tool_input_summary", "_requires_user_approval"],
+      "type": "object"
+    }
+  },
+  { // GITHUB GET RELEASE BY TAG TOOL
+    "description": "Get a specific release by its tag name in a GitHub repository",
+    "name": "mcp_tool_github_mcp_direct_get_release_by_tag",
+    "parameters": {
+      "additionalProperties": false,
+      "properties": {
+        "_requires_user_approval": { "type": "boolean" },
+        "_tool_input_summary": { "type": "string" },
+        "owner": { "type": "string" },
+        "repo": { "type": "string" },
+        "tag": { "type": "string" }
+      },
+      "required": ["owner", "repo", "tag", "_tool_input_summary", "_requires_user_approval"],
+      "type": "object"
+    }
+  },
+  { // GITHUB GET TAG TOOL
+    "description": "Get details about a specific git tag in a GitHub repository",
+    "name": "mcp_tool_github_mcp_direct_get_tag",
+    "parameters": {
+      "additionalProperties": false,
+      "properties": {
+        "_requires_user_approval": { "type": "boolean" },
+        "_tool_input_summary": { "type": "string" },
+        "owner": { "type": "string" },
+        "repo": { "type": "string" },
+        "tag": { "type": "string" }
+      },
+      "required": ["owner", "repo", "tag", "_tool_input_summary", "_requires_user_approval"],
+      "type": "object"
+    }
+  },
+  { // GITHUB GET TEAM MEMBERS TOOL
+    "description": "Get member usernames of a specific team in an organization.",
+    "name": "mcp_tool_github_mcp_direct_get_team_members",
+    "parameters": {
+      "additionalProperties": false,
+      "properties": {
+        "_requires_user_approval": { "type": "boolean" },
+        "_tool_input_summary": { "type": "string" },
+        "org": { "type": "string" },
+        "team_slug": { "type": "string" }
+      },
+      "required": ["org", "team_slug", "_tool_input_summary", "_requires_user_approval"],
+      "type": "object"
+    }
+  },
+  { // GITHUB LIST TEAMS TOOL
+    "description": "Get details of the teams the user is a member of.",
+    "name": "mcp_tool_github_mcp_direct_get_teams",
+    "parameters": {
+      "additionalProperties": false,
+      "properties": {
+        "_requires_user_approval": { "type": "boolean" },
+        "_tool_input_summary": { "type": "string" },
+        "user": { "type": "string" }
+      },
+      "required": ["user", "_tool_input_summary", "_requires_user_approval"],
+      "type": "object"
+    }
+  },
+  { // GITHUB ISSUE READ TOOL
+    "description": "Get information about a specific issue in a GitHub repository.",
+    "name": "mcp_tool_github_mcp_direct_issue_read",
+    "parameters": {
+      "additionalProperties": false,
+      "properties": {
+        "_requires_user_approval": { "type": "boolean" },
+        "_tool_input_summary": { "type": "string" },
+        "issue_number": { "type": "number" },
+        "method": { "enum": ["get", "get_comments", "get_sub_issues", "get_labels"], "type": "string" },
+        "owner": { "type": "string" },
+        "page": { "minimum": 1, "type": "number" },
+        "perPage": { "maximum": 100, "minimum": 1, "type": "number" },
+        "repo": { "type": "string" }
+      },
+      "required": ["method", "owner", "repo", "issue_number", "_tool_input_summary", "_requires_user_approval"],
+      "type": "object"
+    }
+  },
+  { // GITHUB CREATE/UPDATE ISSUE TOOL
+    "description": "Create a new or update an existing issue in a GitHub repository.",
+    "name": "mcp_tool_github_mcp_direct_issue_write",
+    "parameters": {
+      "additionalProperties": false,
+      "properties": {
+        "_requires_user_approval": { "type": "boolean" },
+        "_tool_input_summary": { "type": "string" },
+        "assignees": { "items": { "type": "string" }, "type": "array" },
+        "body": { "type": "string" },
+        "duplicate_of": { "type": "number" },
+        "issue_number": { "type": "number" },
+        "labels": { "items": { "type": "string" }, "type": "array" },
+        "method": { "enum": ["create", "update"], "type": "string" },
+        "milestone": { "type": "number" },
+        "owner": { "type": "string" },
+        "repo": { "type": "string" },
+        "state": { "enum": ["open", "closed"], "type": "string" },
+        "state_reason": { "enum": ["completed", "not_planned", "duplicate"], "type": "string" },
+        "title": { "type": "string" },
+        "type": { "type": "string" }
+      },
+      "required": ["method", "owner", "repo", "_tool_input_summary", "_requires_user_approval"],
+      "type": "object"
+    }
+  },
+  { // GITHUB LIST BRANCHES TOOL
+    "description": "List branches in a GitHub repository",
+    "name": "mcp_tool_github_mcp_direct_list_branches",
+    "parameters": {
+      "additionalProperties": false,
+      "properties": {
+        "_requires_user_approval": { "type": "boolean" },
+        "_tool_input_summary": { "type": "string" },
+        "owner": { "type": "string" },
+        "page": { "minimum": 1, "type": "number" },
+        "perPage": { "maximum": 100, "minimum": 1, "type": "number" },
+        "repo": { "type": "string" }
+      },
+      "required": ["owner", "repo", "_tool_input_summary", "_requires_user_approval"],
+      "type": "object"
+    }
+  },
+  { // GITHUB LIST COMMITS TOOL
+    "description": "Get list of commits of a branch in a GitHub repository.",
+    "name": "mcp_tool_github_mcp_direct_list_commits",
+    "parameters": {
+      "additionalProperties": false,
+      "properties": {
+        "_requires_user_approval": { "type": "boolean" },
+        "_tool_input_summary": { "type": "string" },
+        "author": { "type": "string" },
+        "owner": { "type": "string" },
+        "page": { "minimum": 1, "type": "number" },
+        "path": { "type": "string" },
+        "perPage": { "maximum": 100, "minimum": 1, "type": "number" },
+        "repo": { "type": "string" },
+        "sha": { "type": "string" },
+        "since": { "type": "string" },
+        "until": { "type": "string" }
+      },
+      "required": ["owner", "repo", "_tool_input_summary", "_requires_user_approval"],
+      "type": "object"
+    }
+  },
+
+  { // GITHUB LIST ISSUE TYPES TOOL
+    "description": "List supported issue types for repository owner (organization).",
+    "name": "mcp_tool_github_mcp_direct_list_issue_types",
+    "parameters": {
+      "additionalProperties": false,
+      "properties": {
+        "_requires_user_approval": { "type": "boolean" },
+        "_tool_input_summary": { "type": "string" },
+        "owner": { "type": "string" }
+      },
+      "required": ["owner", "_tool_input_summary", "_requires_user_approval"],
+      "type": "object"
+    }
+  },
+
+  { // GITHUB LIST ISSUES TOOL
+    "description": "List issues in a GitHub repository.",
+    "name": "mcp_tool_github_mcp_direct_list_issues",
+    "parameters": {
+      "additionalProperties": false,
+      "properties": {
+        "_requires_user_approval": { "type": "boolean" },
+        "_tool_input_summary": { "type": "string" },
+        "after": { "type": "string" },
+        "direction": { "enum": ["ASC", "DESC"], "type": "string" },
+        "labels": { "items": { "type": "string" }, "type": "array" },
+        "orderBy": { "enum": ["CREATED_AT", "UPDATED_AT", "COMMENTS"], "type": "string" },
+        "owner": { "type": "string" },
+        "perPage": { "maximum": 100, "minimum": 1, "type": "number" },
+        "repo": { "type": "string" },
+        "since": { "type": "string" },
+        "state": { "enum": ["OPEN", "CLOSED"], "type": "string" }
+      },
+      "required": ["owner", "repo", "_tool_input_summary", "_requires_user_approval"],
+      "type": "object"
+    }
+  },
+
+  { // GITHUB LIST PULL REQUESTS TOOL
+    "description": "List pull requests in a GitHub repository.",
+    "name": "mcp_tool_github_mcp_direct_list_pull_requests",
+    "parameters": {
+      "additionalProperties": false,
+      "properties": {
+        "_requires_user_approval": { "type": "boolean" },
+        "_tool_input_summary": { "type": "string" },
+        "base": { "type": "string" },
+        "direction": { "enum": ["asc", "desc"], "type": "string" },
+        "head": { "type": "string" },
+        "owner": { "type": "string" },
+        "page": { "minimum": 1, "type": "number" },
+        "perPage": { "maximum": 100, "minimum": 1, "type": "number" },
+        "repo": { "type": "string" },
+        "sort": { "enum": ["created", "updated", "popularity", "long-running"], "type": "string" },
+        "state": { "enum": ["open", "closed", "all"], "type": "string" }
+      },
+      "required": ["owner", "repo", "_tool_input_summary", "_requires_user_approval"],
+      "type": "object"
+    }
+  },
+
+  { // GITHUB LIST RELEASES TOOL
+    "description": "List releases in a GitHub repository",
+    "name": "mcp_tool_github_mcp_direct_list_releases",
+    "parameters": {
+      "additionalProperties": false,
+      "properties": {
+        "_requires_user_approval": { "type": "boolean" },
+        "_tool_input_summary": { "type": "string" },
+        "owner": { "type": "string" },
+        "page": { "minimum": 1, "type": "number" },
+        "perPage": { "maximum": 100, "minimum": 1, "type": "number" },
+        "repo": { "type": "string" }
+      },
+      "required": ["owner", "repo", "_tool_input_summary", "_requires_user_approval"],
+      "type": "object"
+    }
+  },
+
+  { // GITHUB LIST REPOSITORY COLLABORATORS TOOL
+    "description": "List collaborators of a GitHub repository.",
+    "name": "mcp_tool_github_mcp_direct_list_repository_collaborators",
+    "parameters": {
+      "additionalProperties": false,
+      "properties": {
+        "_requires_user_approval": { "type": "boolean" },
+        "_tool_input_summary": { "type": "string" },
+        "affiliation": { "enum": ["outside", "direct", "all"], "type": "string" },
+        "owner": { "type": "string" },
+        "page": { "minimum": 1, "type": "number" },
+        "perPage": { "maximum": 100, "minimum": 1, "type": "number" },
+        "repo": { "type": "string" }
+      },
+      "required": ["owner", "repo", "_tool_input_summary", "_requires_user_approval"],
+      "type": "object"
+    }
+  },
+
+  { // GITHUB LIST TAGS TOOL
+    "description": "List git tags in a GitHub repository",
+    "name": "mcp_tool_github_mcp_direct_list_tags",
+    "parameters": {
+      "additionalProperties": false,
+      "properties": {
+        "_requires_user_approval": { "type": "boolean" },
+        "_tool_input_summary": { "type": "string" },
+        "owner": { "type": "string" },
+        "page": { "minimum": 1, "type": "number" },
+        "perPage": { "maximum": 100, "minimum": 1, "type": "number" },
+        "repo": { "type": "string" }
+      },
+      "required": ["owner", "repo", "_tool_input_summary", "_requires_user_approval"],
+      "type": "object"
+    }
+  },
+
+  { // GITHUB MERGE PULL REQUEST TOOL
+    "description": "Merge a pull request in a GitHub repository.",
+    "name": "mcp_tool_github_mcp_direct_merge_pull_request",
+    "parameters": {
+      "additionalProperties": false,
+      "properties": {
+        "_requires_user_approval": { "type": "boolean" },
+        "_tool_input_summary": { "type": "string" },
+        "commit_message": { "type": "string" },
+        "commit_title": { "type": "string" },
+        "merge_method": { "enum": ["merge", "squash", "rebase"], "type": "string" },
+        "owner": { "type": "string" },
+        "pullNumber": { "type": "number" },
+        "repo": { "type": "string" }
+      },
+      "required": ["owner", "repo", "pullNumber", "_tool_input_summary", "_requires_user_approval"],
+      "type": "object"
+    }
+  },
+
+  { // GITHUB READ PULL REQUEST TOOL
+    "description": "Get information on a specific pull request in GitHub repository.",
+    "name": "mcp_tool_github_mcp_direct_pull_request_read",
+    "parameters": {
+      "additionalProperties": false,
+      "properties": {
+        "_requires_user_approval": { "type": "boolean" },
+        "_tool_input_summary": { "type": "string" },
+        "after": { "type": "string" },
+        "method": {
+          "enum": ["get", "get_diff", "get_status", "get_files", "get_review_comments", "get_reviews", "get_comments", "get_check_runs"],
+          "type": "string"
+        },
+        "owner": { "type": "string" },
+        "page": { "minimum": 1, "type": "number" },
+        "perPage": { "maximum": 100, "minimum": 1, "type": "number" },
+        "pullNumber": { "type": "number" },
+        "repo": { "type": "string" }
+      },
+      "required": ["method", "owner", "repo", "pullNumber", "_tool_input_summary", "_requires_user_approval"],
+      "type": "object"
+    }
+  },
+
+  { // GITHUB PULL REQUEST REVIEW TOOL
+    "description": "Create and/or submit, delete review of a pull request.",
+    "name": "mcp_tool_github_mcp_direct_pull_request_review_write",
+    "parameters": {
+      "additionalProperties": false,
+      "properties": {
+        "_requires_user_approval": { "type": "boolean" },
+        "_tool_input_summary": { "type": "string" },
+        "body": { "type": "string" },
+        "commitID": { "type": "string" },
+        "event": { "enum": ["APPROVE", "REQUEST_CHANGES", "COMMENT"], "type": "string" },
+        "method": { "enum": ["create", "submit_pending", "delete_pending", "resolve_thread", "unresolve_thread"], "type": "string" },
+        "owner": { "type": "string" },
+        "pullNumber": { "type": "number" },
+        "repo": { "type": "string" },
+        "threadId": { "type": "string" }
+      },
+      "required": ["method", "owner", "repo", "pullNumber", "_tool_input_summary", "_requires_user_approval"],
+      "type": "object"
+    }
+  },
+
+  { // push_files — multi-file commit. One file per commit is inefficient, but the tool has size limits, so batch by file size (see TURN_ENGINE.md §5). Perplexity may not auto-compact mid-turn and can crash on context overflow, so GAIA Code estimates per-turn token cost to pack work in without overflowing (TURN_ENGINE.md §2).
+    "description": "Push multiple files to a GitHub repository in a single commit",
+    "name": "mcp_tool_github_mcp_direct_push_files",
+    "parameters": {
+      "additionalProperties": false,
+      "properties": {
+        "_requires_user_approval": { "type": "boolean" },
+        "_tool_input_summary": { "type": "string" },
+        "branch": { "type": "string" },
+        "files": {
+          "items": {
+            "additionalProperties": false,
+            "properties": {
+              "content": { "type": "string" },
+              "path": { "type": "string" }
+            },
+            "required": ["path", "content"],
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "message": { "type": "string" },
+        "owner": { "type": "string" },
+        "repo": { "type": "string" }
+      },
+      "required": ["owner", "repo", "branch", "files", "message", "_tool_input_summary", "_requires_user_approval"],
+      "type": "object"
+    }
+  },
+
+  { // GITHUB COPILLOT CODE REVIEW TOOL
+    "description": "Request a GitHub Copilot code review for a pull request.",
+    "name": "mcp_tool_github_mcp_direct_request_copilot_review",
+    "parameters": {
+      "additionalProperties": false,
+      "properties": {
+        "_requires_user_approval": { "type": "boolean" },
+        "_tool_input_summary": { "type": "string" },
+        "owner": { "type": "string" },
+        "pullNumber": { "type": "number" },
+        "repo": { "type": "string" }
+      },
+      "required": ["owner", "repo", "pullNumber", "_tool_input_summary", "_requires_user_approval"],
+      "type": "object"
+    }
+  },
+
+  { // GITHUB SECRET SCANNING TOOL
+    "description": "Scan files, content, or recent changes for secrets such as API keys, passwords, tokens, and credentials.",
+    "name": "mcp_tool_github_mcp_direct_run_secret_scanning",
+    "parameters": {
+      "additionalProperties": false,
+      "properties": {
+        "_requires_user_approval": { "type": "boolean" },
+        "_tool_input_summary": { "type": "string" },
+        "files": {
+          "anyOf": [
+            { "minLength": 1, "type": "string" },
+            { "items": { "type": "string" }, "maxItems": 100, "minItems": 1, "type": "array" }
+          ]
+        },
+        "owner": { "type": "string" },
+        "repo": { "type": "string" }
+      },
+      "required": ["files", "owner", "repo", "_tool_input_summary", "_requires_user_approval"],
+      "type": "object"
+    }
+  },
+
+  { // GITHUB CODE SEARCH TOOL
+    "description": "Fast and precise code search across ALL GitHub repositories using GitHub's native search engine.",
+    "name": "mcp_tool_github_mcp_direct_search_code",
+    "parameters": {
+      "additionalProperties": false,
+      "properties": {
+        "_requires_user_approval": { "type": "boolean" },
+        "_tool_input_summary": { "type": "string" },
+        "order": { "enum": ["asc", "desc"], "type": "string" },
+        "page": { "minimum": 1, "type": "number" },
+        "perPage": { "maximum": 100, "minimum": 1, "type": "number" },
+        "query": { "type": "string" },
+        "sort": { "type": "string" }
+      },
+      "required": ["query", "_tool_input_summary", "_requires_user_approval"],
+      "type": "object"
+    }
+  },
+
+
+  { // GITHUB COMMIT SEARCH TOOL
+    "description": "Search for commits across GitHub repositories using GitHub's commit search syntax.",
+    "name": "mcp_tool_github_mcp_direct_search_commits",
+    "parameters": {
+      "additionalProperties": false,
+      "properties": {
+        "_requires_user_approval": { "type": "boolean" },
+        "_tool_input_summary": { "type": "string" },
+        "order": { "enum": ["asc", "desc"], "type": "string" },
+        "page": { "minimum": 1, "type": "number" },
+        "perPage": { "maximum": 100, "minimum": 1, "type": "number" },
+        "query": { "type": "string" },
+        "sort": { "enum": ["author-date", "committer-date"], "type": "string" }
+      },
+      "required": ["query", "_tool_input_summary", "_requires_user_approval"],
+      "type": "object"
+    }
+  },
+
+  { // GITHUB ISSUE SEARCH TOOL
+    "description": "Search for issues in GitHub repositories using issues search syntax already scoped to is:issue",
+    "name": "mcp_tool_github_mcp_direct_search_issues",
+    "parameters": {
+      "additionalProperties": false,
+      "properties": {
+        "_requires_user_approval": { "type": "boolean" },
+        "_tool_input_summary": { "type": "string" },
+        "order": { "enum": ["asc", "desc"], "type": "string" },
+        "owner": { "type": "string" },
+        "page": { "minimum": 1, "type": "number" },
+        "perPage": { "maximum": 100, "minimum": 1, "type": "number" },
+        "query": { "type": "string" },
+        "repo": { "type": "string" },
+        "sort": { "type": "string" }
+      },
+      "required": ["query", "_tool_input_summary", "_requires_user_approval"],
+      "type": "object"
+    }
+  },
+
+  { // GITHUB PULL REQUEST SEARCH TOOL
+    "description": "Search for pull requests in GitHub repositories using issues search syntax already scoped to is:pr",
+    "name": "mcp_tool_github_mcp_direct_search_pull_requests",
+    "parameters": {
+      "additionalProperties": false,
+      "properties": {
+        "_requires_user_approval": { "type": "boolean" },
+        "_tool_input_summary": { "type": "string" },
+        "order": { "enum": ["asc", "desc"], "type": "string" },
+        "owner": { "type": "string" },
+        "page": { "minimum": 1, "type": "number" },
+        "perPage": { "maximum": 100, "minimum": 1, "type": "number" },
+        "query": { "type": "string" },
+        "repo": { "type": "string" },
+        "sort": { "type": "string" }
+      },
+      "required": ["query", "_tool_input_summary", "_requires_user_approval"],
+      "type": "object"
+    }
+  },
+
+  { // GITHUB REPO SEARCH TOOL
+    "description": "Find GitHub repositories by name, description, readme, topics, or other metadata.",
+    "name": "mcp_tool_github_mcp_direct_search_repositories",
+    "parameters": {
+      "additionalProperties": false,
+      "properties": {
+        "_requires_user_approval": { "type": "boolean" },
+        "_tool_input_summary": { "type": "string" },
+        "minimal_output": { "default": true, "type": "boolean" },
+        "order": { "enum": ["asc", "desc"], "type": "string" },
+        "page": { "minimum": 1, "type": "number" },
+        "perPage": { "maximum": 100, "minimum": 1, "type": "number" },
+        "query": { "type": "string" },
+        "sort": { "enum": ["stars", "forks", "help-wanted-issues", "updated"], "type": "string" }
+      },
+      "required": ["query", "_tool_input_summary", "_requires_user_approval"],
+      "type": "object"
+    }
+  },
+
+
+  { // GITHUB USER SEARCH TOOL
+    "description": "Find GitHub users by username, real name, or other profile information.",
+    "name": "mcp_tool_github_mcp_direct_search_users",
+    "parameters": {
+      "additionalProperties": false,
+      "properties": {
+        "_requires_user_approval": { "type": "boolean" },
+        "_tool_input_summary": { "type": "string" },
+        "order": { "enum": ["asc", "desc"], "type": "string" },
+        "page": { "minimum": 1, "type": "number" },
+        "perPage": { "maximum": 100, "minimum": 1, "type": "number" },
+        "query": { "type": "string" },
+        "sort": { "enum": ["followers", "repositories", "joined"], "type": "string" }
+      },
+      "required": ["query", "_tool_input_summary", "_requires_user_approval"],
+      "type": "object"
+    }
+  },
+
+  { // GITHUB SUB-ISSUE TOOL
+    "description": "Add a sub-issue to a parent issue in a GitHub repository.",
+    "name": "mcp_tool_github_mcp_direct_sub_issue_write",
+    "parameters": {
+      "additionalProperties": false,
+      "properties": {
+        "_requires_user_approval": { "type": "boolean" },
+        "_tool_input_summary": { "type": "string" },
+        "after_id": { "type": "number" },
+        "before_id": { "type": "number" },
+        "issue_number": { "type": "number" },
+        "method": { "type": "string" },
+        "owner": { "type": "string" },
+        "replace_parent": { "type": "boolean" },
+        "repo": { "type": "string" },
+        "sub_issue_id": { "type": "number" }
+      },
+      "required": ["method", "owner", "repo", "issue_number", "sub_issue_id", "_tool_input_summary", "_requires_user_approval"],
+      "type": "object"
+    }
+  },
+
+  { // GITHUB PULL REQUEST UPDATE TOOL
+    "description": "Update an existing pull request in a GitHub repository.",
+    "name": "mcp_tool_github_mcp_direct_update_pull_request",
+    "parameters": {
+      "additionalProperties": false,
+      "properties": {
+        "_requires_user_approval": { "type": "boolean" },
+        "_tool_input_summary": { "type": "string" },
+        "base": { "type": "string" },
+        "body": { "type": "string" },
+        "draft": { "type": "boolean" },
+        "maintainer_can_modify": { "type": "boolean" },
+        "owner": { "type": "string" },
+        "pullNumber": { "type": "number" },
+        "repo": { "type": "string" },
+        "reviewers": { "items": { "type": "string" }, "type": "array" },
+        "state": { "enum": ["open", "closed"], "type": "string" },
+        "title": { "type": "string" }
+      },
+      "required": ["owner", "repo", "pullNumber", "_tool_input_summary", "_requires_user_approval"],
+      "type": "object"
+    }
+  },
+
+  { // GITHUB PULL REQUEST BRANCH UPDATE TOOL
+    "description": "Update the branch of a pull request with the latest changes from the base branch.",
+    "name": "mcp_tool_github_mcp_direct_update_pull_request_branch",
+    "parameters": {
+      "additionalProperties": false,
+      "properties": {
+        "_requires_user_approval": { "type": "boolean" },
+        "_tool_input_summary": { "type": "string" },
+        "expectedHeadSha": { "type": "string" },
+        "owner": { "type": "string" },
+        "pullNumber": { "type": "number" },
+        "repo": { "type": "string" }
+      },
+      "required": ["owner", "repo", "pullNumber", "_tool_input_summary", "_requires_user_approval"],
+      "type": "object"
+    }
+  }
+]

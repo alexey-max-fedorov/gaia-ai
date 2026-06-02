@@ -68,6 +68,6 @@ Rules:
 ## 6. Executing a plan across turns
 
 When executing `PLAN.md` (see `MEMORY_ENGINE.md`):
-- Do as many sequential tasks as fit within the context budget (§2), updating `TASKS.md` after each.
+- Do as many sequential tasks as fit within the context budget (§2). After each task's commit succeeds, **flip its `TASKS.md` checkbox right then** — one small write per task, before moving on. Do not defer these writes to the turn's end; a crash between tasks would lose the progress record.
 - At the turn boundary, emit the progress report (§3), noting which `TASKS.md` items are now checked.
 - Always keep per-turn work inside the budget rather than racing to finish and risking an overflow crash.

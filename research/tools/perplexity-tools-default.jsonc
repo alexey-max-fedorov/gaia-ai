@@ -1,0 +1,100 @@
+// Default tools available in Perplexity (running Claude Sonnet 4.6).
+// Note for GAIA Code: resolve dependency versions for package.json from the registry in real
+// time (GitHub MCP or the fetch tool), never from memory or a search snippet. Implemented in
+// v3.0.1 as the registry-JSON version rule — see ../patch1.md.
+
+
+[
+  { // search_web — for GAIA Code, use it to look up docs when working with a framework (e.g. Next.js) or dependency.
+    "description": "Searches the web for current and factual information to answer user queries, returning relevant results with titles, URLs, and content snippets, similar to Google or Bing. Intended for questions about up-to-date or externally verified information beyond your knowledge cutoff. The tool works best with an array of short, keyword-focused queries. Complex queries that require multi-step reasoning are not supported. Time-sensitive queries are supported if the date is included in the query.\n\nBest practices for using this tool:\n- For multi-entity questions, break them into separate, single-entity queries:\n  - Preferred:\n    [\n      \"Brand A protein powder review\",\n      \"Brand B protein powder review\"\n    ]\n  - Not recommended:\n    [\n      \"Brand A vs Brand B protein powder review\"\n    ]\n\n- For simple queries, keep each query straightforward and focused:\n  - Preferred: [\"inflation rate Canada\"]\n  - Not recommended: [\"What is the inflation rate in Canada?\"]\n\nEach query should be short to ensure optimal tool performance. Make sure all provided examples and generated queries follow this guideline.",
+    "name": "search_web",
+    "parameters": {
+      "additionalProperties": false,
+      "properties": {
+        "queries": {
+          "description": "An array of keyword-based search queries. Each query should be short, as longer queries may reduce performance.",
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    }
+  },
+  { // fetch_url — sometimes surfaced as get_full_page_content (same tool, different name). For GAIA Code, use it to fetch the full content of web pages or files, especially structured data, complete articles, or specific sections of a page.
+    "description": "Retrieves the complete content from specified web pages or files. This tool provides full access to all web page elements, including tables, lists, and detailed text sections that may not be fully shown in search result snippets. It can process multiple URLs in a single request, and supports both public web pages (http/https URLs) and local files. Use this tool when comprehensive content analysis or detailed information extraction is required, especially for accessing structured data, complete articles, or specific sections of a page. Content retrieval is limited to publicly accessible pages or files identified through search operations.",
+    "name": "fetch_url",
+    "parameters": {
+      "additionalProperties": false,
+      "properties": {
+        "urls": {
+          "description": "A list containing up to five URLs or filenames from which to retrieve content. URLs must be complete addresses beginning with http:// or https://. Filenames should include their file extensions. If both a URL and a filename are provided for the same resource, the URL takes precedence.",
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    }
+  },
+  { // execute_code — the Python tool. It can shell out to run bash in the VM and interact with the filesystem, but git clone / npm i fail (the sandbox has no internet), so rely on the other tools for anything network-bound.
+    "description": "Executes Python code in a persistent Jupyter notebook environment, maintaining state across multiple calls within the same conversation. Variables, functions, and imports persist between executions, enabling iterative development and analysis. Each execution has a 30-second timeout and returns standard output or error messages. This tool supports data analysis, calculations, algorithm implementation, file processing, and chart creation. For charts, first call load_skill to get best practices, then write Plotly code that saves to png files. File operations require exact filenames—attached files should be accessed directly by their filename, not by URL. The environment includes standard data science libraries, which can be accessed via import statements. Always write the outputs of your data analysis as a CSV and PNG for charts. Files written by this tool will be automatically shared with the user as downloadable artifacts. DO NOT use this tool for simple calculations or lookups that can be answered directly without code execution. DO NOT include verbose comments explaining your reasoning in the code—perform all reasoning before calling this tool. Code should be concise and focused on actual computation, not documentation.\nIMPORTANT: Output is truncated to 10KB.",
+    "name": "execute_code",
+    "parameters": {
+      "additionalProperties": false,
+      "description": "ExecutePython V2 with chart support via load_skill.\n\nUses EXECUTE_PYTHON_V2_TOOL_DESCRIPTION config which includes chart instructions.",
+      "properties": {
+        "code": {
+          "description": "The Python code to execute. Code must be syntactically valid and properly indented. The execution context persists across calls, allowing reference to previously defined variables, functions, and imported modules within the same conversation session. DO NOT include excessive inline comments or reasoning—code should be self-explanatory. Avoid using print() statements with only static text; code should produce computed results, not echo predetermined conclusions.",
+          "type": "string"
+        }
+      },
+      "required": ["code"],
+      "type": "object"
+    }
+  },
+  { // load_skill — inconsistent in testing, so GAIA Code uses its own skill engine instead (see ../skill_example/ and <skill-engine> in SYSTEM_INSTRUCTIONS.md).
+    "description": "Load specialized instructions for one or more skills listed in the <agent_skills> section of the system prompt. Call this ONLY when the user's task matches a skill listed there. NEVER guess or invent skill names — only use exact names from <agent_skills>.",
+    "name": "load_skill",
+    "parameters": {
+      "additionalProperties": false,
+      "description": "Tool for loading specialized instructions from uploaded sandbox skills.",
+      "properties": {
+        "skill_names": {
+          "description": "List of skill names to load (e.g. ['pdf', 'xlsx']).",
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "required": ["skill_names"],
+      "type": "object"
+    }
+  },
+  { // search_people — LinkedIn search. Works, but not relevant to GAIA Code; no extra docs needed.
+    "description": "Searches for people and professionals on LinkedIn, returning profile pages with names, titles, companies, and background information. Use this tool when the user asks about a specific person, wants to find professionals by role or company, or needs to look up someone's professional background.",
+    "name": "search_people",
+    "parameters": {
+      "additionalProperties": false,
+      "properties": {
+        "queries": {
+          "description": "Enter short 2-5 word keyword queries to find people on LinkedIn. Combine a person's name, company, job title, or location for best results.\nSubmit several queries when possible; approaching the search from multiple angles surfaces related profiles and yields more complete results.\nExamples: 'John Smith Acme CTO', 'Jane Doe Google engineer', 'marketing director Stripe'.",
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "user_description": {
+          "default": "",
+          "description": "A brief, user-friendly label shown in the activity timeline describing the search intent, e.g. 'Searching for John Smith at Acme' or 'Looking up marketing directors in California'. This will be shown to the user in the activity timeline.",
+          "type": "string"
+        }
+      },
+      "required": ["queries"],
+      "type": "object"
+    }
+  }
+]
