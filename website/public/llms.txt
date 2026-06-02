@@ -1,0 +1,25 @@
+# GAIA Code
+
+> GAIA Code is a four-file prompt system that runs Claude Code's engineering workflow inside a Perplexity Space: persistent memory, a plan engine, context-budgeted turns, GitHub MCP integration, and a slash-command skill engine. It is free and open source.
+
+GAIA Code is not an app you install. It ships as four Markdown prompt files: one gate file (SYSTEM_INSTRUCTIONS.md) pasted into a Perplexity Space's Instructions field, and three engine files (SYSTEM_PROMPT.md, MEMORY_ENGINE.md, TURN_ENGINE.md) uploaded as Space Files. GAIA reads all three on startup.
+
+## Engines
+- Persistent Memory: maintains MEMORY.md across Perplexity auto-compaction — project structure, standing notes, and self-recorded fixes.
+- Plan Engine: explore → plan → approve → execute, tracked in PLAN.md and TASKS.md with per-task checkboxes.
+- Turn Engine: estimates token cost per turn, enforces a 15-call tool budget, and batches commits by file size.
+- Skill Engine: slash-command skills (e.g. /humanizer) loaded from Space files.
+
+## Pages
+- Home: https://gaiacode.pro/
+- Architecture: https://gaiacode.pro/architecture — how the gate and three engines fit together.
+- Connectors: https://gaiacode.pro/connectors — GitHub and n8n MCP setup; Supabase coming soon.
+- Get Started: https://gaiacode.pro/get-started — deploy in ~2 minutes.
+
+## Source
+- GitHub: https://github.com/alexey-max-fedorov/gaia-ai
+
+## Notes
+- Recommended model: Claude Sonnet.
+- Setup time: about two minutes; nothing to install.
+- License: open source.
