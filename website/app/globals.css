@@ -61,7 +61,7 @@
     color: inherit;
   }
 
-  /* Global background with image, grid, and glitch */
+  /* Global background with image and grid (static — no glitch) */
   body::before {
     content: "";
     position: fixed;
@@ -75,7 +75,6 @@
     background-position: center;
     background-repeat: no-repeat;
     filter: brightness(0.22);
-    animation: bg-glitch 8s infinite;
   }
 
   /* HZD grid overlay */
@@ -172,56 +171,6 @@
   50%,
   100% {
     left: 100%;
-  }
-}
-
-/* ──────────────────────────────────────────────────────────────────
-   BACKGROUND GLITCH (enhanced with hue-rotate, clip-path, brightness)
-────────────────────────────────────────────────────────────────── */
-
-@keyframes bg-glitch {
-  0%,
-  97% {
-    background-position: center;
-    filter: brightness(0.22) hue-rotate(0deg);
-    clip-path: inset(0);
-  }
-  97.2% {
-    background-position: calc(50% + 4px) calc(50% - 2px);
-    filter: brightness(0.28) hue-rotate(5deg);
-    clip-path: inset(0);
-  }
-  97.4% {
-    background-position: calc(50% - 3px) calc(50% + 1px);
-    filter: brightness(0.18) hue-rotate(-3deg);
-    clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%);
-  }
-  97.6% {
-    background-position: calc(50% + 2px) center;
-    filter: brightness(0.24) hue-rotate(2deg);
-    clip-path: inset(0);
-  }
-  97.8% {
-    background-position: calc(50% - 1px) calc(50% - 1px);
-    filter: brightness(0.20) hue-rotate(-2deg);
-    clip-path: polygon(0 55%, 100% 55%, 100% 100%, 0 100%);
-  }
-  98%,
-  98.2% {
-    background-position: center;
-    filter: brightness(0.26) hue-rotate(0deg);
-    clip-path: inset(0);
-  }
-  98.4% {
-    background-position: calc(50% + 1px) calc(50% + 1px);
-    filter: brightness(0.19) hue-rotate(-1deg);
-    clip-path: inset(0);
-  }
-  98.6%,
-  100% {
-    background-position: center;
-    filter: brightness(0.22) hue-rotate(0deg);
-    clip-path: inset(0);
   }
 }
 
