@@ -51,6 +51,7 @@ export default function PageHero({
         </motion.p>
 
         <h1
+          aria-label={title}
           className="font-[var(--font-rajdhani)] font-bold tracking-[0.13em] leading-none mb-5"
           style={{
             fontSize: "clamp(3rem, 9vw, 6rem)",
