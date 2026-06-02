@@ -2,31 +2,53 @@
 
 **Version:** 3.0.1  **Repository:** `alexey-max-fedorov/gaia-ai`
 
-GAIA Code is a Claude Code-inspired system prompt for Perplexity Spaces. It brings Plan Mode, GitHub MCP integration, task tracking, and structured implementation workflow into a Perplexity conversation.
+GAIA Code is a Claude Code-inspired prompt system for Perplexity Spaces. It brings persistent memory, a plan engine, context-budgeted turns, GitHub MCP integration, and a slash-command skill engine into a Perplexity conversation.
 
 ---
 
 ## Setup
 
-1. Create a new Perplexity Space
-2. Paste the full contents of `prompts/SYSTEM_INSTRUCTIONS.md` into the **System Instructions** field
-3. Upload `prompts/SYSTEM_PROMPT.md` as a **Space File** (this is the full 8k+ prompt)
-4. Set the Space model (Claude Sonnet recommended)
-5. Done — GAIA Code is ready to use
+1. Create a new Perplexity Space.
+2. Paste the full contents of `prompts/SYSTEM_INSTRUCTIONS.md` into the Space **Instructions** field. This is the short gate/router — not the full prompt.
+3. Upload these three files as **Space Files**:
+   - `prompts/SYSTEM_PROMPT.md` — behavior
+   - `prompts/MEMORY_ENGINE.md` — memory + planning
+   - `prompts/TURN_ENGINE.md` — turns + context budget
+4. Set the Space model (Claude Sonnet recommended).
+5. *(Optional)* Connect GitHub via Perplexity Connectors so GAIA can read and write your repositories.
+6. Done — GAIA Code is ready to use.
+
+> GAIA reads all three uploaded files on startup; skipping any one disables that engine. The website's [Get Started](https://use-gaia-ai.vercel.app/get-started) page mirrors these steps with copy/download buttons for each file.
 
 ---
 
 ## What's Included
 
-### `prompts/SYSTEM_PROMPT.md`
+GAIA Code is **four prompt files** that drive **four engines**.
 
-The complete system prompt. Paste into Perplexity Space System Instructions. Includes:
+### `prompts/SYSTEM_INSTRUCTIONS.md` — the gate
 
-- **Plan Mode** — structured planning before every non-trivial implementation; explicit approval gate before any code is written
-- **GitHub MCP** — full GitHub operations via MCP tools (read files, create branches, push commits, open PRs, manage issues)
-- **Task tracking** — visible checkbox task list updated in real time during implementation
-- **Commit batching** — automatic size-aware commit grouping (small files group together, large files push solo)
-- **Claude Code philosophy** — minimal scope, no over-engineering, validate at system boundaries only
+Pasted into the Space Instructions field. Switches GAIA on (`USE_GAIA_AGENT=1`), points it at the other three files, and hosts the skill engine.
+
+### `prompts/SYSTEM_PROMPT.md` — behavior
+
+Identity, tool philosophy, dependency & version rules (versions are pinned from the registry's JSON API, never a stale snippet), security, and the Claude Code engineering philosophy.
+
+### `prompts/MEMORY_ENGINE.md` — memory + planning
+
+- **Persistent memory** (`MEMORY.md`) — survives auto-compaction: project structure, your standing notes, and observations GAIA records itself, including mistakes it fixed so they don't repeat.
+- **Plan engine** (`PLAN.md` + `TASKS.md`) — explore → plan → approve → execute, with checkboxes flipped per task as work lands.
+
+### `prompts/TURN_ENGINE.md` — turns + budget
+
+Context-budget estimation so a turn never overflows the window, a 15-call tool budget, and size-aware commit batching.
+
+### Capabilities at a glance
+
+- **Plan Mode** — structured planning with an explicit approval gate before any code is written.
+- **GitHub MCP** — read repos, create branches, push commits, open PRs, manage issues.
+- **Persistent memory** — coherent across auto-compaction and context-overflow crashes.
+- **Skill engine** — slash-command skills loaded from Space files (e.g. `/humanizer`).
 
 ### `website/`
 
