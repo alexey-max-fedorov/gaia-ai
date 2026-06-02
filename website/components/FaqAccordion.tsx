@@ -20,7 +20,9 @@ export default function FaqAccordion({ items }: { items: Faq[] }) {
           >
             <button
               onClick={() => setOpen(isOpen ? null : i)}
+              id={`faq-trigger-${i}`}
               aria-expanded={isOpen}
+              aria-controls={`faq-panel-${i}`}
               className="w-full flex items-center justify-between gap-4 px-5 py-4 text-left cursor-pointer"
             >
               <span className="font-[var(--font-rajdhani)] text-base md:text-lg font-bold tracking-[0.04em] text-[#E8EAF6]">
@@ -35,6 +37,9 @@ export default function FaqAccordion({ items }: { items: Faq[] }) {
             <AnimatePresence initial={false}>
               {isOpen && (
                 <motion.div
+                  id={`faq-panel-${i}`}
+                  role="region"
+                  aria-labelledby={`faq-trigger-${i}`}
                   initial={{ height: 0, opacity: 0 }}
                   animate={{ height: "auto", opacity: 1 }}
                   exit={{ height: 0, opacity: 0 }}
