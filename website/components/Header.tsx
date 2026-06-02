@@ -2,11 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-
-const NAV = [
-  { href: "/connectors",  label: "CONNECTORS" },
-  { href: "/get-started", label: "GET STARTED" },
-];
+import { NAV } from "@/lib/site";
 
 export default function Header() {
   const pathname = usePathname();

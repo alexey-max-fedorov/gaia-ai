@@ -1,8 +1,9 @@
 import Link from "next/link";
+import { VERSION, NAV, URLS } from "@/lib/site";
 
 const LINKS = [
-  { label: "CONNECTORS",   href: "/connectors",   external: false },
-  { label: "GITHUB",       href: "https://github.com/alexey-max-fedorov/gaia-ai", external: true },
+  ...NAV.filter((n) => n.href !== "/get-started").map((n) => ({ label: n.label, href: n.href, external: false })),
+  { label: "GITHUB", href: URLS.github, external: true },
 ];
 
 export default function Footer() {
@@ -11,7 +12,7 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-5 flex flex-col md:flex-row items-center justify-between gap-4">
 
         <span className="font-[var(--font-ibm-mono)] text-[8px] tracking-[0.35em] text-[#6B7A94]/30 uppercase">
-          GAIA CODE &middot; v2.1 &middot; Built for Perplexity
+          GAIA CODE &middot; v{VERSION} &middot; Built for Perplexity
         </span>
 
         <div className="flex items-center gap-6">
