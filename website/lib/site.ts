@@ -1,7 +1,7 @@
 // website/lib/site.ts
 // Single source of truth for the GAIA Code site: version, links, nav, and the v3 content model.
 
-export const VERSION = "3.1";
+export const VERSION = "3.2";
 
 // Canonical site identity — single source of truth for the live domain.
 export const SITE = {
@@ -78,6 +78,20 @@ export const SPACE_FILES: SpaceFile[] = [
     role: "Turns + budget",
     summary:
       "Context-budget estimation so a turn never overflows, a 15-call tool budget, and size-aware commit batching.",
+  },
+];
+
+// Optional slash-command skills (uploaded as Space Files, invoked with /<name>).
+// Kept separate from SPACE_FILES so the core "four files" model stays intact.
+export const SKILL_FILES: SpaceFile[] = [
+  {
+    id: "update",
+    file: "update.md",
+    path: "prompts/update.md",
+    deploy: "upload",
+    role: "Skill",
+    summary:
+      "Type /update to check whether a newer GAIA Code version is available — it compares your Space's version against the latest release and points you here to redeploy.",
   },
 ];
 

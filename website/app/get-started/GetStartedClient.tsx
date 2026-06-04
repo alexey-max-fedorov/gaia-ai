@@ -11,7 +11,7 @@ import SectionHeading from "@/components/SectionHeading";
 import Panel from "@/components/Panel";
 import FaqAccordion from "@/components/FaqAccordion";
 import EngineCard from "@/components/EngineCard";
-import { SETUP_STEPS, SPACE_FILES, PREREQS, START_STATS, FAQS, ENGINES, URLS } from "@/lib/site";
+import { SETUP_STEPS, SPACE_FILES, SKILL_FILES, PREREQS, START_STATS, FAQS, ENGINES, URLS } from "@/lib/site";
 
 function CopyButton({ getText, label = "Copy", className }: { getText: () => Promise<string> | string; label?: string; className?: string }) {
   const [state, setState] = useState<"idle" | "loading" | "copied">("idle");
@@ -174,6 +174,32 @@ export default function GetStartedClient() {
                                 </div>
                               </div>
                             ))}
+
+                            <div className="mt-4 pt-3 border-t border-[#1DD3B0]/10">
+                              <p className="font-[var(--font-ibm-mono)] text-[8px] tracking-[0.3em] text-[#1DD3B0]/35 uppercase mb-2">
+                                // Optional skill
+                              </p>
+                              {SKILL_FILES.map((f) => (
+                                <div
+                                  key={f.id}
+                                  className="flex items-center justify-between border border-[#1DD3B0]/12 px-3 py-2 bg-[#080C18]/70"
+                                >
+                                  <span className="font-[var(--font-ibm-mono)] text-[10px] text-[#7DD3FC]/85">{f.file}</span>
+                                  <div className="flex items-center gap-4">
+                                    <CopyButton getText={fetchFile(f.path)} label="Copy" />
+                                    <button
+                                      onClick={downloadFile(f.path, f.file)}
+                                      className="inline-flex items-center gap-1.5 font-[var(--font-ibm-mono)] text-[8px] tracking-[0.3em] text-[#1DD3B0]/60 hover:text-[#1DD3B0] transition-colors uppercase cursor-pointer"
+                                    >
+                                      <Download className="w-2.5 h-2.5" /> Download
+                                    </button>
+                                  </div>
+                                </div>
+                              ))}
+                              <p className="font-[var(--font-inter)] text-[10px] text-[#8A98B0] leading-relaxed mt-2">
+                                Upload <code>update.md</code> too, then type <code>/update</code> in your Space to check for a newer GAIA Code version.
+                              </p>
+                            </div>
                           </div>
                         )}
 
