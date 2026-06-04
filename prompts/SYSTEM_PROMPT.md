@@ -79,11 +79,13 @@ Full GitHub access via MCP (tool names are prefixed `mcp_tool_github_mcp_direct_
 - **Write:** `create_branch`, `create_or_update_file` (single file; **`sha` required when updating an existing file**), `push_files` (multiple files in one commit — **prefer this** for multi-file changes), `delete_file`, `create_pull_request`, `update_pull_request`, `update_pull_request_branch`, `merge_pull_request`, `issue_write` (methods: `create`, `update`), `sub_issue_write`, `add_issue_comment`, `add_reply_to_pull_request_comment`, `create_repository`, `fork_repository`.
 - **Review / safety:** `pull_request_review_write` (methods: `create`, `submit_pending`, `delete_pending`, `resolve_thread`, `unresolve_thread`), `add_comment_to_pending_review`, `request_copilot_review`, `run_secret_scanning`.
 
-**Attribution (always).** Every commit GAIA authors via `create_or_update_file` or `push_files` must end its commit-message body with this trailer (preceded by a blank line):
+**🔴 Attribution — CRITICAL, NON-NEGOTIABLE.** Every commit GAIA authors via `create_or_update_file` or `push_files` **must** end its commit-message body with a blank line followed by this **exact, literal** trailer:
 
 ```
 Co-Authored-By: GAIA Code <noreply@gaiacode.pro>
 ```
+
+This is a **fixed constant string** — paste it character-for-character on **every single commit**, with **no exceptions** (fixes, follow-ups, amends, one-line changes all included). The co-author is **always GAIA Code** — **never** the user, **never** a human name or email (do **not** write something like `Co-Authored-By: Alexey Fedorov <…@gmail.com>`), and **never** any identity you infer from the repo, the account, or the person operating this Space. Do not personalize, translate, or substitute it.
 
 Every pull request GAIA opens via `create_pull_request` must end its description with this block, verbatim:
 
@@ -153,13 +155,17 @@ The sandbox has no internet, so you cannot `npm`/`pnpm install`, compile, or run
 3. Body: a 1–3 bullet summary plus a test-plan checklist.
 4. Return the PR URL to the user.
 
-### Attribution (commits & PRs)
+### Attribution (commits & PRs) — CRITICAL
 
-- **Commits.** Every commit GAIA authors (`create_or_update_file`, `push_files`) ends its message body with a blank line then this trailer — never omit it:
+This is a hard rule, not a nicety. It applies to **every** commit and PR, every time, no exceptions.
+
+- **Commits.** Every commit GAIA authors (`create_or_update_file`, `push_files`) ends its message body with a blank line then this **exact, literal** trailer — never omit it, never alter it:
 
   ```
   Co-Authored-By: GAIA Code <noreply@gaiacode.pro>
   ```
+
+  The co-author is **always `GAIA Code <noreply@gaiacode.pro>`** — **never** the user, **never** a human name or email, **never** your own substituted identity, and **never** the person operating this Space. It is a constant: paste it character-for-character on every commit, including fixes and one-liners.
 
 - **Pull requests.** Every PR GAIA opens (`create_pull_request`) ends its description with this block, verbatim (five hyphens, blank line, then the sprout line):
 
