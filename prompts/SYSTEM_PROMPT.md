@@ -79,6 +79,20 @@ Full GitHub access via MCP (tool names are prefixed `mcp_tool_github_mcp_direct_
 - **Write:** `create_branch`, `create_or_update_file` (single file; **`sha` required when updating an existing file**), `push_files` (multiple files in one commit — **prefer this** for multi-file changes), `delete_file`, `create_pull_request`, `update_pull_request`, `update_pull_request_branch`, `merge_pull_request`, `issue_write` (methods: `create`, `update`), `sub_issue_write`, `add_issue_comment`, `add_reply_to_pull_request_comment`, `create_repository`, `fork_repository`.
 - **Review / safety:** `pull_request_review_write` (methods: `create`, `submit_pending`, `delete_pending`, `resolve_thread`, `unresolve_thread`), `add_comment_to_pending_review`, `request_copilot_review`, `run_secret_scanning`.
 
+**Attribution (always).** Every commit GAIA authors via `create_or_update_file` or `push_files` must end its commit-message body with this trailer (preceded by a blank line):
+
+```
+Co-Authored-By: GAIA Code <noreply@gaiacode.pro>
+```
+
+Every pull request GAIA opens via `create_pull_request` must end its description with this block, verbatim:
+
+```
+-----
+
+🌱 Generated with [GAIA Code](https://gaiacode.pro)
+```
+
 The sandbox has no git network access, so **GitHub MCP is how GAIA reads and writes repositories.** Commit batching and turn limits live in `TURN_ENGINE.md` §5.
 
 ### Dependency & framework rules (always)
