@@ -13,7 +13,7 @@ export const SITE = {
 } as const;
 
 // Shown as a freshness signal on pages and used for sitemap lastModified.
-export const LAST_UPDATED = "2026-06-02";
+export const LAST_UPDATED = "2026-06-04";
 
 export const URLS = {
   site: "https://gaiacode.pro",
@@ -223,12 +223,13 @@ export const PAGE_SEO: Record<"architecture" | "connectors" | "getStarted", Page
   },
   connectors: {
     description:
-      "Connect GitHub, n8n, and more to GAIA Code via Perplexity MCP connectors so it can act on your repos and automations — not just answer. Step-by-step setup for each connector.",
+      "Connect GitHub, n8n, Supabase, and more to GAIA Code via Perplexity MCP connectors so it can act on your repos, automations, and database — not just answer. Step-by-step setup for each connector.",
     title: "Connectors",
     keywords: [
       "Perplexity connectors",
       "GitHub MCP",
       "n8n MCP server",
+      "Supabase MCP",
       "GAIA Code integrations",
       "Model Context Protocol",
     ],
@@ -261,7 +262,7 @@ export const ARCH_STATS: Stat[] = [
 ];
 
 export const CONN_STATS: Stat[] = [
-  { value: "2", label: "Live connectors" },
+  { value: "3", label: "Live connectors" },
   { value: "MCP", label: "Protocol" },
   { value: "R/W", label: "Repo access" },
   { value: "∞", label: "n8n workflows" },
@@ -378,10 +379,39 @@ export const CONNECTORS: Connector[] = [
     id: "supabase",
     name: "Supabase",
     icon: "database",
-    status: "soon",
+    status: "live",
     category: "Database",
-    tagline: "Query your Supabase database and run edge functions directly from GAIA Code.",
-    steps: [],
+    tagline: "Query your Supabase database, manage tables, and run edge functions directly from GAIA Code via the official Supabase remote MCP server.",
+    steps: [
+      {
+        num: "01",
+        title: "Open Perplexity Connectors",
+        description:
+          'Go to `perplexity.ai/account/connectors` and click "+ Custom Connector".',
+        action: { label: "Open Connectors", href: "https://www.perplexity.ai/account/connectors" },
+      },
+      {
+        num: "02",
+        title: "Enter the Supabase MCP URL",
+        description:
+          "Paste the official Supabase remote MCP endpoint as the server URL: `https://mcp.supabase.com/mcp`. This is Supabase's hosted MCP server — no local install or personal access token required up front.",
+        action: { label: "Supabase MCP docs", href: "https://supabase.com/docs/guides/ai-tools/mcp" },
+      },
+      {
+        num: "03",
+        title: "Authenticate with Supabase",
+        description:
+          "After adding the connector, Perplexity will initiate an OAuth flow. Log in to your Supabase account and authorize access. Your projects will be available to GAIA Code once the flow completes.",
+        action: null,
+      },
+      {
+        num: "04",
+        title: "Scope to a specific project (optional)",
+        description:
+          "By default the MCP server can access all projects in your account. To limit it to one project, note your project ref from the Supabase dashboard URL (`https://supabase.com/dashboard/project/<project-ref>`) — you can share it with GAIA Code in your Space instructions so it targets the right database.",
+        action: { label: "Supabase Dashboard", href: "https://supabase.com/dashboard" },
+      },
+    ],
   },
 ];
 
@@ -434,15 +464,19 @@ export const FAQS: Record<"architecture" | "connectors" | "getStarted", Faq[]> =
   connectors: [
     {
       q: "What are GAIA Code connectors?",
-      a: "Connectors are Perplexity MCP (Model Context Protocol) integrations that let GAIA Code act on external systems — like reading and writing GitHub repositories or triggering n8n workflows — instead of only answering questions.",
+      a: "Connectors are Perplexity MCP (Model Context Protocol) integrations that let GAIA Code act on external systems — like reading and writing GitHub repositories, triggering n8n workflows, or querying a Supabase database — instead of only answering questions.",
     },
     {
       q: "Which connectors are available?",
-      a: "GitHub and n8n are live today. GitHub gives GAIA read/write repo access (branches, commits, PRs, issues). n8n exposes any workflow as an MCP server. A Supabase connector is coming soon.",
+      a: "GitHub, n8n, and Supabase are all live. GitHub gives GAIA read/write repo access (branches, commits, PRs, issues). n8n exposes any workflow as an MCP server. Supabase connects via the official remote MCP at mcp.supabase.com and authenticates through OAuth.",
     },
     {
       q: "Is the GitHub connector safe?",
       a: "You authorize the connection through Perplexity's standard OAuth flow and control which scopes GitHub grants. You can revoke access at any time from your Perplexity connectors settings or your GitHub account.",
+    },
+    {
+      q: "Does the Supabase connector need a personal access token?",
+      a: "No. The official Supabase remote MCP server at mcp.supabase.com uses OAuth — you authenticate through your Supabase account in the browser. No token generation or manual configuration is required.",
     },
   ],
   getStarted: [
