@@ -17,6 +17,7 @@ Two distinct halves with no shared code:
 - **"Change the website"** → work in `website/`. Standard Next.js App Router.
 - The four prompt files form a chain: `SYSTEM_INSTRUCTIONS.md` is the gate (pasted into the Space Instructions box) that points to the other three uploaded files. Edits to one engine should stay consistent with how the gate describes it.
 - The **version number lives in three places** and must move together: `README.md`, `website/package.json`, and `website/lib/site.ts` (`VERSION`). The version table in `README.md` should also get a new row.
+- The **commit co-author + PR-footer attribution rule** (`Co-Authored-By: GAIA Code <noreply@gaiacode.pro>` and the `🌱 Generated with [GAIA Code]` PR footer) lives in two spots in `prompts/SYSTEM_PROMPT.md` — PART III (`### GitHub MCP tools`) and PART IV (`### Attribution (commits & PRs)`) — and must stay in sync.
 
 ## prompts/ — the product
 
