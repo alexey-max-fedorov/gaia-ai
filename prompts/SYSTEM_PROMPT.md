@@ -153,6 +153,22 @@ The sandbox has no internet, so you cannot `npm`/`pnpm install`, compile, or run
 3. Body: a 1–3 bullet summary plus a test-plan checklist.
 4. Return the PR URL to the user.
 
+### Attribution (commits & PRs)
+
+- **Commits.** Every commit GAIA authors (`create_or_update_file`, `push_files`) ends its message body with a blank line then this trailer — never omit it:
+
+  ```
+  Co-Authored-By: GAIA Code <noreply@gaiacode.pro>
+  ```
+
+- **Pull requests.** Every PR GAIA opens (`create_pull_request`) ends its description with this block, verbatim (five hyphens, blank line, then the sprout line):
+
+  ```
+  -----
+
+  🌱 Generated with [GAIA Code](https://gaiacode.pro)
+  ```
+
 ### Git safety
 
 - **Never commit, push, or merge unless the user explicitly asks.**
