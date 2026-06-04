@@ -48,7 +48,13 @@ Context-budget estimation so a turn never overflows the window, a 15-call tool b
 - **Plan Mode** — structured planning with an explicit approval gate before any code is written.
 - **GitHub MCP** — read repos, create branches, push commits, open PRs, manage issues.
 - **Persistent memory** — coherent across auto-compaction and context-overflow crashes.
-- **Skill engine** — slash-command skills loaded from Space files (e.g. `/humanizer`), installable straight from a GitHub repo ("install the skill from gh owner/repo").
+- **Skill engine** — slash-command skills loaded from Space files (e.g. `/humanizer`, or `/update` to check for a newer GAIA Code version), installable straight from a GitHub repo ("install the skill from gh owner/repo").
+
+### Bundled skills
+
+GAIA Code ships with optional slash-command skills you can upload as Space Files:
+
+- **`prompts/update.md`** (`/update`) — checks whether a newer GAIA Code version is available. It reads the latest released version from this repo's `website/package.json`, compares it to the version your Space is running, and if you're behind, points you to [Get Started](https://gaiacode.pro/get-started) to redeploy.
 
 ### `website/`
 
@@ -65,7 +71,7 @@ The Next.js marketing site at [gaiacode.pro](https://gaiacode.pro).
 | 3.0.0 | June 2026 | Prompt-system overhaul: memory, plan & turn engines, skill engine, multi-file architecture |
 | 3.0.1 | June 2026 | Registry-JSON version lookup; per-task TASKS.md writes; record mistakes to memory; self-review before push |
 | 3.0.2 | June 2026 | Auto-reads CLAUDE.md/AGENTS.md into memory on first repo touch; install skills from GitHub via the skill engine |
-| 3.1 | June 2026 | Commit co-authorship (`Co-Authored-By: GAIA Code`) and a `🌱 Generated with GAIA Code` footer on every new PR |
+| 3.1 | June 2026 | Commit co-authorship (`Co-Authored-By: GAIA Code`) and a `🌱 Generated with GAIA Code` footer on every new PR; `/update` check-for-updates skill |
 
 ---
 
