@@ -1,7 +1,7 @@
 // website/lib/site.ts
 // Single source of truth for the GAIA Code site: version, links, nav, and the v3 content model.
 
-export const VERSION = "3.0.2";
+export const VERSION = "3.1";
 
 // Canonical site identity — single source of truth for the live domain.
 export const SITE = {
