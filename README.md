@@ -1,6 +1,6 @@
 # GAIA Code
 
-**Version:** 3.0.2  **Repository:** `alexey-max-fedorov/gaia-ai`
+**Version:** 3.1  **Repository:** `alexey-max-fedorov/gaia-ai`
 
 GAIA Code is a Claude Code-inspired prompt system for Perplexity Spaces. It brings persistent memory, a plan engine, context-budgeted turns, GitHub MCP integration, and a slash-command skill engine into a Perplexity conversation.
 
@@ -65,6 +65,7 @@ The Next.js marketing site at [gaiacode.pro](https://gaiacode.pro).
 | 3.0.0 | June 2026 | Prompt-system overhaul: memory, plan & turn engines, skill engine, multi-file architecture |
 | 3.0.1 | June 2026 | Registry-JSON version lookup; per-task TASKS.md writes; record mistakes to memory; self-review before push |
 | 3.0.2 | June 2026 | Auto-reads CLAUDE.md/AGENTS.md into memory on first repo touch; install skills from GitHub via the skill engine |
+| 3.1 | June 2026 | Commit co-authorship (`Co-Authored-By: GAIA Code`) and a `🌱 Generated with GAIA Code` footer on every new PR |
 
 ---
 
