@@ -1,6 +1,6 @@
 # GAIA Code
 
-**Version:** 3.2  **Repository:** `alexey-max-fedorov/gaia-ai`
+**Version:** 3.3  **Repository:** `alexey-max-fedorov/gaia-ai`
 
 GAIA Code is a Claude Code-inspired prompt system for Perplexity Spaces. It brings persistent memory, a plan engine, context-budgeted turns, GitHub MCP integration, and a slash-command skill engine into a Perplexity conversation.
 
@@ -49,6 +49,7 @@ Context-budget estimation so a turn never overflows the window, a 15-call tool b
 - **GitHub MCP** — read repos, create branches, push commits, open PRs, manage issues.
 - **Persistent memory** — coherent across auto-compaction and context-overflow crashes.
 - **Skill engine** — slash-command skills loaded from Space files (e.g. `/humanizer`, or `/update` to check for a newer GAIA Code version), installable straight from a GitHub repo ("install the skill from gh owner/repo").
+- **Permission modes** — choose how GAIA handles tool-call approval: **Ask Permissions** (default — it asks before every write: commit, push, PR, issue, merge) or **Bypass Permissions** (it runs every tool call without asking). Toggle with `/dangerously-skip-permissions` and `/ask-permissions`; the choice is saved to memory so it survives auto-compaction.
 
 ### Bundled skills
 
@@ -73,6 +74,7 @@ The Next.js marketing site at [gaiacode.pro](https://gaiacode.pro).
 | 3.0.2 | June 2026 | Auto-reads CLAUDE.md/AGENTS.md into memory on first repo touch; install skills from GitHub via the skill engine |
 | 3.1 | June 2026 | Commit co-authorship (`Co-Authored-By: GAIA Code`) and a `🌱 Generated with GAIA Code` footer on every new PR |
 | 3.2 | June 2026 | `/update` check-for-updates skill (compares your Space's version against the latest release) |
+| 3.3 | June 2026 | Permission modes — Ask Permissions (default) / Bypass Permissions — stored in `MEMORY.md`, with `/dangerously-skip-permissions` & `/ask-permissions`; firmer PR-footer attribution (fixes #5); standardized `[Tool Name] summary` for `_tool_input_summary` |
 
 ---
 
