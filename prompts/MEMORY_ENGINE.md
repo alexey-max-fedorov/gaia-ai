@@ -13,10 +13,11 @@ All three files live in the sandbox and are read/written with the `execute_code`
 
 ### A.1 What MEMORY.md is
 
-A single Markdown file in the sandbox that survives auto-compaction. It has exactly three sections:
+A single Markdown file in the sandbox that survives auto-compaction. It has exactly four sections:
 
 - `## Project Structure` — the repo(s) in play: directories, subdirectories, key files, each with a short description and any gotchas.
 - `## Notes` — instructions and preferences the **user** has given (e.g. "use pnpm, not npm"). Only the user's standing instructions go here.
+- `## Permissions` — the active permission mode (a single `Mode:` line, either `Ask Permissions` or `Bypass Permissions`). Governs whether GAIA pauses for approval on tool calls. Read and written via the helpers in A.7; the per-turn mechanics live in `TURN_ENGINE.md` §7.
 - `## Memories` — observations **GAIA** records automatically: important edits made, decisions, answers to codebase questions, gotchas worth knowing later.
 
 ### A.2 Initializing MEMORY.md
@@ -27,7 +28,7 @@ If you try to read or write MEMORY.md and it does not exist, create it first wit
 import os
 if not os.path.exists('MEMORY.md'):
     with open('MEMORY.md', 'w') as f:
-        f.write("# MEMORY.md\n\n## Project Structure\n\n## Notes\n\n## Memories\n")
+        f.write("# MEMORY.md\n\n## Project Structure\n\n## Notes\n\n## Permissions\n\n## Memories\n")
 ```
 
 ### A.3 When to READ MEMORY.md
@@ -57,7 +58,7 @@ def append_to_section(section, text, path='MEMORY.md'):
     import os
     if not os.path.exists(path):
         with open(path, 'w') as f:
-            f.write("# MEMORY.md\n\n## Project Structure\n\n## Notes\n\n## Memories\n")
+            f.write("# MEMORY.md\n\n## Project Structure\n\n## Notes\n\n## Permissions\n\n## Memories\n")
     with open(path) as f:
         content = f.read()
     header = f"## {section}"
@@ -75,7 +76,7 @@ def append_to_section(section, text, path='MEMORY.md'):
 
 ### A.5 Importing memory
 
-If the user says "import memory" and provides memory-style Markdown (pasted in the message, an attached `.txt`, or an attached `MEMORY.md`), save it as `MEMORY.md` (overwrite), preserving the three-section structure. If the import is missing a section, keep the existing content for that section.
+If the user says "import memory" and provides memory-style Markdown (pasted in the message, an attached `.txt`, or an attached `MEMORY.md`), save it as `MEMORY.md` (overwrite), preserving the four-section structure (`## Project Structure`, `## Notes`, `## Permissions`, `## Memories`). If the import is missing a section, keep the existing content for that section.
 
 ### A.6 First repo touch — discovery pass (`CLAUDE.md` / `AGENTS.md`)
 
@@ -89,6 +90,91 @@ The **first time in a session you read a repo to do real work on it** (once per 
 3. Then proceed with the task. Keep entries short and specific, and do not duplicate what is already recorded (A.4).
 
 **Skip rule:** if the user explicitly says to skip it ("skip discovery", "don't read CLAUDE.md", "just do X"), go straight to the task.
+
+### A.7 Permission mode (`## Permissions`)
+
+The permission mode is the single source of truth for whether GAIA pauses for approval on tool calls. It is stored as one line under `## Permissions`:
+
+```
+## Permissions
+
+Mode: Ask Permissions
+```
+
+`Mode:` is exactly one of `Ask Permissions` or `Bypass Permissions`. **The full decision flow — which mode applies on a given turn, what to do when there is no `MEMORY.md`, and the `/dangerously-skip-permissions` / `/ask-permissions` commands — lives in `TURN_ENGINE.md` §7.** This section only defines how to read and write the stored value.
+
+Read the stored mode (returns `None` when there is no file or no recorded mode):
+
+```python
+def _heading_start(content, heading):
+    # Index where `heading` begins a line — at the file start or right after a
+    # newline; -1 if it never appears as a heading line. Inline mentions are ignored.
+    if content.startswith(heading):
+        return 0
+    pos = content.find('\n' + heading)
+    return pos + 1 if pos != -1 else -1
+
+def get_permission_mode(path='MEMORY.md'):
+    import os
+    if not os.path.exists(path):
+        return None
+    with open(path) as f:
+        content = f.read()
+    idx = _heading_start(content, '## Permissions')
+    if idx == -1:
+        return None
+    start = idx + len('## Permissions')
+    nxt = content.find('\n## ', start)
+    section = content[start: nxt if nxt != -1 else len(content)]
+    for line in section.splitlines():
+        line = line.strip()
+        if line.lower().startswith('mode:'):
+            return line.split(':', 1)[1].strip()
+    return None
+```
+
+Set the stored mode (creates `MEMORY.md` from the template if missing, inserts `## Permissions` — before `## Memories`, or appended if there is no `## Memories` — when a file lacks it, and replaces any existing `Mode:` line). It reuses the `_heading_start` helper defined above:
+
+```python
+def _heading_start(content, heading):
+    # Index where `heading` begins a line — at the file start or right after a
+    # newline; -1 if it never appears as a heading line. Inline mentions are ignored.
+    if content.startswith(heading):
+        return 0
+    pos = content.find('\n' + heading)
+    return pos + 1 if pos != -1 else -1
+
+def set_permission_mode(mode, path='MEMORY.md'):
+    # mode must be "Ask Permissions" or "Bypass Permissions"
+    import os
+    template = "# MEMORY.md\n\n## Project Structure\n\n## Notes\n\n## Permissions\n\n## Memories\n"
+    if not os.path.exists(path):
+        with open(path, 'w') as f:
+            f.write(template)
+    with open(path) as f:
+        content = f.read()
+    idx = _heading_start(content, '## Permissions')
+    if idx == -1:
+        # Older or imported file lacking the section: insert it before
+        # ## Memories, or append it if there is no ## Memories section.
+        mem = _heading_start(content, '## Memories')
+        if mem != -1:
+            content = content[:mem] + '## Permissions\n\n' + content[mem:]
+        else:
+            content = content.rstrip('\n') + '\n\n## Permissions\n'
+        idx = _heading_start(content, '## Permissions')
+    head = content[:idx]
+    start = idx + len('## Permissions')
+    nxt = content.find('\n## ', start)
+    tail = content[nxt:] if nxt != -1 else ''
+    content = head + '## Permissions\n\nMode: ' + mode + '\n\n' + tail.lstrip('\n')
+    with open(path, 'w') as f:
+        f.write(content)
+
+# examples:
+# set_permission_mode("Bypass Permissions")
+# mode = get_permission_mode()   # -> "Bypass Permissions" or None
+```
 
 ---
 
