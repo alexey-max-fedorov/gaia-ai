@@ -112,9 +112,10 @@ def get_permission_mode(path='MEMORY.md'):
         return None
     with open(path) as f:
         content = f.read()
-    if '## Permissions' not in content:
+    if '\n## Permissions' not in content:
         return None
-    start = content.index('## Permissions') + len('## Permissions')
+    idx = content.index('\n## Permissions') + 1
+    start = idx + len('## Permissions')
     nxt = content.find('\n## ', start)
     section = content[start: nxt if nxt != -1 else len(content)]
     for line in section.splitlines():
@@ -136,10 +137,11 @@ def set_permission_mode(mode, path='MEMORY.md'):
             f.write(template)
     with open(path) as f:
         content = f.read()
-    if '## Permissions' not in content:
-        content = content.replace('## Memories', '## Permissions\n\n## Memories', 1)
-    head = content[:content.index('## Permissions')]
-    start = content.index('## Permissions') + len('## Permissions')
+    if '\n## Permissions' not in content:
+        content = content.replace('\n## Memories', '\n## Permissions\n\n## Memories', 1)
+    idx = content.index('\n## Permissions') + 1
+    head = content[:idx]
+    start = idx + len('## Permissions')
     nxt = content.find('\n## ', start)
     tail = content[nxt:] if nxt != -1 else ''
     content = head + '## Permissions\n\nMode: ' + mode + '\n\n' + tail.lstrip('\n')
