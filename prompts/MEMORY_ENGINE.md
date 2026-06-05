@@ -106,15 +106,23 @@ Mode: Ask Permissions
 Read the stored mode (returns `None` when there is no file or no recorded mode):
 
 ```python
+def _heading_start(content, heading):
+    # Index where `heading` begins a line — at the file start or right after a
+    # newline; -1 if it never appears as a heading line. Inline mentions are ignored.
+    if content.startswith(heading):
+        return 0
+    pos = content.find('\n' + heading)
+    return pos + 1 if pos != -1 else -1
+
 def get_permission_mode(path='MEMORY.md'):
     import os
     if not os.path.exists(path):
         return None
     with open(path) as f:
         content = f.read()
-    if '\n## Permissions' not in content:
+    idx = _heading_start(content, '## Permissions')
+    if idx == -1:
         return None
-    idx = content.index('\n## Permissions') + 1
     start = idx + len('## Permissions')
     nxt = content.find('\n## ', start)
     section = content[start: nxt if nxt != -1 else len(content)]
@@ -125,9 +133,17 @@ def get_permission_mode(path='MEMORY.md'):
     return None
 ```
 
-Set the stored mode (creates `MEMORY.md` from the template if missing, inserts `## Permissions` if an older file lacks it, and replaces any existing `Mode:` line):
+Set the stored mode (creates `MEMORY.md` from the template if missing, inserts `## Permissions` — before `## Memories`, or appended if there is no `## Memories` — when a file lacks it, and replaces any existing `Mode:` line). It reuses the `_heading_start` helper defined above:
 
 ```python
+def _heading_start(content, heading):
+    # Index where `heading` begins a line — at the file start or right after a
+    # newline; -1 if it never appears as a heading line. Inline mentions are ignored.
+    if content.startswith(heading):
+        return 0
+    pos = content.find('\n' + heading)
+    return pos + 1 if pos != -1 else -1
+
 def set_permission_mode(mode, path='MEMORY.md'):
     # mode must be "Ask Permissions" or "Bypass Permissions"
     import os
@@ -137,9 +153,16 @@ def set_permission_mode(mode, path='MEMORY.md'):
             f.write(template)
     with open(path) as f:
         content = f.read()
-    if '\n## Permissions' not in content:
-        content = content.replace('\n## Memories', '\n## Permissions\n\n## Memories', 1)
-    idx = content.index('\n## Permissions') + 1
+    idx = _heading_start(content, '## Permissions')
+    if idx == -1:
+        # Older or imported file lacking the section: insert it before
+        # ## Memories, or append it if there is no ## Memories section.
+        mem = _heading_start(content, '## Memories')
+        if mem != -1:
+            content = content[:mem] + '## Permissions\n\n' + content[mem:]
+        else:
+            content = content.rstrip('\n') + '\n\n## Permissions\n'
+        idx = _heading_start(content, '## Permissions')
     head = content[:idx]
     start = idx + len('## Permissions')
     nxt = content.find('\n## ', start)
