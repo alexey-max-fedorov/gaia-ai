@@ -163,6 +163,34 @@ export const RELIABILITY = [
   },
 ];
 
+// ── Permission modes (v3.3): how GAIA handles tool-call approval ─────────────
+export interface PermissionMode {
+  id: string;
+  name: string;
+  badge: string;   // short tag shown on the card
+  tagline: string;
+  body: string;
+}
+
+export const PERMISSION_MODES: PermissionMode[] = [
+  {
+    id: "ask",
+    name: "Ask Permissions",
+    badge: "Default",
+    tagline: "Approve every write.",
+    body:
+      "GAIA pauses for your approval before any tool call that changes external state — commits, pushes, PRs, issues, merges. Read-only calls run freely. This is the default until you choose otherwise.",
+  },
+  {
+    id: "bypass",
+    name: "Bypass Permissions",
+    badge: "Hands-off",
+    tagline: "No prompts, full speed.",
+    body:
+      "GAIA runs every tool call without asking. Switch on with /dangerously-skip-permissions and back with /ask-permissions — the choice is saved to MEMORY.md, so it survives auto-compaction.",
+  },
+];
+
 // Ordered deployment steps for get-started. `fileId` links a step to a SPACE_FILES entry (null = no file action).
 export interface SetupStep {
   num: string;
@@ -473,6 +501,10 @@ export const FAQS: Record<"architecture" | "connectors" | "getStarted", Faq[]> =
     {
       q: "Do I need all four files?",
       a: "Yes. The gate is pasted into Space Instructions and the three engine files are uploaded as Space Files. GAIA reads all three on startup — skipping any one disables that engine.",
+    },
+    {
+      q: "Can GAIA stop asking for approval on every action?",
+      a: "Yes. GAIA Code has two permission modes. Ask Permissions — the default — prompts you before any write (commits, pushes, PRs, issues, merges). Bypass Permissions runs every tool call without asking. Switch with /dangerously-skip-permissions, switch back with /ask-permissions; the choice is stored in MEMORY.md so it persists across auto-compaction.",
     },
   ],
   connectors: [

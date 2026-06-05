@@ -10,7 +10,7 @@ import Panel from "@/components/Panel";
 import FlowDiagram from "@/components/FlowDiagram";
 import FaqAccordion from "@/components/FaqAccordion";
 import EngineCard from "@/components/EngineCard";
-import { ENGINES, TURN_FLOW, FAQS, ARCH_STATS, SPACE_FILES, URLS } from "@/lib/site";
+import { ENGINES, TURN_FLOW, FAQS, ARCH_STATS, SPACE_FILES, PERMISSION_MODES, URLS } from "@/lib/site";
 
 export default function ArchitectureClient() {
   return (
@@ -87,6 +87,34 @@ export default function ArchitectureClient() {
                     {s.title}
                   </h3>
                   <p className="font-[var(--font-inter)] text-xs text-[#8A98B0] leading-relaxed">{s.body}</p>
+                </Panel>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Permission modes */}
+        <section className="relative py-16 md:py-24 border-t border-[#1DD3B0]/8">
+          <div className="max-w-5xl mx-auto px-5">
+            <SectionHeading
+              label="// Permission modes"
+              title={<>ASK. OR <span style={{ color: "#1DD3B0" }}>BYPASS.</span></>}
+              description="Choose how GAIA handles approval. Ask Permissions checks in before every write; Bypass runs hands-off. The mode is saved to MEMORY.md, so it holds across auto-compaction."
+              className="mb-10"
+            />
+            <div className="grid md:grid-cols-2 gap-3">
+              {PERMISSION_MODES.map((m, i) => (
+                <Panel key={m.id} index={i} badge={m.id === "ask" ? "01" : "02"}>
+                  <div className="flex items-center gap-2 mb-2">
+                    <h3 className="font-[var(--font-rajdhani)] text-lg font-bold tracking-[0.12em] text-[#E8EAF6] group-hover:text-[#1DD3B0] transition-colors">
+                      {m.name}
+                    </h3>
+                    <span className="font-[var(--font-ibm-mono)] text-[7px] tracking-[0.3em] uppercase px-1.5 py-0.5 border text-[#1DD3B0]/70 border-[#1DD3B0]/25">
+                      {m.badge}
+                    </span>
+                  </div>
+                  <p className="font-[var(--font-rajdhani)] text-sm tracking-[0.1em] text-[#1DD3B0]/70 mb-2">{m.tagline}</p>
+                  <p className="font-[var(--font-inter)] text-xs text-[#8A98B0] leading-relaxed">{m.body}</p>
                 </Panel>
               ))}
             </div>
