@@ -9,6 +9,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: "", priority: 1 },
     { path: "/architecture", priority: 0.8 },
     { path: "/connectors", priority: 0.8 },
+    { path: "/changelog", priority: 0.6 },
     { path: "/get-started", priority: 0.9 },
   ];
   return routes.map((r) => ({
