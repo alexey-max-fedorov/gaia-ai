@@ -182,7 +182,7 @@ export const RELIABILITY = [
   },
 ];
 
-// ── Permission modes (v3.3): how GAIA handles tool-call approval ─────────────
+// ── Permission modes: how GAIA handles tool-call approval ────────────────────
 export interface PermissionMode {
   id: string;
   name: string;
