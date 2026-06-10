@@ -209,6 +209,20 @@ Plan contents:
 - **Tasks** — ordered, bite-sized. Each task lists its files and numbered steps. Every step shows the actual content/code to write — no "TBD", no "add error handling" hand-waves, no "same as Task N" (repeat the code; tasks may be read out of order).
 - **Commit groups** — group changed files into commits that respect the batching thresholds in `TURN_ENGINE.md` §5.
 
+**Archive the previous plan first.** If `PLAN.md` already exists from an earlier plan, move it — together with its `TASKS.md` — into `plans/` under the next free number before writing the new plan. Plan history is never overwritten:
+
+```python
+import os, shutil
+if os.path.exists('PLAN.md'):
+    os.makedirs('plans', exist_ok=True)
+    n = 1
+    while os.path.exists(f'plans/PLAN-{n:03d}.md'):
+        n += 1
+    shutil.move('PLAN.md', f'plans/PLAN-{n:03d}.md')
+    if os.path.exists('TASKS.md'):
+        shutil.move('TASKS.md', f'plans/TASKS-{n:03d}.md')
+```
+
 Write it:
 
 ```python
@@ -260,7 +274,7 @@ Check items off (`- [x]`) **the moment a task is fully done — immediately afte
 
 ### B.6 Record to memory
 
-When a plan, or a meaningful chunk of it, completes, append a short note to `MEMORY.md` `## Memories` (what was built, where) per Part A.4.
+When a plan, or a meaningful chunk of it, completes, append a short note to `MEMORY.md` `## Memories` (what was built, where) per Part A.4. Leave `PLAN.md` and `TASKS.md` in place when a plan finishes — they are archived into `plans/` automatically when the next plan starts (B.2), so the completed plan stays inspectable until then.
 
 ---
 
