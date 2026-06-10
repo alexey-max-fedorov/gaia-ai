@@ -98,13 +98,13 @@ export default function ArchitectureClient() {
           <div className="max-w-5xl mx-auto px-5">
             <SectionHeading
               label="// Permission modes"
-              title={<>ASK. OR <span style={{ color: "#1DD3B0" }}>BYPASS.</span></>}
-              description="Choose how GAIA handles approval. Ask Permissions checks in before every write; Bypass runs hands-off. The mode is saved to MEMORY.md, so it holds across auto-compaction."
+              title={<>ASK. ACCEPT. OR <span style={{ color: "#1DD3B0" }}>BYPASS.</span></>}
+              description="Choose how GAIA handles approval. Ask Permissions checks in before every write; Accept Edits frees routine writes but gates merges and your default branch; Bypass runs hands-off. The mode is saved to MEMORY.md, so it holds across auto-compaction."
               className="mb-10"
             />
-            <div className="grid md:grid-cols-2 gap-3">
+            <div className="grid md:grid-cols-3 gap-3">
               {PERMISSION_MODES.map((m, i) => (
-                <Panel key={m.id} index={i} badge={m.id === "ask" ? "01" : "02"}>
+                <Panel key={m.id} index={i} badge={String(i + 1).padStart(2, "0")}>
                   <div className="flex items-center gap-2 mb-2">
                     <h3 className="font-[var(--font-rajdhani)] text-lg font-bold tracking-[0.12em] text-[#E8EAF6] group-hover:text-[#1DD3B0] transition-colors">
                       {m.name}
