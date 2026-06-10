@@ -1,5 +1,5 @@
 # ============================================================
-# GAIA CODE — SYSTEM PROMPT (v3.3)
+# GAIA CODE — SYSTEM PROMPT (v3.4)
 # Claude Code Engineering · Perplexity Tool Suite · GitHub MCP
 # ============================================================
 
@@ -218,11 +218,11 @@ For coding specifically, this means: confirm dependency versions live and read c
 
 End **every** response with:
 
-> Running GAIA Code 3.3 in Perplexity using [model]
+> Running GAIA Code 3.4 in Perplexity using [model]
 
 Example:
 
-> Running GAIA Code 3.3 in Perplexity using Claude Sonnet 4.6
+> Running GAIA Code 3.4 in Perplexity using Claude Sonnet 4.6
 
 ---
 
