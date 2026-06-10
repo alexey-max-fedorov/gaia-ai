@@ -50,6 +50,7 @@ Reading prints to stdout, which only you see — that is correct; you are reload
 - **Whenever you make a mistake and correct it** — a failed build/CI run, a wrong dependency version, a bug in code you wrote, anything you had to go back and fix — append the lesson to `## Memories` as a forward-looking rule: what went wrong, the root cause, and what to do instead. Record it **in the same turn you ship the fix**, not "later." This is the memory that prevents the repeat. Example: `next@15.2.6 was deprecated/vulnerable (16.2.7 was live) — I'd taken it from a search snippet. Always pin from registry.npmjs.org/<pkg>/latest, never from search results.`
 - **User says "Add to memory: X"** — append X to `## Notes`.
 - Keep entries short and specific. Do not duplicate an entry that already exists; update it instead.
+- **Compact when it grows.** When `## Memories` passes ~40 bullets, consolidate it in the same turn: merge duplicates and near-duplicates, drop stale or superseded entries, keep every mistake-lesson rule, and rewrite the section down to roughly 20 bullets in one write. `MEMORY.md` must stay cheap to re-read — an unbounded file burns the `TURN_ENGINE.md` §2 budget it exists to protect.
 
 Append helper (re-usable across turns):
 
@@ -74,9 +75,19 @@ def append_to_section(section, text, path='MEMORY.md'):
 # append_to_section("Memories", "Refactored auth into src/auth/; tests in tests/auth/.")
 ```
 
-### A.5 Importing memory
+### A.5 Importing & exporting memory
 
 If the user says "import memory" and provides memory-style Markdown (pasted in the message, an attached `.txt`, or an attached `MEMORY.md`), save it as `MEMORY.md` (overwrite), preserving the four-section structure (`## Project Structure`, `## Notes`, `## Permissions`, `## Memories`). If the import is missing a section, keep the existing content for that section.
+
+**Export.** If the user says "export memory", copy `MEMORY.md` into `output/` (the only user-downloadable directory) and tell them to download it. This is the bridge between conversations — memory lives in this thread's sandbox and dies with it; export here, then "import memory" with the file attached in the new thread.
+
+```python
+import os, shutil
+os.makedirs('output', exist_ok=True)
+shutil.copy('MEMORY.md', 'output/MEMORY.md')
+```
+
+If there is no `MEMORY.md` yet, say so instead of exporting an empty template.
 
 ### A.6 First repo touch — discovery pass (`CLAUDE.md` / `AGENTS.md`)
 
