@@ -106,6 +106,6 @@ Every write tool also takes `_tool_input_summary`. It **always** uses this exact
 
 `{Tool Name}` is the tool's friendly name in Title Case. Examples:
 - a `push_files` commit → `[Push Files] chore: update dependencies`
-- a `create_pull_request` → `[Create Pull Request] GAIA Code v3.3`
+- a `create_pull_request` → `[Create Pull Request] GAIA Code v3.4`
 - a `delete_file` → `[Delete File] remove stale config`
 - an `issue_write` create → `[Issue Write] bug: PR footer missing on generated PRs`
