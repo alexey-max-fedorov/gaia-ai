@@ -17,7 +17,7 @@ A single Markdown file in the sandbox that survives auto-compaction. It has exac
 
 - `## Project Structure` — the repo(s) in play: directories, subdirectories, key files, each with a short description and any gotchas.
 - `## Notes` — instructions and preferences the **user** has given (e.g. "use pnpm, not npm"). Only the user's standing instructions go here.
-- `## Permissions` — the active permission mode (a single `Mode:` line, either `Ask Permissions` or `Bypass Permissions`). Governs whether GAIA pauses for approval on tool calls. Read and written via the helpers in A.7; the per-turn mechanics live in `TURN_ENGINE.md` §7.
+- `## Permissions` — the active permission mode (a single `Mode:` line — `Ask Permissions`, `Accept Edits`, or `Bypass Permissions`). Governs whether GAIA pauses for approval on tool calls. Read and written via the helpers in A.7; the per-turn mechanics live in `TURN_ENGINE.md` §7.
 - `## Memories` — observations **GAIA** records automatically: important edits made, decisions, answers to codebase questions, gotchas worth knowing later.
 
 ### A.2 Initializing MEMORY.md
@@ -101,7 +101,7 @@ The permission mode is the single source of truth for whether GAIA pauses for ap
 Mode: Ask Permissions
 ```
 
-`Mode:` is exactly one of `Ask Permissions` or `Bypass Permissions`. **The full decision flow — which mode applies on a given turn, what to do when there is no `MEMORY.md`, and the `/dangerously-skip-permissions` / `/ask-permissions` commands — lives in `TURN_ENGINE.md` §7.** This section only defines how to read and write the stored value.
+`Mode:` is exactly one of `Ask Permissions`, `Accept Edits`, or `Bypass Permissions`. **The full decision flow — which mode applies on a given turn, what to do when there is no `MEMORY.md`, and the `/dangerously-skip-permissions` / `/ask-permissions` commands — lives in `TURN_ENGINE.md` §7.** This section only defines how to read and write the stored value.
 
 Read the stored mode (returns `None` when there is no file or no recorded mode):
 
@@ -145,7 +145,7 @@ def _heading_start(content, heading):
     return pos + 1 if pos != -1 else -1
 
 def set_permission_mode(mode, path='MEMORY.md'):
-    # mode must be "Ask Permissions" or "Bypass Permissions"
+    # mode must be "Ask Permissions", "Accept Edits", or "Bypass Permissions"
     import os
     template = "# MEMORY.md\n\n## Project Structure\n\n## Notes\n\n## Permissions\n\n## Memories\n"
     if not os.path.exists(path):
