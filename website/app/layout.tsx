@@ -4,6 +4,7 @@ import "./globals.css";
 import { SITE } from "@/lib/site";
 import { SITE_URL, organizationLd, websiteLd, softwareApplicationLd } from "@/lib/seo";
 import JsonLd from "@/components/JsonLd";
+import { Analytics } from "@vercel/analytics/next";
 
 const rajdhani = Rajdhani({
   subsets: ["latin"],
@@ -86,6 +87,7 @@ export default function RootLayout({
       >
         <JsonLd data={[organizationLd(), websiteLd(), softwareApplicationLd()]} />
         {children}
+        <Analytics />
       </body>
     </html>
   );
