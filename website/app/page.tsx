@@ -251,12 +251,12 @@ export default function Home() {
           <div className="max-w-5xl mx-auto px-5">
             <SectionLabel className="mb-4">// Permission modes</SectionLabel>
             <h2 className="font-[var(--font-rajdhani)] text-3xl md:text-4xl font-bold tracking-[0.12em] text-[#E8EAF6] mb-3">
-              ASK. OR <span style={{ color: "#1DD3B0" }}>BYPASS.</span>
+              ASK. ACCEPT. OR <span style={{ color: "#1DD3B0" }}>BYPASS.</span>
             </h2>
             <p className="font-[var(--font-inter)] text-[#6B7A94] text-sm md:text-base max-w-xl leading-relaxed mb-8">
-              Approve every write, or let GAIA run hands-off. Toggle with <code className="font-[var(--font-ibm-mono)] text-[#7DD3FC]/85">/dangerously-skip-permissions</code> and <code className="font-[var(--font-ibm-mono)] text-[#7DD3FC]/85">/ask-permissions</code> — the choice is saved to memory.
+              Approve every write, auto-accept the routine, or run fully hands-off. Toggle with <code className="font-[var(--font-ibm-mono)] text-[#7DD3FC]/85">/ask-permissions</code>, <code className="font-[var(--font-ibm-mono)] text-[#7DD3FC]/85">/accept-edits</code>, and <code className="font-[var(--font-ibm-mono)] text-[#7DD3FC]/85">/dangerously-skip-permissions</code> — the choice is saved to memory.
             </p>
-            <div className="grid md:grid-cols-2 gap-3">
+            <div className="grid md:grid-cols-3 gap-3">
               {PERMISSION_MODES.map((m) => (
                 <div key={m.id} className="p-6 border border-[#1DD3B0]/12 bg-[#0D1526]/40">
                   <div className="flex items-center gap-2 mb-2">
