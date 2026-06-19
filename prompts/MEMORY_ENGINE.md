@@ -83,8 +83,9 @@ If the user says "import memory" and provides memory-style Markdown (pasted in t
 
 ```python
 import os, shutil
-os.makedirs('output', exist_ok=True)
-shutil.copy('MEMORY.md', 'output/MEMORY.md')
+if os.path.exists('MEMORY.md'):
+    os.makedirs('output', exist_ok=True)
+    shutil.copy('MEMORY.md', 'output/MEMORY.md')
 ```
 
 If there is no `MEMORY.md` yet, say so instead of exporting an empty template.
