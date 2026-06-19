@@ -112,7 +112,7 @@ The permission mode is the single source of truth for whether GAIA pauses for ap
 Mode: Ask Permissions
 ```
 
-`Mode:` is exactly one of `Ask Permissions`, `Accept Edits`, or `Bypass Permissions`. **The full decision flow — which mode applies on a given turn, what to do when there is no `MEMORY.md`, and the `/dangerously-skip-permissions` / `/ask-permissions` commands — lives in `TURN_ENGINE.md` §7.** This section only defines how to read and write the stored value.
+`Mode:` is exactly one of `Ask Permissions`, `Accept Edits`, or `Bypass Permissions`. **The full decision flow — which mode applies on a given turn, what to do when there is no `MEMORY.md`, and the `/dangerously-skip-permissions` / `/accept-edits` / `/ask-permissions` commands — lives in `TURN_ENGINE.md` §7.** This section only defines how to read and write the stored value.
 
 Read the stored mode (returns `None` when there is no file or no recorded mode):
 
