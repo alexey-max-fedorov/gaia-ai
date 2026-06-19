@@ -297,8 +297,8 @@ memory, plan, tasks = _read('MEMORY.md'), _read('PLAN.md'), _read('TASKS.md')
 
 mode = None
 if memory:
-    m = re.search(r'## Permissions.*?Mode:\s*(.+)', memory, re.S)
-    mode = m.group(1).splitlines()[0].strip() if m else None
+    m = re.search(r'## Permissions.*?Mode:\s*([^\n]*)', memory, re.S)
+    mode = m.group(1).strip() if m else None
 
 plan_title = plan.splitlines()[0].lstrip('# ').strip() if plan else None
 done = len(re.findall(r'^- \[x\]', tasks or '', re.M))
