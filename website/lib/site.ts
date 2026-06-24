@@ -13,7 +13,7 @@ export const SITE = {
 } as const;
 
 // Shown as a freshness signal on pages and used for sitemap lastModified.
-export const LAST_UPDATED = "2026-06-09";
+export const LAST_UPDATED = "2026-06-24";
 
 export const URLS = {
   site: "https://gaiacode.pro",
