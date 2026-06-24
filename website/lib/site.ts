@@ -1,7 +1,7 @@
 // website/lib/site.ts
 // Single source of truth for the GAIA Code site: version, links, nav, and the v3 content model.
 
-export const VERSION = "3.3";
+export const VERSION = "3.4";
 
 // Canonical site identity — single source of truth for the live domain.
 export const SITE = {
@@ -13,7 +13,7 @@ export const SITE = {
 } as const;
 
 // Shown as a freshness signal on pages and used for sitemap lastModified.
-export const LAST_UPDATED = "2026-06-04";
+export const LAST_UPDATED = "2026-06-24";
 
 export const URLS = {
   site: "https://gaiacode.pro",
@@ -28,6 +28,7 @@ export const URLS = {
 export const NAV = [
   { href: "/architecture", label: "ARCHITECTURE" },
   { href: "/connectors", label: "CONNECTORS" },
+  { href: "/changelog", label: "CHANGELOG" },
   { href: "/get-started", label: "GET STARTED" },
 ] as const;
 
@@ -92,6 +93,24 @@ export const SKILL_FILES: SpaceFile[] = [
     role: "Skill",
     summary:
       "Type /update to check whether a newer GAIA Code version is available — it compares your Space's version against the latest release and points you here to redeploy.",
+  },
+  {
+    id: "doctor",
+    file: "doctor.md",
+    path: "prompts/doctor.md",
+    deploy: "upload",
+    role: "Skill",
+    summary:
+      "Type /doctor to verify your deployment — engine files present, versions consistent, memory initialized, GitHub MCP connected. Read-only.",
+  },
+  {
+    id: "pr-review",
+    file: "pr-review.md",
+    path: "prompts/pr-review.md",
+    deploy: "upload",
+    role: "Skill",
+    summary:
+      "Type /pr-review owner/repo#123 to review a pull request — GAIA reads the full diff, analyzes it, and posts findings as a PR review.",
   },
 ];
 
@@ -163,7 +182,7 @@ export const RELIABILITY = [
   },
 ];
 
-// ── Permission modes (v3.3): how GAIA handles tool-call approval ─────────────
+// ── Permission modes: how GAIA handles tool-call approval ────────────────────
 export interface PermissionMode {
   id: string;
   name: string;
@@ -180,6 +199,14 @@ export const PERMISSION_MODES: PermissionMode[] = [
     tagline: "Approve every write.",
     body:
       "GAIA pauses for your approval before any tool call that changes external state — commits, pushes, PRs, issues, merges. Read-only calls run freely. This is the default until you choose otherwise.",
+  },
+  {
+    id: "accept",
+    name: "Accept Edits",
+    badge: "Daily driver",
+    tagline: "Routine writes flow, risky ones ask.",
+    body:
+      "GAIA commits, pushes branches, and opens PRs without stopping — but still asks before merging a PR, creating a repo, or writing to your default branch. Switch with /accept-edits.",
   },
   {
     id: "bypass",
@@ -249,7 +276,7 @@ export interface PageSeo {
   keywords: string[];
 }
 
-export const PAGE_SEO: Record<"architecture" | "connectors" | "getStarted", PageSeo> = {
+export const PAGE_SEO: Record<"architecture" | "connectors" | "getStarted" | "changelog", PageSeo> = {
   architecture: {
     title: "Architecture",
     description:
@@ -286,6 +313,17 @@ export const PAGE_SEO: Record<"architecture" | "connectors" | "getStarted", Page
       "Perplexity Space setup",
       "Claude Code in Perplexity",
       "deploy prompt system",
+    ],
+  },
+  changelog: {
+    title: "Changelog",
+    description:
+      "Every GAIA Code release — what each version added or fixed, from the first prompt to the current four-engine system.",
+    keywords: [
+      "GAIA Code changelog",
+      "GAIA Code releases",
+      "GAIA Code versions",
+      "Perplexity prompt system updates",
     ],
   },
 };
@@ -504,7 +542,7 @@ export const FAQS: Record<"architecture" | "connectors" | "getStarted", Faq[]> =
     },
     {
       q: "Can GAIA stop asking for approval on every action?",
-      a: "Yes. GAIA Code has two permission modes. Ask Permissions — the default — prompts you before any write (commits, pushes, PRs, issues, merges). Bypass Permissions runs every tool call without asking. Switch with /dangerously-skip-permissions, switch back with /ask-permissions; the choice is stored in MEMORY.md so it persists across auto-compaction.",
+      a: "Yes. GAIA Code has three permission modes. Ask Permissions — the default — prompts you before any write. Accept Edits auto-approves routine writes (commits, branches, PRs) but still asks before merges, repo creation, or default-branch writes. Bypass Permissions runs every tool call without asking. Switch with /ask-permissions, /accept-edits, and /dangerously-skip-permissions; the choice is stored in MEMORY.md so it persists across auto-compaction.",
     },
   ],
   connectors: [
@@ -544,3 +582,52 @@ export const FAQS: Record<"architecture" | "connectors" | "getStarted", Faq[]> =
     },
   ],
 };
+
+// ── Changelog (rendered at /changelog; keep in sync with the README version table) ──
+export interface ChangelogEntry {
+  version: string;
+  date: string;
+  notes: string;
+}
+
+export const CHANGELOG: ChangelogEntry[] = [
+  {
+    version: "3.4",
+    date: "June 2026",
+    notes:
+      "Accept Edits permission mode (/accept-edits), /status & /help built-ins, memory export + compaction, plan archiving, /doctor & /pr-review bundled skills, /update lists what's new, skill-engine guardrail, CI version-sync, this changelog page.",
+  },
+  {
+    version: "3.3",
+    date: "June 2026",
+    notes:
+      "Permission modes — Ask Permissions (default) / Bypass Permissions — stored in MEMORY.md, with /dangerously-skip-permissions & /ask-permissions; firmer PR-footer attribution; standardized [Tool Name] tool-input summaries.",
+  },
+  {
+    version: "3.2",
+    date: "June 2026",
+    notes: "/update check-for-updates skill — compares your Space's version against the latest release.",
+  },
+  {
+    version: "3.1",
+    date: "June 2026",
+    notes: "Commit co-authorship (Co-Authored-By: GAIA Code) and a 🌱 Generated with GAIA Code footer on every new PR.",
+  },
+  {
+    version: "3.0.2",
+    date: "June 2026",
+    notes: "Auto-reads CLAUDE.md/AGENTS.md into memory on first repo touch; install skills from GitHub via the skill engine.",
+  },
+  {
+    version: "3.0.1",
+    date: "June 2026",
+    notes: "Registry-JSON version lookup; per-task TASKS.md writes; mistakes recorded to memory; self-review before push.",
+  },
+  {
+    version: "3.0.0",
+    date: "June 2026",
+    notes: "Prompt-system overhaul: memory, plan & turn engines, skill engine, multi-file architecture.",
+  },
+  { version: "2.1", date: "March 2026", notes: "Commit batching rules; GAIA Code rebrand." },
+  { version: "1.0", date: "March 2026", notes: "Initial release." },
+];

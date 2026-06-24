@@ -177,7 +177,7 @@ export default function GetStartedClient() {
 
                             <div className="mt-4 pt-3 border-t border-[#1DD3B0]/10">
                               <p className="font-[var(--font-ibm-mono)] text-[8px] tracking-[0.3em] text-[#1DD3B0]/35 uppercase mb-2">
-                                // Optional skill
+                                // Optional skills
                               </p>
                               {SKILL_FILES.map((f) => (
                                 <div
@@ -197,7 +197,7 @@ export default function GetStartedClient() {
                                 </div>
                               ))}
                               <p className="font-[var(--font-inter)] text-[10px] text-[#8A98B0] leading-relaxed mt-2">
-                                Upload <code>update.md</code> too, then type <code>/update</code> in your Space to check for a newer GAIA Code version.
+                                Upload any of these too, then call them by name in your Space: <code>/update</code> checks for a newer GAIA Code version, <code>/doctor</code> verifies your deployment, and <code>/pr-review</code> reviews a pull request.
                               </p>
                             </div>
                           </div>

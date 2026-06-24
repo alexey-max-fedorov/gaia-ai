@@ -7,7 +7,7 @@ Two distinct halves with no shared code:
 | Path | What it is | Edit it when |
 |---|---|---|
 | `prompts/` | The actual product — prompt files deployed to a Perplexity Space | Changing GAIA's behavior, memory/planning/turn rules, or the skill engine |
-| `website/` | Next.js 15 marketing site ([use-gaia-ai.vercel.app](https://use-gaia-ai.vercel.app)) | Changing the public site |
+| `website/` | Next.js 15 marketing site ([gaiacode.pro](https://gaiacode.pro)) | Changing the public site |
 | `research/` | Reference material (Perplexity tool schemas, system prompt captures, skill examples) — **input, not shipped** | Rarely; background reading |
 | `docs/superpowers/plans/` | Historical implementation plans | Rarely |
 
@@ -16,7 +16,7 @@ Two distinct halves with no shared code:
 - **"Change how GAIA behaves / memory / planning / turns"** → edit the relevant file in `prompts/`. These are prose specs read by an LLM at runtime, not code — there is nothing to build or test, but precision of wording is the whole game.
 - **"Change the website"** → work in `website/`. Standard Next.js App Router.
 - The four prompt files form a chain: `SYSTEM_INSTRUCTIONS.md` is the gate (pasted into the Space Instructions box) that points to the other three uploaded files. Edits to one engine should stay consistent with how the gate describes it.
-- The **version number lives in three places** and must move together: `README.md`, `website/package.json`, and `website/lib/site.ts` (`VERSION`). The version table in `README.md` should also get a new row.
+- The **version number lives in four files** and must move together: `README.md` (header), `website/package.json`, `website/lib/site.ts` (`VERSION`), and `prompts/SYSTEM_PROMPT.md` (the `(vX.Y)` header **and** the PART VII footer rule — two spots in that file). Each release also adds a row to the `README.md` version table and an entry to `CHANGELOG` in `website/lib/site.ts`. CI enforces the four files: `scripts/check-version-sync.mjs` fails on drift.
 - The **commit co-author + PR-footer attribution rule** (`Co-Authored-By: GAIA Code <noreply@gaiacode.pro>` and the `🌱 Generated with [GAIA Code]` PR footer) lives in **three** spots that must stay in sync: a hard-rule line in `prompts/SYSTEM_INSTRUCTIONS.md` (the gate, highest priority — commit trailer only), plus `prompts/SYSTEM_PROMPT.md` PART III (`### GitHub MCP tools`) and PART IV (`### Attribution (commits & PRs)`). The co-author is **always** `GAIA Code <noreply@gaiacode.pro>` — never the user or a human identity.
 
 ## prompts/ — the product
@@ -44,6 +44,6 @@ There is no test suite. `pnpm build` + `pnpm lint` are the verification gates.
 ### Website architecture
 
 - Next.js 15 App Router + React 19 + Tailwind + framer-motion. Routes: `/` (home), `/architecture`, `/connectors`, `/get-started`.
-- `website/lib/site.ts` is the **single source of truth** — version, URLs, nav, and the `SPACE_FILES` content model that drives the Get Started page (each file's deploy kind: `paste` vs `upload`). Add/rename a prompt file → update `SPACE_FILES` here.
+- `website/lib/site.ts` is the **single source of truth** — version, URLs, nav, and the `SPACE_FILES` content model that drives the Get Started page (each file's deploy kind: `paste` vs `upload`). Add/rename a prompt file → update `SPACE_FILES` here (bundled slash-command skills go in `SKILL_FILES` instead).
 - The Get Started page pulls raw prompt files from GitHub via `URLS.rawBase` (the `master` branch), so prompt changes must be pushed before they appear live.
 - Shared primitives live in `website/components/` (`Background`, `Header`, `Footer`, `SectionLabel`, `EngineCard`, etc.); the visual theme is Horizon Zero Dawn-inspired.

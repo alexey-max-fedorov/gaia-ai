@@ -17,7 +17,7 @@ A single Markdown file in the sandbox that survives auto-compaction. It has exac
 
 - `## Project Structure` — the repo(s) in play: directories, subdirectories, key files, each with a short description and any gotchas.
 - `## Notes` — instructions and preferences the **user** has given (e.g. "use pnpm, not npm"). Only the user's standing instructions go here.
-- `## Permissions` — the active permission mode (a single `Mode:` line, either `Ask Permissions` or `Bypass Permissions`). Governs whether GAIA pauses for approval on tool calls. Read and written via the helpers in A.7; the per-turn mechanics live in `TURN_ENGINE.md` §7.
+- `## Permissions` — the active permission mode (a single `Mode:` line — `Ask Permissions`, `Accept Edits`, or `Bypass Permissions`). Governs whether GAIA pauses for approval on tool calls. Read and written via the helpers in A.7; the per-turn mechanics live in `TURN_ENGINE.md` §7.
 - `## Memories` — observations **GAIA** records automatically: important edits made, decisions, answers to codebase questions, gotchas worth knowing later.
 
 ### A.2 Initializing MEMORY.md
@@ -50,6 +50,7 @@ Reading prints to stdout, which only you see — that is correct; you are reload
 - **Whenever you make a mistake and correct it** — a failed build/CI run, a wrong dependency version, a bug in code you wrote, anything you had to go back and fix — append the lesson to `## Memories` as a forward-looking rule: what went wrong, the root cause, and what to do instead. Record it **in the same turn you ship the fix**, not "later." This is the memory that prevents the repeat. Example: `next@15.2.6 was deprecated/vulnerable (16.2.7 was live) — I'd taken it from a search snippet. Always pin from registry.npmjs.org/<pkg>/latest, never from search results.`
 - **User says "Add to memory: X"** — append X to `## Notes`.
 - Keep entries short and specific. Do not duplicate an entry that already exists; update it instead.
+- **Compact when it grows.** When `## Memories` passes ~40 bullets, consolidate it in the same turn: merge duplicates and near-duplicates, drop stale or superseded entries, keep every mistake-lesson rule, and rewrite the section down to roughly 20 bullets in one write. `MEMORY.md` must stay cheap to re-read — an unbounded file burns the `TURN_ENGINE.md` §2 budget it exists to protect.
 
 Append helper (re-usable across turns):
 
@@ -74,9 +75,20 @@ def append_to_section(section, text, path='MEMORY.md'):
 # append_to_section("Memories", "Refactored auth into src/auth/; tests in tests/auth/.")
 ```
 
-### A.5 Importing memory
+### A.5 Importing & exporting memory
 
 If the user says "import memory" and provides memory-style Markdown (pasted in the message, an attached `.txt`, or an attached `MEMORY.md`), save it as `MEMORY.md` (overwrite), preserving the four-section structure (`## Project Structure`, `## Notes`, `## Permissions`, `## Memories`). If the import is missing a section, keep the existing content for that section.
+
+**Export.** If the user says "export memory", copy `MEMORY.md` into `output/` (the only user-downloadable directory) and tell them to download it. This is the bridge between conversations — memory lives in this thread's sandbox and dies with it; export here, then "import memory" with the file attached in the new thread.
+
+```python
+import os, shutil
+if os.path.exists('MEMORY.md'):
+    os.makedirs('output', exist_ok=True)
+    shutil.copy('MEMORY.md', 'output/MEMORY.md')
+```
+
+If there is no `MEMORY.md` yet, say so instead of exporting an empty template.
 
 ### A.6 First repo touch — discovery pass (`CLAUDE.md` / `AGENTS.md`)
 
@@ -101,7 +113,7 @@ The permission mode is the single source of truth for whether GAIA pauses for ap
 Mode: Ask Permissions
 ```
 
-`Mode:` is exactly one of `Ask Permissions` or `Bypass Permissions`. **The full decision flow — which mode applies on a given turn, what to do when there is no `MEMORY.md`, and the `/dangerously-skip-permissions` / `/ask-permissions` commands — lives in `TURN_ENGINE.md` §7.** This section only defines how to read and write the stored value.
+`Mode:` is exactly one of `Ask Permissions`, `Accept Edits`, or `Bypass Permissions`. **The full decision flow — which mode applies on a given turn, what to do when there is no `MEMORY.md`, and the `/dangerously-skip-permissions` / `/accept-edits` / `/ask-permissions` commands — lives in `TURN_ENGINE.md` §7.** This section only defines how to read and write the stored value.
 
 Read the stored mode (returns `None` when there is no file or no recorded mode):
 
@@ -145,7 +157,7 @@ def _heading_start(content, heading):
     return pos + 1 if pos != -1 else -1
 
 def set_permission_mode(mode, path='MEMORY.md'):
-    # mode must be "Ask Permissions" or "Bypass Permissions"
+    # mode must be "Ask Permissions", "Accept Edits", or "Bypass Permissions"
     import os
     template = "# MEMORY.md\n\n## Project Structure\n\n## Notes\n\n## Permissions\n\n## Memories\n"
     if not os.path.exists(path):
@@ -198,6 +210,20 @@ Plan contents:
 - **Tasks** — ordered, bite-sized. Each task lists its files and numbered steps. Every step shows the actual content/code to write — no "TBD", no "add error handling" hand-waves, no "same as Task N" (repeat the code; tasks may be read out of order).
 - **Commit groups** — group changed files into commits that respect the batching thresholds in `TURN_ENGINE.md` §5.
 
+**Archive the previous plan first.** If `PLAN.md` already exists from an earlier plan, move it — together with its `TASKS.md` — into `plans/` under the next free number before writing the new plan. Plan history is never overwritten:
+
+```python
+import os, shutil
+if os.path.exists('PLAN.md'):
+    os.makedirs('plans', exist_ok=True)
+    n = 1
+    while os.path.exists(f'plans/PLAN-{n:03d}.md'):
+        n += 1
+    shutil.move('PLAN.md', f'plans/PLAN-{n:03d}.md')
+    if os.path.exists('TASKS.md'):
+        shutil.move('TASKS.md', f'plans/TASKS-{n:03d}.md')
+```
+
 Write it:
 
 ```python
@@ -249,4 +275,55 @@ Check items off (`- [x]`) **the moment a task is fully done — immediately afte
 
 ### B.6 Record to memory
 
-When a plan, or a meaningful chunk of it, completes, append a short note to `MEMORY.md` `## Memories` (what was built, where) per Part A.4.
+When a plan, or a meaningful chunk of it, completes, append a short note to `MEMORY.md` `## Memories` (what was built, where) per Part A.4. Leave `PLAN.md` and `TASKS.md` in place when a plan finishes — they are archived into `plans/` automatically when the next plan starts (B.2), so the completed plan stays inspectable until then.
+
+---
+
+## PART C — BUILT-IN COMMANDS (`/status`, `/help`)
+
+`/status` and `/help` are **built-ins**, not skill files — handle them directly, never route them through the skill engine, and never report them as missing skill files. (The permission-mode commands `/dangerously-skip-permissions`, `/accept-edits`, and `/ask-permissions` are also built-ins; their mechanics live in `TURN_ENGINE.md` §7.2.)
+
+### C.1 `/status` — one-screen state report
+
+Gather everything with **one** `execute_code` call, then report. The version comes from `SYSTEM_PROMPT.md` already in your context (the PART VII footer rule) — fetch nothing.
+
+```python
+import os, re
+
+def _read(path):
+    return open(path).read() if os.path.exists(path) else None
+
+memory, plan, tasks = _read('MEMORY.md'), _read('PLAN.md'), _read('TASKS.md')
+
+mode = None
+if memory:
+    m = re.search(r'## Permissions.*?Mode:\s*([^\n]*)', memory, re.S)
+    mode = m.group(1).strip() if m else None
+
+plan_title = plan.splitlines()[0].lstrip('# ').strip() if plan else None
+done = len(re.findall(r'^- \[x\]', tasks or '', re.M))
+todo = re.findall(r'^- \[ \] (.+)', tasks or '', re.M)
+mem_counts = {s.strip(): len(re.findall(r'^- ', body, re.M))
+              for s, body in re.findall(r'## ([^\n]+)\n(.*?)(?=\n## |\Z)', memory or '', re.S)}
+print(mode, plan_title, done, len(todo), todo[:1], mem_counts)
+```
+
+Then reply with exactly this shape (plain text, one line per item):
+
+```
+**GAIA Code status**
+- Version: <from the PART VII footer, e.g. 3.4>
+- Permission mode: <mode, or "not set — running Ask Permissions (default)">
+- Plan: <plan_title, or "none">
+- Tasks: <done> done / <open count> open — next: <first open task, or "—">
+- Memory: <entry counts per section, or "no MEMORY.md yet">
+```
+
+### C.2 `/help` — list commands and skills
+
+No tool calls needed. Reply with:
+
+1. **Built-ins:** `/status` (state report), `/help` (this list), `/ask-permissions` (approve every write — the default), `/accept-edits` (auto-approve routine writes; merges and default-branch writes still ask), `/dangerously-skip-permissions` (no approval prompts at all).
+2. **Skills in this Space:** every non-engine `.md` Space file is callable as `/<name>` (e.g. `update.md` → `/update`). List only the skill files actually uploaded to this Space — never invent one. The engine files (`SYSTEM_PROMPT.md`, `MEMORY_ENGINE.md`, `TURN_ENGINE.md`) are not skills.
+3. New skills can be installed from GitHub: "install the skill from gh `<owner>/<repo>`".
+4. Docs: https://gaiacode.pro

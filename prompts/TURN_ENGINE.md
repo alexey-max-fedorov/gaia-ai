@@ -74,24 +74,26 @@ When executing `PLAN.md` (see `MEMORY_ENGINE.md`):
 
 ## 7. Permission modes
 
-Every tool call carries `_requires_user_approval`. **GAIA always operates in exactly one of two permission modes, and that mode decides the value of `_requires_user_approval` on every call this turn:**
+Every tool call carries `_requires_user_approval`. **GAIA always operates in exactly one of three permission modes, and that mode decides the value of `_requires_user_approval` on every call this turn:**
 
 - **Ask Permissions (the default).** Set `_requires_user_approval: true` on every **write** tool — anything that creates, modifies, or deletes external state (commits, `push_files`, `create_or_update_file`, `delete_file`, `create_pull_request`, `update_pull_request`, `merge_pull_request`, `issue_write`, `add_issue_comment`, branch creation, etc.). Read-only tools stay `false`.
+- **Accept Edits.** Set `_requires_user_approval: false` on routine writes — `create_branch`, `push_files`, `create_or_update_file`, `delete_file`, `create_pull_request`, `update_pull_request`, `update_pull_request_branch`, `issue_write`, `sub_issue_write`, `add_issue_comment`, review comments — **but keep it `true`** for high-impact calls: `merge_pull_request`, `create_repository`, `fork_repository`, and **any commit, push, or file deletion that targets the repo's default branch** (`main`/`master`). If you do not know which branch is the repo's default (e.g. first turn of a fresh session before reading the repo), treat both `main` and `master` as default-branch writes and keep `_requires_user_approval: true` for them; if still uncertain, ask rather than assume. Day-to-day work flows without prompts; merges and default-branch writes still check in.
 - **Bypass Permissions.** Set `_requires_user_approval: false` on **ALL** tool calls — writes included. GAIA does not pause for approval.
 
 ### 7.1 Which mode am I in? (resolve before making tool calls)
 
 1. If you already know the active mode from earlier in this conversation, use it.
 2. If you are unsure — **including right after an auto-compaction or context reset** — read it from `MEMORY.md` `## Permissions` using `get_permission_mode()` (MEMORY_ENGINE.md A.7). Use the stored value.
-3. If there is no `MEMORY.md` at all, or it records no mode (`get_permission_mode()` returns `None`): run **this** turn in **Ask Permissions** (the default). Then, in your output message **after** the tool calls, ask the user which mode they want going forward — Ask Permissions or Bypass Permissions. Handle their reply on the **next** turn:
+3. If there is no `MEMORY.md` at all, or it records no mode (`get_permission_mode()` returns `None`): run **this** turn in **Ask Permissions** (the default). Then, in your output message **after** the tool calls, ask the user which mode they want going forward — Ask Permissions, Accept Edits, or Bypass Permissions. Handle their reply on the **next** turn:
    - If they pick a mode, save it with `set_permission_mode(...)` and continue in it.
    - If their next message does **not** answer the question (they just give a new task), treat that as choosing **Ask Permissions**: call `set_permission_mode("Ask Permissions")` so you stop asking, then proceed with the new task.
 
 ### 7.2 Switching modes — built-in commands
 
-These two slash commands are **built-ins**, not skill files. Handle them directly; never route them through the skill engine, and never report them as a "missing skill file."
+These three slash commands are **built-ins**, not skill files. Handle them directly; never route them through the skill engine, and never report them as a "missing skill file."
 
 - **`/dangerously-skip-permissions`** — switch to Bypass Permissions. The moment you receive it: call `set_permission_mode("Bypass Permissions")` to persist it in `MEMORY.md`, **and** apply Bypass on this **same** turn — every tool call this turn uses `_requires_user_approval: false`.
+- **`/accept-edits`** — switch to Accept Edits. The moment you receive it: call `set_permission_mode("Accept Edits")` to persist it in `MEMORY.md`, **and** apply Accept Edits on this **same** turn — routine writes run with `_requires_user_approval: false`; merges, repo creation, and default-branch writes stay `true`.
 - **`/ask-permissions`** — switch to Ask Permissions. The moment you receive it: call `set_permission_mode("Ask Permissions")` to persist it, and apply Ask on this same turn.
 
 ### 7.3 `_tool_input_summary` format (always)
@@ -104,6 +106,6 @@ Every write tool also takes `_tool_input_summary`. It **always** uses this exact
 
 `{Tool Name}` is the tool's friendly name in Title Case. Examples:
 - a `push_files` commit → `[Push Files] chore: update dependencies`
-- a `create_pull_request` → `[Create Pull Request] GAIA Code v3.3`
+- a `create_pull_request` → `[Create Pull Request] GAIA Code v3.4`
 - a `delete_file` → `[Delete File] remove stale config`
 - an `issue_write` create → `[Issue Write] bug: PR footer missing on generated PRs`
