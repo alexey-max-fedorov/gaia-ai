@@ -1,0 +1,41 @@
+name: BetterDependabot
+
+on:
+  schedule:
+    - cron: '0 4 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update-deps:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          package_json_file: website/package.json
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+          cache-dependency-path: website/pnpm-lock.yaml
+
+      - name: Update dependencies
+        working-directory: website
+        run: pnpm update
+
+      - name: Commit lockfile changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add website/pnpm-lock.yaml
+          if git diff --cached --quiet; then
+            echo "No lockfile changes, skipping commit."
+          else
+            git commit -m "chore(deps): update pnpm lockfile"
+            git push
+          fi
