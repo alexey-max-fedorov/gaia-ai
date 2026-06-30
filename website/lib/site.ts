@@ -250,7 +250,7 @@ export const SETUP_STEPS: SetupStep[] = [
   {
     num: "04",
     title: "Select your model",
-    body: "Choose a model in Space settings. Claude Sonnet is recommended for the deepest reasoning.",
+    body: "Choose a model in Space settings. GLM-5.2 and Claude Sonnet 5.0 Thinking are recommended for the deepest reasoning.",
     fileId: null,
   },
   {
@@ -508,7 +508,7 @@ export const PREREQS: Prereq[] = [
   },
   {
     title: "A capable model",
-    body: "Claude Sonnet is recommended for the deepest reasoning. You'll select it in Space settings.",
+    body: "GLM-5.2 and Claude Sonnet 5.0 Thinking are recommended for the deepest reasoning. You'll select one in Space settings.",
   },
   {
     title: "A GitHub account (optional)",
@@ -574,7 +574,7 @@ export const FAQS: Record<"architecture" | "connectors" | "getStarted", Faq[]> =
     },
     {
       q: "Which model should I use?",
-      a: "Claude Sonnet is recommended for the deepest reasoning. You select the model in your Space settings after uploading the files.",
+      a: "GLM-5.2 and Claude Sonnet 5.0 Thinking are recommended for the deepest reasoning. You select the model in your Space settings after uploading the files.",
     },
     {
       q: "Is GAIA Code free and open source?",

@@ -14,7 +14,7 @@ GAIA Code is a Claude Code-inspired prompt system for Perplexity Spaces. It brin
    - `prompts/SYSTEM_PROMPT.md` — behavior
    - `prompts/MEMORY_ENGINE.md` — memory + planning
    - `prompts/TURN_ENGINE.md` — turns + context budget
-4. Set the Space model (Claude Sonnet recommended).
+4. Set the Space model (GLM-5.2 or Claude Sonnet 5.0 Thinking recommended).
 5. *(Optional)* Connect GitHub via Perplexity Connectors so GAIA can read and write your repositories.
 6. Done — GAIA Code is ready to use.
 
