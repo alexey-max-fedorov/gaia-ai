@@ -26,7 +26,7 @@ jobs:
 
       - name: Update dependencies
         working-directory: website
-        run: pnpm update
+        run: pnpm update --latest
 
       - name: Commit lockfile changes
         run: |
@@ -36,6 +36,6 @@ jobs:
           if git diff --cached --quiet; then
             echo "No lockfile changes, skipping commit."
           else
-            git commit -m "chore(deps): update pnpm lockfile"
+            git commit -m "chore(deps): update deps"
             git push
           fi
