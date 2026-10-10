@@ -39,6 +39,8 @@ pnpm build        # production build
 pnpm lint         # next lint (eslint)
 ```
 
+The site is a static export (`output: "export"`) hosted on GitHub Pages (DNS on Cloudflare); pushes to `master` touching `website/**` deploy via `.github/workflows/deploy-website.yml`. Metadata routes need `export const dynamic = "force-static"`; no API routes/middleware/`redirects()`.
+
 There is no test suite. `pnpm build` + `pnpm lint` are the verification gates.
 
 ### Website architecture

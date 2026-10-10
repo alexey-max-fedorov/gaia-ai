@@ -7,3 +7,5 @@ export const alt = "GAIA Code — Changelog";
 export default function Image() {
   return renderOg({ title: "CHANGELOG", subtitle: "Every GAIA Code release, newest first." });
 }
+
+export const dynamic = "force-static";

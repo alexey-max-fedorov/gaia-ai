@@ -7,3 +7,5 @@ export const alt = "GAIA Code — Architecture";
 export default function Image() {
   return renderOg({ title: "ARCHITECTURE", subtitle: "One gate. Three engines. Here's how GAIA Code fits together." });
 }
+
+export const dynamic = "force-static";

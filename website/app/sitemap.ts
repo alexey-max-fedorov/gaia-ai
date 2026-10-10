@@ -19,3 +19,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: r.priority,
   }));
 }
+
+export const dynamic = "force-static";

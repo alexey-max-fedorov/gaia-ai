@@ -7,3 +7,5 @@ export const alt = "GAIA Code — Connectors";
 export default function Image() {
   return renderOg({ title: "CONNECTORS", subtitle: "Wire up GitHub, n8n, and more via Perplexity MCP." });
 }
+
+export const dynamic = "force-static";

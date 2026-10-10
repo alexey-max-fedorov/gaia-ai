@@ -7,3 +7,5 @@ export const alt = "GAIA Code — Get Started";
 export default function Image() {
   return renderOg({ title: "GET STARTED", subtitle: "Deploy GAIA Code in your Perplexity Space in ~2 minutes." });
 }
+
+export const dynamic = "force-static";

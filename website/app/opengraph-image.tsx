@@ -7,3 +7,5 @@ export const alt = "GAIA Code — Claude Code's workflow inside a Perplexity Spa
 export default function Image() {
   return renderOg({ title: "GAIA CODE", subtitle: "Claude Code's workflow, inside a Perplexity Space." });
 }
+
+export const dynamic = "force-static";
