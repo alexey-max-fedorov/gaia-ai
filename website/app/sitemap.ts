@@ -11,6 +11,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: "/connectors", priority: 0.8 },
     { path: "/changelog", priority: 0.6 },
     { path: "/get-started", priority: 0.9 },
+    { path: "/privacy", priority: 0.3 },
   ];
   return routes.map((r) => ({
     url: `${SITE_URL}${r.path}`,

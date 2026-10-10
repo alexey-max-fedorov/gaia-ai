@@ -3,6 +3,7 @@ import { VERSION, NAV, URLS } from "@/lib/site";
 
 const LINKS = [
   ...NAV.filter((n) => n.href !== "/get-started").map((n) => ({ label: n.label, href: n.href, external: false })),
+  { label: "PRIVACY", href: "/privacy", external: false },
   { label: "GITHUB", href: URLS.github, external: true },
 ];
 
